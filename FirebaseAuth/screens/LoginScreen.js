@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
-import { auth } from '../firebase'
+// import { auth } from '../firebase'
 // None of these files exist error given
 
 
@@ -9,6 +9,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  /* 
   const handleSignUp = () => {
     auth
     .createUserWithEmailAndPassword(email, password)
@@ -18,6 +19,7 @@ const LoginScreen = () => {
     })
     .catch(error => alert(error.message))
   }
+  */
   
   return (
     <KeyboardAvoidingView
@@ -49,7 +51,7 @@ const LoginScreen = () => {
         </TouchableOpacity>  
 
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={() => { }}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
