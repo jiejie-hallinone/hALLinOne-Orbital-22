@@ -3,12 +3,9 @@ import React from 'react'
 
 const BookingsScreen = () => {
   return (
-    <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
-    >
+    <View>
       <Text>Bookings Screen</Text>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
