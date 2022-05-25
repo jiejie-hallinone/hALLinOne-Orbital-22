@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
-// import { auth } from '../firebase'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
+import { auth } from '../Firebase/Firebase';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 // None of these files exist error given
 
 
@@ -9,18 +11,36 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  /* 
   const handleSignUp = () => {
-    auth
-    .createUserWithEmailAndPassword(email, password)
-    .then(userCredentials => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredentials) => {
       const user = userCredentials.user;
-      console.log(user.email);
+      console.log("Registered " + user.email);
     })
     .catch(error => alert(error.message))
   }
-  */
   
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredentials) => {
+      const user = userCredentials.user;
+      console.log("Logged in " + user.email);
+    })
+    .catch(error => alert(error.message))
+  }
+
+
+  const navigation = useNavigation()
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, user => {
+      if (user) {
+        navigation.navigate("Bookings");
+      }
+    })
+
+    return unsub
+  }, [])
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -44,14 +64,14 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => { }}
+          onPress={handleLogin}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>  
 
         <TouchableOpacity
-          onPress={() => { }}
+          onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
