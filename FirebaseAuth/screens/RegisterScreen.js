@@ -2,36 +2,36 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import React, { useEffect, useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { auth } from '../Firebase/Firebase';
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredentials) => {
-      const user = userCredentials.user;
-      console.log("Logged in " + user.email);
-    })
-    .catch(error => alert(error.message))
-  }
+const RegisterScreen = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmpassword, setConfirmPassword] = useState('')
 
+    const handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+          const user = userCredentials.user;
+          console.log("Registered " + user.email);
+        })
+        .catch(error => alert(error.message))
+    } 
 
-  const navigation = useNavigation()
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, user => {
-      if (user) {
-        navigation.navigate("Bookings");
-      }
-    })
+    const navigation = useNavigation()
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, user => {
+            if (user) {
+                navigation.navigate("Bookings");
+            }
+        })
 
-    return unsub
-  }, [])
+        return unsub
+    }, [])
 
-  return (
+    return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior="padding"
@@ -50,18 +50,28 @@ const LoginScreen = () => {
           style={styles.input}
           secureTextEntry
         />   
+        <TextInput
+          placeholder="Confirm Password"
+          value={confirmpassword}
+          onChangeText={text => setConfirmPassword(text)}
+          style={styles.input}
+          secureTextEntry
+        /> 
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>  
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => {
+            if (password === confirmpassword) {
+                handleSignUp();
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                
+            } else {
+                alert("Passwords do not match!")
+            }
+          }}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
@@ -71,7 +81,7 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default RegisterScreen
 
 const styles = StyleSheet.create({
   container: {
