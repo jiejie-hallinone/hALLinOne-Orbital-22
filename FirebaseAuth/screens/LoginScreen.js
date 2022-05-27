@@ -24,7 +24,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, user => {
       if (user) {
-        navigation.navigate("Bookings");
+        navigation.replace("Bookings");
       }
     })
 
