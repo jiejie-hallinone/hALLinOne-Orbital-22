@@ -17,10 +17,12 @@ const SettingsScreen = () => {
 
   const user = auth.currentUser
   const email = user?.email;
+  const name = user?.displayName;
 
   return (
     <View style={styles.container}>
       <Text>Email: {email}</Text>
+      <Text>Name: {name}</Text>
 
       <TouchableOpacity
         onPress={handleSignOut}

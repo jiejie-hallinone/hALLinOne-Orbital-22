@@ -8,6 +8,7 @@ import HistoryScreen from './screens/HistoryScreen';
 import SocialScreen from './screens/SocialScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FirstTimeSetupScreen from './screens/FirstTimeSetupScreen';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupScreen" component={FirstTimeSetupScreen} />
         <Stack.Screen options={{headerShown:false}} name="Bookings" component={AfterLoginTabs} />
       </Stack.Navigator>
     </NavigationContainer>

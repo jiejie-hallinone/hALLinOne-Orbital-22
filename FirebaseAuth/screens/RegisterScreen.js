@@ -24,7 +24,7 @@ const RegisterScreen = () => {
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, user => {
             if (user) {
-                navigation.navigate("Bookings");
+                navigation.navigate("FirstTimeSetupScreen");
             }
         })
 
