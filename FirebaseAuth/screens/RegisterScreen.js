@@ -64,10 +64,6 @@ const RegisterScreen = () => {
           onPress={() => {
             if (password === confirmpassword) {
                 handleSignUp();
-                setEmail('');
-                setPassword('');
-                setConfirmPassword('');
-                
             } else {
                 alert("Passwords do not match!")
             }

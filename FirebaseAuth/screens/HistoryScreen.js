@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const BookingsScreen = () => {
+const HistoryScreen = () => {
   return (
     <View>
-      <Text>Here will be the halls available, then the blocks, then facilities</Text>
+      <Text>Here you can see your past bookings</Text>
     </View>
   )
 }
 
-export default BookingsScreen
+export default HistoryScreen
 
 const styles = StyleSheet.create({})

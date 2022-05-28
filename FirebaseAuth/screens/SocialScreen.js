@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const BookingsScreen = () => {
+const SocialScreen = () => {
   return (
     <View>
-      <Text>Here will be the halls available, then the blocks, then facilities</Text>
+      <Text>Here you can view the feed of open jios and post your own open jios</Text>
     </View>
   )
 }
 
-export default BookingsScreen
+export default SocialScreen
 
 const styles = StyleSheet.create({})
