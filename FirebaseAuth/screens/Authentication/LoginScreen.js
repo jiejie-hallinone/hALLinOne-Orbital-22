@@ -7,9 +7,13 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const LoginScreen = () => {
+  // stores email and password
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   
+  // function that signs in the user to the app (and firebase)
+  // if successful, console will display logged in and the email
+  // else, an alert will be pushed to the user
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredentials) => {
@@ -19,8 +23,9 @@ const LoginScreen = () => {
     .catch(error => alert(error.message))
   }
 
-
+  // to navigate within Authentication stack
   const navigation = useNavigation()
+  // if log in successful, bring to the bookings tab. Only done once per log in
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, user => {
       if (user) {
@@ -38,12 +43,14 @@ const LoginScreen = () => {
     >
       <View style={styles.inputContainer}>
         <TextInput
+          // input field for email to log in
           placeholder="Email"
           value={email}
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
         <TextInput
+          // input field for password to log in
           placeholder="Password"
           value={password}
           onChangeText={text => setPassword(text)}
@@ -54,6 +61,7 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
+          // login button that logs the user into app and firebase when pressed
           onPress={handleLogin}
           style={styles.button}
         >
@@ -61,6 +69,7 @@ const LoginScreen = () => {
         </TouchableOpacity>  
 
         <TouchableOpacity
+          // button that brings the user to the page to register a new user
           onPress={() => navigation.navigate("Register")}
           style={[styles.button, styles.buttonOutline]}
         >
@@ -73,6 +82,7 @@ const LoginScreen = () => {
 
 export default LoginScreen
 
+// styles used within screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,

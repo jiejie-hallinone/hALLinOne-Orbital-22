@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/Authentication/LoginScreen';
@@ -17,13 +16,20 @@ import PostScreen from './screens/Social/PostScreen';
 import ProfileScreen from './screens/Settings/ProfileScreen';
 import BookScreen from './screens/Bookings/BookScreen';
 
+// Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
 const Tabs = createBottomTabNavigator();
+// Stack navigator for authentication - to navigate between login, registering, additional details and then main tabs
 const Stack = createNativeStackNavigator();
+// Stack navigator for pages within the bookings tab
 const BookingsStack = createNativeStackNavigator();
+// Stack navigator for pages within the history tab
 const HistoryStack = createNativeStackNavigator();
+// Stack navigator for pages within the social tab
 const SocialStack = createNativeStackNavigator();
+// Stack navigator for pages within the settings tab
 const SettingsStack = createNativeStackNavigator();
 
+// pages within bookings
 function BookingTab() {
   return (
     <BookingsStack.Navigator>
@@ -35,6 +41,7 @@ function BookingTab() {
   );
 }
 
+//pages within history
 function HistoryTab() {
   return (
     <HistoryStack.Navigator>
@@ -44,6 +51,7 @@ function HistoryTab() {
   );
 }
 
+// pages within social
 function SocialTab() {
   return (
     <SocialStack.Navigator>
@@ -53,6 +61,7 @@ function SocialTab() {
   );
 }
 
+// pages within settings
 function SettingsTab() {
   return (
     <SettingsStack.Navigator>
@@ -62,6 +71,8 @@ function SettingsTab() {
   );
 }
 
+// main tabs, only accessible after login
+// do not show header
 function AfterLoginTabs() {
   return (
     <Tabs.Navigator>
@@ -73,6 +84,7 @@ function AfterLoginTabs() {
   );  
 }
 
+// navigates between authentication to the main tabs
 export default function App() {
   return (
     <NavigationContainer>
@@ -86,6 +98,9 @@ export default function App() {
   );
 }
 
+/*
+// default style within app, not used here
+// for reference 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,3 +109,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+*/

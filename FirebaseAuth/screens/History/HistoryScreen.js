@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
+// here the existing bookings made by the user will be shown
 const HistoryScreen = () => {
   return (
     <View>

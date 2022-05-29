@@ -3,18 +3,22 @@ import React, { useState } from 'react'
 import { auth } from '../../Firebase/Firebase';
 import { updateProfile } from 'firebase/auth';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const FirstTimeSetupScreen = () => {
+    // stores name
     const [name, setName] = useState('')
+
+    // to navigate between authentication stack
     const navigation = useNavigation();
     return (
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
         >
-          <View style={styles.inputContainer}>
+          <View style={styles.inputContainer}> 
             <TextInput
+              // input field to type user's desired display name, which is stored as name
               placeholder="Name"
               value={name}
               onChangeText={text => setName(text)}
@@ -24,10 +28,14 @@ const FirstTimeSetupScreen = () => {
     
           <View style={styles.buttonContainer}>
             <TouchableOpacity
+              // button that when pressed, updates user displayed name to what was input in above field
+              // button writes "Set up Profile"
               onPress={() => {
                 updateProfile(auth.currentUser, {
                     displayName: name
                 })
+                // if successful, name will be updated and logged on the console
+                // user will be brought to bookings tab
                 .then(() => {
                     console.log("Name updated to " + name);
                     navigation.navigate("Bookings");})
@@ -44,6 +52,7 @@ const FirstTimeSetupScreen = () => {
     
     export default FirstTimeSetupScreen
     
+    // styles of elements in screen
     const styles = StyleSheet.create({
       container: {
         flex: 1,

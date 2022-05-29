@@ -3,9 +3,14 @@ import { signOut } from 'firebase/auth';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { auth } from '../../Firebase/Firebase';
 
+// this screen displays a menu of the settings the users can select to customise their application
 const SettingsScreen = () => {
-
+  // to navigate within settings stack
   const navigation = useNavigation();
+
+  // to sign user out of app and firebase
+  // if successful, console will display signed out and user will be brought back to the login page
+  // else, the user will be notified of the error
   const handleSignOut = () => {
     signOut(auth)
     .then(() => {
@@ -18,6 +23,7 @@ const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        // button to bring the user to view and edit their profile
         onPress={() => navigation.navigate("Profile")}
         style={styles.prof}
       >
@@ -25,6 +31,7 @@ const SettingsScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
+        // button to sign the user out of app and firebase
         onPress={handleSignOut}
         style={styles.button}
       >
@@ -36,6 +43,7 @@ const SettingsScreen = () => {
 
 export default SettingsScreen
 
+// styles used within screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,

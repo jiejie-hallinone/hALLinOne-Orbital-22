@@ -7,10 +7,14 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const RegisterScreen = () => {
+    // stores email, password, and confirmed password (a retype of password)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmpassword, setConfirmPassword] = useState('')
 
+    // function that creates an account for the app and firebase
+    // if successful, console will show registered, with the user email
+    // else, an alert will be pushed to the user
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
@@ -20,7 +24,10 @@ const RegisterScreen = () => {
         .catch(error => alert(error.message))
     } 
 
+    // to navigate within authentication stack
     const navigation = useNavigation()
+    
+    // to bring users to screen to fill in further details to set up profile after signing up
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, user => {
             if (user) {
@@ -38,12 +45,14 @@ const RegisterScreen = () => {
     >
       <View style={styles.inputContainer}>
         <TextInput
+          // input field for email
           placeholder="Email"
           value={email}
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
         <TextInput
+          // input field for password
           placeholder="Password"
           value={password}
           onChangeText={text => setPassword(text)}
@@ -51,6 +60,7 @@ const RegisterScreen = () => {
           secureTextEntry
         />   
         <TextInput
+          // input field to retype password
           placeholder="Confirm Password"
           value={confirmpassword}
           onChangeText={text => setConfirmPassword(text)}
@@ -61,10 +71,13 @@ const RegisterScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
+          // register button to create a new account
           onPress={() => {
+            // if password and retyped password match, create account
             if (password === confirmpassword) {
                 handleSignUp();
             } else {
+                // alert users that passwords do not match and users have to retype the password
                 alert("Passwords do not match!")
             }
           }}
@@ -79,6 +92,7 @@ const RegisterScreen = () => {
 
 export default RegisterScreen
 
+// styles used within screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
