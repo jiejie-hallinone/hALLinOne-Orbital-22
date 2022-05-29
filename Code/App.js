@@ -33,9 +33,9 @@ const SettingsStack = createNativeStackNavigator();
 function BookingTab() {
   return (
     <BookingsStack.Navigator>
-      <BookingsStack.Screen name="Select Hall" component={BookingsScreen}/>
-      <BookingsStack.Screen name="Select Block" component={BlocksScreen}/>
-      <BookingsStack.Screen name="Select Facilities" component={FacilitiesScreen}/>
+      <BookingsStack.Screen name="Hall" component={BookingsScreen}/>
+      <BookingsStack.Screen name="Block" component={BlocksScreen}/>
+      <BookingsStack.Screen name="Facilities" component={FacilitiesScreen}/>
       <BookingsStack.Screen name="Book" component={BookScreen}/>
     </BookingsStack.Navigator>
   );
@@ -45,8 +45,8 @@ function BookingTab() {
 function HistoryTab() {
   return (
     <HistoryStack.Navigator>
-      <HistoryStack.Screen name="Existing Bookings" component={HistoryScreen}/>
-      <HistoryStack.Screen name="Amend Booking" component={AmendScreen}/>
+      <HistoryStack.Screen name="Bookings" component={HistoryScreen}/>
+      <HistoryStack.Screen name="Amend" component={AmendScreen}/>
     </HistoryStack.Navigator>
   );
 }
@@ -65,7 +65,7 @@ function SocialTab() {
 function SettingsTab() {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings Menu" component={SettingsScreen}/>
+      <SettingsStack.Screen name="Menu" component={SettingsScreen}/>
       <SettingsStack.Screen name="Profile" component={ProfileScreen}/>
     </SettingsStack.Navigator>
   );
