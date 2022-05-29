@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
-import { auth } from '../Firebase/Firebase';
+import { auth } from '../../Firebase/Firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
@@ -24,7 +24,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, user => {
       if (user) {
-        navigation.replace("Bookings");
+        navigation.replace("AfterLogin");
       }
     })
 

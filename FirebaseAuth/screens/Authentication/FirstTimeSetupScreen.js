@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { auth } from '../Firebase/Firebase';
+import { auth } from '../../Firebase/Firebase';
 import { updateProfile } from 'firebase/auth';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
