@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { auth } from '../../Firebase/Firebase';
+import { auth, db } from '../../Firebase/Firebase';
 import { updateProfile } from 'firebase/auth';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { useNavigation } from '@react-navigation/native';
+import { doc, setDoc } from "firebase/firestore"; 
+
+
 
 const FirstTimeSetupScreen = () => {
     // stores name
@@ -37,10 +40,19 @@ const FirstTimeSetupScreen = () => {
                 // if successful, name will be updated and logged on the console
                 // user will be brought to bookings tab
                 .then(() => {
-                    console.log("Name updated to " + name);
-                    navigation.navigate("Bookings");})
-                }
+                  try{
+                    const docRef = setDoc(doc(db, "users", auth.currentUser.uid), {
+                      name: name,
+                      email: auth.currentUser.email
+                    });
+                    console.log("Document written with email: ", auth.currentUser.email);
+                    navigation.navigate("Bookings");
+                  } catch (e) {
+                    console.error("Error adding document: ", e);
+                  }  
+                })
               }
+            }
               style={[styles.button, styles.buttonOutline]}
             >
               <Text style={styles.buttonOutlineText}>Set up profile</Text>
