@@ -15,6 +15,9 @@ import AmendScreen from './screens/History/AmendScreen';
 import PostScreen from './screens/Social/PostScreen';
 import ProfileScreen from './screens/Settings/ProfileScreen';
 import BookScreen from './screens/Bookings/BookScreen';
+import FirstTimeSetupHallScreen from './screens/Authentication/FirstTimeSetupHallScreen';
+import FirstTimeSetupBlockScreen from './screens/Authentication/FirstTimeSetupBlockScreen';
+import FirstTimeSetupLevelScreen from './screens/Authentication/FirstTimeSetupLevelScreen';
 
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
 const Tabs = createBottomTabNavigator();
@@ -92,6 +95,9 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupScreen" component={FirstTimeSetupScreen} />
+        <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupHallScreen" component={FirstTimeSetupHallScreen} />
+        <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupBlockScreen" component={FirstTimeSetupBlockScreen} />
+        <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupLevelScreen" component={FirstTimeSetupLevelScreen} />
         <Stack.Screen options={{headerShown:false}} name="AfterLogin" component={AfterLoginTabs} />
       </Stack.Navigator>
     </NavigationContainer>
