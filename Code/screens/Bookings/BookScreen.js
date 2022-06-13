@@ -117,6 +117,7 @@ const BookScreen = () => {
           display='default'
           onChange={onChangeEnd}
           style={styles.dtpicker}
+          minimumDate={date}
         />
       )}
 
@@ -131,7 +132,7 @@ const BookScreen = () => {
             startDateTime: date,
             endDateTime: dateEnd,
           })
-          console.log("Booking made with ID: ", docRef.id);
+          console.log("Booking made");
           alert("Booking successfully made")
           navigation.navigate("Hall")
         }}
