@@ -132,6 +132,7 @@ const BookScreen = () => {
             endDateTime: dateEnd,
           })
           console.log("Booking made with ID: ", docRef.id);
+          alert("Booking successfully made")
           navigation.navigate("Hall")
         }}
         style={styles.confirm}
