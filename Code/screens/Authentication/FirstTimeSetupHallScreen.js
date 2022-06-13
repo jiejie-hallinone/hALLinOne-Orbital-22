@@ -8,6 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 const FirstTimeSetupHallScreen = () => {
   // select hall to save in profile
+  
     const [hall, setHall] = useState('')
 
     // to navigate between authentication stack

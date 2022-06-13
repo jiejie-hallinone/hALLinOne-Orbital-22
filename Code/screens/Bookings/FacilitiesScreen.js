@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
+// to be exported for bookings to be made later on
 var fac
 
 // this screen displays all the facilities of the block selected from the previous page

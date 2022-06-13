@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
+// to be exported for bookings to be made later on
 var block;
 
 // this screen displays all the blocks of the hall selected from the previous page
@@ -19,62 +20,62 @@ const BlocksScreen = () => {
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>A Block </Text>
+        <Text style={styles.buttonText}>A Block / Block 1</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for A block, brings the user to the next page to pick which facility
+        // button for B block, brings the user to the next page to pick which facility
         onPress={() => {
           block = 'B'
           navigation.navigate("Block Facilities")
         }}
         style={styles.button2}
       >
-        <Text style={styles.buttonText}>B Block </Text>
+        <Text style={styles.buttonText}>B Block / Block 2</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for A block, brings the user to the next page to pick which facility
+        // button for C block, brings the user to the next page to pick which facility
         onPress={() => {
           block = 'C'
           navigation.navigate("Block Facilities")
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>C Block </Text>
+        <Text style={styles.buttonText}>C Block / Block 3</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for A block, brings the user to the next page to pick which facility
+        // button for D block, brings the user to the next page to pick which facility
         onPress={() => {
           block = 'D'
           navigation.navigate("Block Facilities")
         }}
         style={styles.button2}
       >
-        <Text style={styles.buttonText}>D Block </Text>
+        <Text style={styles.buttonText}>D Block / Block 4</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for A block, brings the user to the next page to pick which facility
+        // button for E block, brings the user to the next page to pick which facility
         onPress={() => {
           block = 'E'
           navigation.navigate("Block Facilities")
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>E Block </Text>
+        <Text style={styles.buttonText}>E Block / Block 5</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for A block, brings the user to the next page to pick which facility
+        // button for common facilities, brings the user to the next page to pick which common facility
         onPress={() => {
           block = 'F'
           navigation.navigate("Common Facilities")
         }}
         style={styles.button2}
       >
-        <Text style={styles.buttonText}>Common </Text>
+        <Text style={styles.buttonText}>Common Facilities</Text>
       </TouchableOpacity>
     </View>
   )
