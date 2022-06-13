@@ -4,19 +4,22 @@ import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, onSnapshot } from "firebase/firestore";
 
+var hallname;
 // this screen displays all the halls, and is the first page of the bookings tab
 // users will choose the hall of the facility they would like to book
 const BookingsScreen = () => {
   // to navigate within bookings stack
   const navigation = useNavigation();
 
-    // obtain user information from firestore
-    const user = auth.currentUser
-    const [hall, setHall] = useState('')
-    const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-       const data = doc.data();
-       setHall(data.hall)
-    });
+  // obtain user information from firestore
+  const user = auth.currentUser
+  const [hall, setHall] = useState('')
+  const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+   const data = doc.data();
+   setHall(data.hall)
+   hallname = hall;
+  });  
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -91,7 +94,7 @@ const BookingsScreen = () => {
         }}
         style={styles.LH}
       >
-        <Text style={styles.buttonText}>Prince George's Park Hall </Text>
+        <Text style={styles.krbuttonText}>Prince George's Park Hall </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -106,13 +109,15 @@ const BookingsScreen = () => {
         }}
         style={styles.KE}
       >
-        <Text style={styles.buttonText}>King Edwards VII Hall </Text>
+        <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
       </TouchableOpacity>
     </View>
   )
 }
 
 export default BookingsScreen
+
+export {hallname}
 
 // styles within screen
 const styles = StyleSheet.create({
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
   },
   EH: {
     backgroundColor: 'yellow',
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
   krbuttonText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
   },
   LH: {
     backgroundColor: 'gray',
