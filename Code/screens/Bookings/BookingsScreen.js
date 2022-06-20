@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 // to be exported for bookings to be made later on
 var hallname;
@@ -17,7 +17,7 @@ const BookingsScreen = () => {
   // obtain user information from firestore
   const user = auth.currentUser
   const [hall, setHall] = useState('')
-  const unsub = getDoc(doc(db, "users", auth.currentUser.uid), (doc) => {
+  const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     const data = doc.data();
     setHall(data.hall)
     hallname = hall;
