@@ -9,44 +9,41 @@ import { doc, getDocs, collection, query, where } from "firebase/firestore";
 const HistoryScreen = () => {
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
+  
   // gets the bookings from firestore made by current user, with end date and time after the current date and time
   const getBookings = async () => {
     const newBookings = new Array();
-    const q = query(collection(db, "bookings"), where("uid", "==", uid), where("endDateTime", ">=", new Date()));
+    const q = await query(collection(db, "bookings"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
+    await querySnapshot.forEach(doc => {
       let data = doc.data()
       console.log(doc.id + " retrieved")
-      newBookings.push(data);
+      newBookings.push({data: data, id: doc.id});
     })
 
     return {newBookings};
   }
-
-  const [bookings, setBookings] = useState([]);
+  
+  /*
   useEffect(() => {
     setBookings(getBookings());
-  }, []);
-
-  // to render the list of bookings into individual buttons
-  const renderList = (data) => {
-    return (
-      <View style={styles.list}>
-        
-          <Text>{data.hall}</Text>
-        
-      </View>
-    );
-  };
+  }, [])
+  */
+  // const [bookings, setBookings] = useState(getBookings());
+  // console.log(bookings)
 
   return (
-    <View>
+    <View
+      style={styles.container}
+    >
       <FlatList
-      style={styles.list}
-      data={bookings}
-      renderItem={renderList}
-      keyExtractor={(item, index) => index}
-    />
+        style={styles.item}
+        data={getBookings()}
+        renderItem={({item}) => (
+          <Text style={styles.text}>test</Text>
+        )}
+        keyExtractor={item => item.id}
+      />
     </View>
   )
 }
@@ -58,21 +55,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     bordercolor: 'red',
-    
+    borderWidth: 2
   },
-  list: {
-    flex: 1,
+  item: {
     width: '100%',
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    borderColor: 'red',
-  }, 
-  bookingsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    borderColor: 'red'
+    backgroundColor: 'pink',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: 700,
   }
 })

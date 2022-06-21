@@ -8,6 +8,7 @@ import { auth, db } from '../../Firebase/Firebase';
 import { doc, addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native'
+import { FirebaseError } from 'firebase/app'
 
 
 // facility being booked
@@ -145,7 +146,8 @@ const BookScreen = () => {
       <TouchableOpacity
       // makes booking by saving into firestore bookings collection
         onPress={() => {
-          const docRef = addDoc(collection(db, "bookings"), {
+          try {
+            const docRef = addDoc(collection(db, "bookings"), {
             uid: uid,
             name: name,
             hall: hallname,
@@ -158,7 +160,11 @@ const BookScreen = () => {
           // user notified of successful booking and brought back to main page
           alert("Booking successfully made")
           navigation.navigate("Hall")
+        } catch (FirebaseError) {
+          alert("Select date and time!")
+        }
         }}
+          
         style={styles.confirm}
        >
          <Text style={styles.text}>Confirm Booking</Text>
