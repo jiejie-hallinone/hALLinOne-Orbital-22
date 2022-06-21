@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
@@ -28,41 +28,36 @@ const HistoryScreen = () => {
     await querySnapshot.forEach(doc => {
       // retrieves document data (name, hall, time etc)
       let data = doc.data()
-      console.log(doc.id + " retrieved")
+      // console.log(doc.id + " retrieved")
       // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
     setLoading(false);
 
-    return {newBookings};
+    setBookings(newBookings);
   }
   
   
   // to get the bookings and set to the state bookings but only occurs after rendering
-  const [bookings, setBookings] = useState(getBookings());
-  /*
-  useEffect(() => {
-    setBookings(getBookings());
-  }, [])
-  */  
+  const [bookings, setBookings] = useState([]);
   
-  // for error checking
-  // initially, will log an empty promise (ie data not retrieved)
-  // only after refreshing app then the booking data will be shown - but not rendered
-  console.log(bookings)
+  useEffect(() => {
+    getBookings();
+  }, [])
 
-  return (
-    <View
-      style={styles.container}
-    >
-      <FlatList
-        style={styles.item}
-        data={bookings}
-        renderItem={({item}) => (
-          <Text style={styles.text}>test</Text>
-        )}
-        keyExtractor={item => item.id}
-      />
+  function Loaded(props) {
+    return (
+      <View style={styles.listContainer}>
+        
+        <FlatList
+          style={styles.item}
+          data={bookings}
+          renderItem={({item}) => (
+            <Text style={styles.text}>{item.data.hall}</Text>
+          )}
+          keyExtractor={item => item.id}
+        />
+
 
       <TouchableOpacity
       // button to amend booking
@@ -73,6 +68,23 @@ const HistoryScreen = () => {
         >
           <Text style={styles.buttonOutlineText}>Amend</Text>
       </TouchableOpacity>
+  
+      </View>
+    )
+  }
+
+  return (
+    <View
+      style={styles.container}
+    >
+   {loading 
+    ? <ActivityIndicator 
+        size="large"
+        color="black"
+      />
+    : <Loaded />
+    }     
+
     </View>
   )
 }
@@ -85,19 +97,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    bordercolor: 'red',
-    borderWidth: 2
+    justifyContent: 'center'
   },
   item: {
+    flexDirection: 'column',
     width: '100%',
-    backgroundColor: 'pink',
-    padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   text: {
     fontSize: 16,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   button: {
     backgroundColor: '#0782F9',
@@ -114,7 +124,12 @@ const styles = StyleSheet.create({
   },
   buttonOutlineText: {
     color: '#0782F9',
-    fontWeight: '700',
     fontSize: 16,
+  },
+  listContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
   },
 })
