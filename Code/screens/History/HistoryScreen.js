@@ -13,7 +13,7 @@ const HistoryScreen = () => {
   // gets the bookings from firestore made by current user, with end date and time after the current date and time
   const getBookings = async () => {
     const newBookings = new Array();
-    const q = await query(collection(db, "bookings"), where("uid", "==", uid));
+    const q = await query(collection(db, "bookings"), where("uid", "==", uid), where("endDateTime", ">=", new Date()));
     const querySnapshot = await getDocs(q);
     await querySnapshot.forEach(doc => {
       let data = doc.data()
