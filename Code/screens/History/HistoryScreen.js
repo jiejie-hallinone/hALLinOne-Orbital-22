@@ -16,12 +16,18 @@ const HistoryScreen = () => {
   
   // gets the bookings from firestore made by current user, with end date and time after the current date and time
   const getBookings = async () => {
+    // to store data
     const newBookings = new Array();
+    // queries under bookings those bookings in firestore made by the user that has not expired yet
     const q = await query(collection(db, "bookings"), where("uid", "==", uid), where("endDateTime", ">=", new Date()));
+    // retrieves the documents
     const querySnapshot = await getDocs(q);
+    // for each document
     await querySnapshot.forEach(doc => {
+      // retrieves document data (name, hall, time etc)
       let data = doc.data()
       console.log(doc.id + " retrieved")
+      // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
 
@@ -29,11 +35,16 @@ const HistoryScreen = () => {
   }
   
   /*
+  // to get the bookings and set to the state bookings but only occurs after rendering
+  // const [bookings, setBookings] = useState(getBookings());
   useEffect(() => {
     setBookings(getBookings());
   }, [])
   */
-  // const [bookings, setBookings] = useState(getBookings());
+  
+  // for error checking
+  // initially, will log an empty promise (ie data not retrieved)
+  // only after refreshing app then the booking data will be shown - but not rendered
   // console.log(bookings)
 
   return (
