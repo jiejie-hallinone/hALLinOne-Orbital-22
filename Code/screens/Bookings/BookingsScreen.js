@@ -10,9 +10,9 @@ var hallname;
 // this screen displays all the halls, and is the first page of the bookings tab
 // users will choose the hall of the facility they would like to book
 // user can only enter his own hall, but this page still exists for admins to regulate (debugging etc)
-const BookingsScreen = () => {
+const BookingsScreen = ({navigation}) => {
   // to navigate within bookings stack
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   // obtain user information from firestore
   const user = auth.currentUser
@@ -20,7 +20,7 @@ const BookingsScreen = () => {
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     const data = doc.data();
     setHall(data.hall)
-    hallname = hall;
+    hallname = hall; 
   });  
 
   return (
@@ -29,7 +29,7 @@ const BookingsScreen = () => {
         // button for TH, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "TH") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
@@ -44,7 +44,7 @@ const BookingsScreen = () => {
         // button for EH, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "EH") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
@@ -59,7 +59,7 @@ const BookingsScreen = () => {
         // button for SH, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "SH") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
@@ -74,7 +74,7 @@ const BookingsScreen = () => {
         // button for KR, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "KR") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
@@ -89,7 +89,7 @@ const BookingsScreen = () => {
         // button for PGP, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "LH") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
@@ -104,7 +104,7 @@ const BookingsScreen = () => {
         // button for KE, which will bring users to select which block within hall 1
         onPress={() => {
           if (hall === "KE") {
-            navigation.navigate("Block")
+            navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")

@@ -1,15 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, getParam } from '@react-navigation/native'
 
 // to be exported for bookings to be made later on
 var fac
 
 // this screen displays all the facilities of the block selected from the previous page
 // users will choose the facility they would like to book
-const FacilitiesScreen = () => {
+const FacilitiesScreen = (route, navigation) => {
   // to navigate within bookings stack
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+
+  const {hall, block} = route.params;
+  console.log(block);
+  console.log(hall);
   return (
     <View style={styles.container}>
       <TouchableOpacity

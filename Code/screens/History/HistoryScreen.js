@@ -12,6 +12,8 @@ const HistoryScreen = () => {
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
 
+  const [loading, setLoading] = useState(true);
+
   const navigation = useNavigation();
   
   // gets the bookings from firestore made by current user, with end date and time after the current date and time
@@ -19,7 +21,7 @@ const HistoryScreen = () => {
     // to store data
     const newBookings = new Array();
     // queries under bookings those bookings in firestore made by the user that has not expired yet
-    const q = await query(collection(db, "bookings"), where("uid", "==", uid), where("endDateTime", ">=", new Date()));
+    const q = query(collection(db, "bookings"), where("uid", "==", uid), where("endDateTime", ">=", new Date()));
     // retrieves the documents
     const querySnapshot = await getDocs(q);
     // for each document
@@ -30,22 +32,24 @@ const HistoryScreen = () => {
       // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
+    setLoading(false);
 
     return {newBookings};
   }
   
-  /*
+  
   // to get the bookings and set to the state bookings but only occurs after rendering
-  // const [bookings, setBookings] = useState(getBookings());
+  const [bookings, setBookings] = useState(getBookings());
+  /*
   useEffect(() => {
     setBookings(getBookings());
   }, [])
-  */
+  */  
   
   // for error checking
   // initially, will log an empty promise (ie data not retrieved)
   // only after refreshing app then the booking data will be shown - but not rendered
-  // console.log(bookings)
+  console.log(bookings)
 
   return (
     <View
@@ -53,7 +57,7 @@ const HistoryScreen = () => {
     >
       <FlatList
         style={styles.item}
-        data={getBookings()}
+        data={bookings}
         renderItem={({item}) => (
           <Text style={styles.text}>test</Text>
         )}
@@ -97,9 +101,10 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#0782F9',
-    width: '100%',
+    width: '30%',
     padding: 15,
     borderRadius: 10,
+    alignItems: 'center'
   },
   buttonOutline: {
     backgroundColor: 'white',
