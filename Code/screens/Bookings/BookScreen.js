@@ -146,7 +146,6 @@ const BookScreen = () => {
       <TouchableOpacity
       // makes booking by saving into firestore bookings collection
         onPress={() => {
-          try {
             const docRef = addDoc(collection(db, "bookings"), {
             uid: uid,
             name: name,
@@ -160,9 +159,6 @@ const BookScreen = () => {
           // user notified of successful booking and brought back to main page
           alert("Booking successfully made")
           navigation.navigate("Hall")
-        } catch (FirebaseError) {
-          alert("Select date and time!")
-        }
         }}
           
         style={styles.confirm}
