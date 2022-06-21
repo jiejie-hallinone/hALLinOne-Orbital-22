@@ -1,24 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useNavigation, getParam } from '@react-navigation/native'
-
-var block;
 
 // this screen displays all the blocks of the hall selected from the previous page
 // users will choose the block of the facility they would like to book
 const BlocksScreen = ({route, navigation}) => {
-  // to navigate within bookings stack
-  // const navigation = useNavigation();
-
   const {hall} = route.params
-  console.log(hall)
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         // button for A block, brings the user to the next page to pick which facility
         onPress={() => {
-          block = 'A'
-          navigation.navigate("Block Facilities", {hall: {hall}, block: 'A'})
+          navigation.navigate("Block Facilities", {hall: hall, block: 'A'})
         }}
         style={styles.button}
       >
@@ -28,8 +21,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for B block, brings the user to the next page to pick which facility
         onPress={() => {
-          block = 'B'
-          navigation.navigate("Block Facilities", {hall: {hall}, block: 'B'})
+          navigation.navigate("Block Facilities", {hall: hall, block: 'B'})
         }}
         style={styles.button2}
       >
@@ -39,8 +31,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for C block, brings the user to the next page to pick which facility
         onPress={() => {
-          block = 'C'
-          navigation.navigate("Block Facilities", {hall: {hall}, block: 'C'})
+          navigation.navigate("Block Facilities", {hall: hall, block: 'C'})
         }}
         style={styles.button}
       >
@@ -50,8 +41,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for D block, brings the user to the next page to pick which facility
         onPress={() => {
-          block = 'D'
-          navigation.navigate("Block Facilities", {hall: {hall}, block: 'D'})
+          navigation.navigate("Block Facilities", {hall: hall, block: 'D'})
         }}
         style={styles.button2}
       >
@@ -61,8 +51,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for E block, brings the user to the next page to pick which facility
         onPress={() => {
-          block = 'E'
-          navigation.navigate("Block Facilities", {hall: {hall}, block: 'E'})
+          navigation.navigate("Block Facilities", {hall: hall, block: 'E'})
         }}
         style={styles.button}
       >
@@ -72,8 +61,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for common facilities, brings the user to the next page to pick which common facility
         onPress={() => {
-          block = 'F'
-          navigation.navigate("Common Facilities", {hall: {hall}, block: 'F'})
+          navigation.navigate("Common Facilities", {hall: hall, block: 'F'})
         }}
         style={styles.button2}
       >
@@ -84,7 +72,6 @@ const BlocksScreen = ({route, navigation}) => {
 }
 
 export default BlocksScreen
-export {block}
 
 // styles used within screen
 const styles = StyleSheet.create({

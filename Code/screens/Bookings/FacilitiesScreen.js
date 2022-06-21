@@ -1,26 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useNavigation, getParam } from '@react-navigation/native'
-
-// to be exported for bookings to be made later on
-var fac
 
 // this screen displays all the facilities of the block selected from the previous page
 // users will choose the facility they would like to book
-const FacilitiesScreen = (route, navigation) => {
-  // to navigate within bookings stack
-  // const navigation = useNavigation();
+const FacilitiesScreen = ({route, navigation}) => {
 
   const {hall, block} = route.params;
-  console.log(block);
-  console.log(hall);
   return (
     <View style={styles.container}>
       <TouchableOpacity
         // button to select Lounge, brings user to page to book the lounge when pressed
         onPress={() => {
-          fac = 'L'
-          navigation.navigate("Book")
+          navigation.navigate("Book", {
+            hall: hall,
+            block: block,
+            facility: 'L'
+          })
         }}
         style={styles.button}
       >
@@ -30,8 +25,11 @@ const FacilitiesScreen = (route, navigation) => {
       <TouchableOpacity
         // button to select Washing Machine, brings user to page to book the lounge when pressed
         onPress={() => {
-          fac = 'W'
-          navigation.navigate("Book")
+          navigation.navigate("Book", {
+            hall: hall,
+            block: block,
+            facility: 'W'
+          })
         }}
         style={styles.button2}
       >
@@ -41,8 +39,11 @@ const FacilitiesScreen = (route, navigation) => {
       <TouchableOpacity
         // button to select Dryer, brings user to page to book the lounge when pressed
         onPress={() => {
-          fac = 'D'
-          navigation.navigate("Book")
+          navigation.navigate("Book", {
+            hall: hall,
+            block: block,
+            facility: 'D'
+          })
         }}
         style={styles.button}
       >
@@ -54,7 +55,6 @@ const FacilitiesScreen = (route, navigation) => {
 
 export default FacilitiesScreen
 
-export {fac}
 
 // styles used within screen
 const styles = StyleSheet.create({

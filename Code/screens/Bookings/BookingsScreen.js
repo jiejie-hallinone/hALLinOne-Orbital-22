@@ -4,15 +4,10 @@ import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, onSnapshot } from "firebase/firestore";
 
-// to be exported for bookings to be made later on
-var hallname;
-
 // this screen displays all the halls, and is the first page of the bookings tab
 // users will choose the hall of the facility they would like to book
 // user can only enter his own hall, but this page still exists for admins to regulate (debugging etc)
 const BookingsScreen = ({navigation}) => {
-  // to navigate within bookings stack
-  // const navigation = useNavigation();
 
   // obtain user information from firestore
   const user = auth.currentUser
@@ -20,7 +15,6 @@ const BookingsScreen = ({navigation}) => {
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     const data = doc.data();
     setHall(data.hall)
-    hallname = hall; 
   });  
 
   return (
@@ -119,8 +113,6 @@ const BookingsScreen = ({navigation}) => {
 }
 
 export default BookingsScreen
-
-export {hallname}
 
 // styles within screen
 const styles = StyleSheet.create({

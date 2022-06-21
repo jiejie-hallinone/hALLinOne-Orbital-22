@@ -1,22 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useNavigation } from '@react-navigation/native'
-
-// to be exported for bookings to be made later on
-var commonfac;
 
 // this screen displays all the facilities of the block selected from the previous page
 // users will choose the facility they would like to book
-const CommonFacilitiesScreen = () => {
-  // to navigate within bookings stack
-  const navigation = useNavigation();
+const CommonFacilitiesScreen = ({route, navigation}) => {
+  const {hall, block} = route.params;
   return (
     <View style={styles.container}>
       <TouchableOpacity
         // button to select Comm Hall, brings user to page to book the lounge when pressed
         onPress={() => {
-            commonfac = 'C'
-            navigation.navigate("Book")
+            navigation.navigate("Book", {
+              hall: hall,
+              block: block,
+              facility: 'C'
+            })
           }}
         style={styles.button}
       >
@@ -26,8 +24,11 @@ const CommonFacilitiesScreen = () => {
       <TouchableOpacity
         // button to select Basketball Court, brings user to page to book the lounge when pressed
         onPress={() => {
-            commonfac = 'B'
-            navigation.navigate("Book")
+            navigation.navigate("Book", {
+              hall: hall,
+              block: block,
+              facility: 'B'
+            })
           }}
         style={styles.button2}
       >
@@ -37,8 +38,11 @@ const CommonFacilitiesScreen = () => {
       <TouchableOpacity
         // button to select Squash Court, brings user to page to book the lounge when pressed
         onPress={() => {
-            commonfac = 'S'
-            navigation.navigate("Book")
+            navigation.navigate("Book", {
+              hall: hall,
+              block: block,
+              facility: 'S'
+            })
           }}
         style={styles.button}
       >
@@ -48,8 +52,11 @@ const CommonFacilitiesScreen = () => {
       <TouchableOpacity
         // button to select Band Room, brings user to page to book the lounge when pressed
         onPress={() => {
-            commonfac = 'M'
-            navigation.navigate("Book")
+            navigation.navigate("Book", {
+              hall: hall,
+              block: block,
+              facility: 'M'
+            })
           }}
         style={styles.button2}
       >
@@ -60,7 +67,6 @@ const CommonFacilitiesScreen = () => {
 }
 
 export default CommonFacilitiesScreen
-export {commonfac}
 
 // styles used within screen
 const styles = StyleSheet.create({

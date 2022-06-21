@@ -1,28 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
-import { hallname } from './BookingsScreen'
-import { block } from './BlocksScreen'
-import { fac } from './FacilitiesScreen'
-import { commonfac } from './CommonFacilitiesScreen'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native'
 import { FirebaseError } from 'firebase/app'
 
-
-// facility being booked
-const facility = block === 'F' ? commonfac : fac;
-
 // this screen is to fill in the details of the booking of the facility selected in previous page - date and time
-const BookScreen = () => {
+const BookScreen = ({route, navigation}) => {
   // obtains user info used to make booking
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
   const name = currentUser.displayName;
 
-  // to navigate
-  const navigation = useNavigation();
+  const {hall, block, facility} = route.params;
 
   // states used to capture information for booking
   // start date and time
@@ -149,7 +140,7 @@ const BookScreen = () => {
             const docRef = addDoc(collection(db, "bookings"), {
             uid: uid,
             name: name,
-            hall: hallname,
+            hall: hall,
             block: block,
             facility: facility,
             startDateTime: date,
