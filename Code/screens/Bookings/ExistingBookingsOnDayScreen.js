@@ -10,35 +10,45 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
 
     const getBookings = async () => {
         // to store data
-        const newBookings1 = new Array();
+        const newBookings = new Array();
         // queries under bookings those bookings in firestore made by the user that has not expired yet
-        const q1 = query(collection(db, "bookings"), 
+        const q = query(collection(db, "bookings"), 
             where("hall", "==", hall), 
             where("block", "==", block), 
             where("facility", "==", facility));
-            //where("startDateTime", "<=", date));
+            // where("startDateTime", "<=", date));
             // where("endDateTime", ">=", date));
         // retrieves the documents
-        const querySnapshot1 = await getDocs(q1);
+        const querySnapshot = await getDocs(q);
         // for each document
-        await querySnapshot1.forEach(doc => {
+        await querySnapshot.forEach(doc => {
           // retrieves document data (name, hall, time etc)
           let data = doc.data()
+          console.log("retrieved: " + doc.id);
+          const start = data.startDateTime.toDate();
+          const end = data.endDateTime.toDate();
+          // console.log(date.year);
           // console.log(doc.id + " retrieved")
           // adds it to the newBookings array as a tuple - with the data and the doc id
-          newBookings1.push({data: data, id: doc.id});
-          console.log("retrieved1: " + doc.id);
+          if (start.getDate() <= date.day && (start.getMonth() + 1) <= date.month && (start.getYear() + 1900) <= date.year 
+            && end.getDate() >= date.day && (end.getMonth() + 1) >= date.month && (end.getYear() + 1900) >= date.year) {
+                newBookings.push({data: data, id: doc.id});
+                console.log("added: " + doc.id)
+          }
+          
         })
 
         setLoading(false);
     
-        setBookings(newBookings1);
+        setBookings(newBookings);
         // console.log(bookings);
       }
 
       useEffect(() => {
-        getBookings();
-      }, [])
+        const unsub = navigation.addListener('focus', () => {
+          getBookings();
+        });
+      }, [navigation])
 
     // function to render each item in flatList (each booking)
     function renderList({item}) {

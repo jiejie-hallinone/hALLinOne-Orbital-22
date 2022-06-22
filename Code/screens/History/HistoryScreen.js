@@ -94,7 +94,7 @@ const HistoryScreen = ({route, navigation}) => {
     await querySnapshot.forEach(doc => {
       // retrieves document data (name, hall, time etc)
       let data = doc.data()
-      console.log(doc.id + " retrieved")
+      // console.log(doc.id + " retrieved")
       // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
@@ -104,7 +104,7 @@ const HistoryScreen = ({route, navigation}) => {
   }
   
   
-  // to get the bookings and set to the state bookings but only occurs after rendering
+  // to get the bookings and set to the state bookings, every time page is visited
   const [bookings, setBookings] = useState([]);
   
   useEffect(() => {
@@ -113,13 +113,6 @@ const HistoryScreen = ({route, navigation}) => {
     });
   }, [navigation])
 
-  /*
-  if (reload) {
-    setLoading(true);
-    getBookings();
-    setReload(false);
-  }
-  */
 
   // to get which booking id to amend
   const [amend, setAmend] = useState();
@@ -130,13 +123,13 @@ const HistoryScreen = ({route, navigation}) => {
   function renderList({item}) {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
-    const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + start.getYear();
+    const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + (start.getYear() + 1900);
     const startTime = start.getHours() + 'hrs ' + start.getMinutes() + 'min';
     const starting = startDate + " " + startTime;
 
     // convert end Date and Time to String
     const end = item.data.endDateTime.toDate();
-    const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + end.getYear();
+    const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + (end.getYear() + 1900);
     const endTime = end.getHours() + 'hrs ' + end.getMinutes() + 'min';
     const ending = endDate + " " + endTime;
 
