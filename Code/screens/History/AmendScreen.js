@@ -1,20 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
-import { amend } from './HistoryScreen'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, updateDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native'
 
 // users will be brought here to ammend their selected exising booking from the previous page
-const AmendScreen = () => {
+const AmendScreen = ({route, navigation}) => {
 // obtains user info used to make booking
 const currentUser = auth.currentUser;
 const uid = currentUser.uid;
 const name = currentUser.displayName;
 
-// to navigate
-const navigation = useNavigation();
+const {amend} = route.params;
 
 // states used to capture information for booking
 // start date and time
@@ -30,6 +28,8 @@ const [showEnd, setShowEnd] = useState(false)
 // text for checking selected date and time
 const [text, setText] = useState("Start Date:\nStart time:")
 const [textEnd, setTextEnd] = useState("End Date:\nEnd time:")
+// to pass back to history page after confirming amend
+const [amended, setAmended] = useState(false);
 
 // updates start date and time when changed
 const onChangeStart = (event, selectedDate) => {
@@ -146,10 +146,11 @@ return (
             alert("Booking does not exist / Unable to update")
           })
           .then(() => {
+            setAmended(true);
             console.log("Booking updated");
             // user notified of successful booking and brought back to main page
             alert("Booking successfully updated")
-            navigation.navigate("Bookings")
+            navigation.navigate("Bookings", {amended: amended})
           })
          
           
