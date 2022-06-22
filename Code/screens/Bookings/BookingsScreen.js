@@ -14,7 +14,11 @@ const BookingsScreen = ({navigation}) => {
   const [hall, setHall] = useState('')
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     const data = doc.data();
-    setHall(data.hall)
+    if (data) {
+      setHall(data.hall)
+    } else {
+      setHall("");
+    }
   });  
 
   return (
