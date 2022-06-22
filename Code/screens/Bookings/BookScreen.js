@@ -149,7 +149,9 @@ const BookScreen = ({route, navigation}) => {
           console.log("Booking made");
           // user notified of successful booking and brought back to main page
           alert("Booking successfully made")
-          navigation.navigate("Hall")
+          navigation.navigate("History", {
+            amended: true
+          });
         }}
           
         style={styles.confirm}

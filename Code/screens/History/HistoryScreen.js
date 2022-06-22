@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
 import React, {useEffect, useState} from 'react'
-import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, getDocs, collection, query, where, deleteDoc } from "firebase/firestore";
-import { render } from 'react-dom';
 
 // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
 const hallName = hallAbbreviation => {
@@ -78,12 +76,11 @@ const HistoryScreen = ({route, navigation}) => {
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
 
-  // if still retrieving information
-  const [loading, setLoading] = useState(true);
-
   // boolean for if a booking was amended, from amend screen
-  const {amended} = route.params || false;
-  const [reload, setReload] = useState(amended);
+  const {amended} = route.params || true;
+
+  // if still retrieving information
+  const [loading, setLoading] = useState(amended);
   
   // gets the bookings from firestore made by current user, with end date and time after the current date and time
   const getBookings = async () => {
@@ -97,7 +94,7 @@ const HistoryScreen = ({route, navigation}) => {
     await querySnapshot.forEach(doc => {
       // retrieves document data (name, hall, time etc)
       let data = doc.data()
-      // console.log(doc.id + " retrieved")
+      console.log(doc.id + " retrieved")
       // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
@@ -111,14 +108,18 @@ const HistoryScreen = ({route, navigation}) => {
   const [bookings, setBookings] = useState([]);
   
   useEffect(() => {
-    getBookings();
-  }, [])
+    const unsub = navigation.addListener('focus', () => {
+      getBookings();
+    });
+  }, [navigation])
 
+  /*
   if (reload) {
     setLoading(true);
     getBookings();
     setReload(false);
   }
+  */
 
   // to get which booking id to amend
   const [amend, setAmend] = useState();

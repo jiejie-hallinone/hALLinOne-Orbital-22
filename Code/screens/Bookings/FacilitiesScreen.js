@@ -23,6 +23,20 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
+        // button to check existing bookings for Lounge, brings user to page to existing bookings page
+        onPress={() => {
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'L'
+          })
+        }}
+        style={styles.ebButton}
+      >
+        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
         // button to select Washing Machine, brings user to page to book the lounge when pressed
         onPress={() => {
           navigation.navigate("Book", {
@@ -37,6 +51,20 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
+        // button to check existing bookings for WM, brings user to page to existing bookings page
+        onPress={() => {
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'W'
+          })
+        }}
+        style={styles.ebButton}
+      >
+        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
         // button to select Dryer, brings user to page to book the lounge when pressed
         onPress={() => {
           navigation.navigate("Book", {
@@ -48,6 +76,20 @@ const FacilitiesScreen = ({route, navigation}) => {
         style={styles.button}
       >
         <Text style={styles.buttonText}>Dryer</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        // button to check existing bookings for Dryer, brings user to page to existing bookings page
+        onPress={() => {
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'D'
+          })
+        }}
+        style={styles.ebButton}
+      >
+        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
       </TouchableOpacity>
     </View>
   )
@@ -80,5 +122,19 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 20,
+  },
+  ebButton: {
+    backgroundColor: 'red',
+    width: '60%',
+    borderRadius: 10,
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 2,
+    marginTop: 2,
+  },
+  ebbuttonText: {
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 16,
   },
 })

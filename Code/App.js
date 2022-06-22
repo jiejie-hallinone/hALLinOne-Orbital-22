@@ -19,6 +19,8 @@ import FirstTimeSetupHallScreen from './screens/Authentication/FirstTimeSetupHal
 import FirstTimeSetupBlockScreen from './screens/Authentication/FirstTimeSetupBlockScreen';
 import FirstTimeSetupLevelScreen from './screens/Authentication/FirstTimeSetupLevelScreen';
 import CommonFacilitiesScreen from './screens/Bookings/CommonFacilitiesScreen';
+import ExistingBookingsScreen from './screens/Bookings/ExistingBookingsScreen';
+import ExistingBookingsOnDayScreen from './screens/Bookings/ExistingBookingsOnDayScreen';
 
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
 const Tabs = createBottomTabNavigator();
@@ -42,6 +44,8 @@ function BookingTab() {
       <BookingsStack.Screen name="Block Facilities" component={FacilitiesScreen}/>
       <BookingsStack.Screen name="Common Facilities" component={CommonFacilitiesScreen}/>
       <BookingsStack.Screen name="Book" component={BookScreen}/>
+      <BookingsStack.Screen name="Date" component={ExistingBookingsScreen}/>
+      <BookingsStack.Screen name="Existing Bookings" component={ExistingBookingsOnDayScreen}/>
     </BookingsStack.Navigator>
   );
 }
