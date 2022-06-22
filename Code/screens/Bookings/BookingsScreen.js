@@ -126,6 +126,8 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'green',
+    borderWidth: 2,
   },
   buttonText: {
     color: 'black',
@@ -138,6 +140,8 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'red',
+    borderWidth: 2,
   },
   SH: {
     backgroundColor: 'orange',
@@ -145,6 +149,8 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'black',
+    borderWidth: 2,
   },
   KR: {
     backgroundColor: 'blue',
@@ -152,6 +158,8 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'black',
+    borderWidth: 2,
   },
   krbuttonText: {
     color: 'white',
@@ -164,6 +172,8 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'yellow',
+    borderWidth: 2,
   },
   KE: {
     backgroundColor: 'red',
@@ -171,5 +181,7 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
     marginTop: 10,
+    borderColor: 'yellow',
+    borderWidth: 2,
   },
 })

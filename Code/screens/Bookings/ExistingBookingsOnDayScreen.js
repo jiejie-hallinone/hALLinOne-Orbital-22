@@ -24,7 +24,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
         await querySnapshot.forEach(doc => {
           // retrieves document data (name, hall, time etc)
           let data = doc.data()
-          console.log("retrieved: " + doc.id);
+          // console.log("retrieved: " + doc.id);
           const start = data.startDateTime.toDate();
           const end = data.endDateTime.toDate();
           // console.log(date.year);
@@ -33,7 +33,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           if (start.getDate() <= date.day && (start.getMonth() + 1) <= date.month && (start.getYear() + 1900) <= date.year 
             && end.getDate() >= date.day && (end.getMonth() + 1) >= date.month && (end.getYear() + 1900) >= date.year) {
                 newBookings.push({data: data, id: doc.id});
-                console.log("added: " + doc.id)
+                // console.log("added: " + doc.id)
           }
           
         })
@@ -65,7 +65,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
     const ending = endDate + " " + endTime;
 
     return (
-      <View>
+      <View style={styles.itemContainer}>
         <Text>Booking by: {item.data.name}</Text>
         <Text>From: {starting}</Text>
         <Text>To: {ending}</Text>
@@ -84,7 +84,6 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           renderItem={renderList}
           keyExtractor={item => item.id}
         />
-  
       </View>
     )
   }
@@ -109,4 +108,30 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
 
 export default ExistingBookingsOnDayScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+    },
+    item: {
+        flexDirection: 'column',
+        width: '100%',
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
+    itemContainer: {
+        alignItems: 'center',
+        width: '100%',
+        borderBottomColor: 'black',
+        borderBottomWidth: 2,
+        marginBottom: 10,
+    },
+    listContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%'
+      },
+})

@@ -134,7 +134,7 @@ const HistoryScreen = ({route, navigation}) => {
     const ending = endDate + " " + endTime;
 
     return (
-      <View>
+      <View style={styles.itemContainer}>
         <Text>Hall: {hallName(item.data.hall)}</Text>
         <Text>Block: {blockName(item.data.block)}</Text>
         <Text>Facility: {facName(item.data.facility)}</Text>
@@ -260,13 +260,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%', 
   },
   cancelButton: {
     backgroundColor: '#0782F9',
     width: '30%',
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 5,
   },
   cancelButtonOutline: {
     backgroundColor: 'white',
@@ -278,4 +279,11 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
+  itemContainer: {
+    alignItems: 'center',
+    width: '100%',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    marginBottom: 10,
+  }
 })
