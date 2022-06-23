@@ -118,6 +118,7 @@ return (
         display='default'
         onChange={onChangeStart}
         style={styles.dtpicker}
+        minimumDate={new Date()}
       />
     )}
 
