@@ -3,8 +3,6 @@ import React, {useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useNavigation } from '@react-navigation/native'
-import { FirebaseError } from 'firebase/app'
 
 // this screen is to fill in the details of the booking of the facility selected in previous page - date and time
 const BookScreen = ({route, navigation}) => {

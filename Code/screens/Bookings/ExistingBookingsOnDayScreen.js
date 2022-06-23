@@ -54,13 +54,13 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
     function renderList({item}) {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
-    const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + start.getYear();
+    const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + (start.getYear() + 1900);
     const startTime = start.getHours() + 'hrs ' + start.getMinutes() + 'min';
     const starting = startDate + " " + startTime;
 
     // convert end Date and Time to String
     const end = item.data.endDateTime.toDate();
-    const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + end.getYear();
+    const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + (end.getYear() + 1900);
     const endTime = end.getHours() + 'hrs ' + end.getMinutes() + 'min';
     const ending = endDate + " " + endTime;
 
