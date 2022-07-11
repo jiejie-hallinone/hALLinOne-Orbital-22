@@ -45,13 +45,17 @@ const FirstTimeSetupLevelScreen = () => {
                 // button writes "Finish setup"
                 onPress={() => {
                     try{
-                      // updates user's level into profile on firestore
-                      const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
-                        level: level,
-                      });
-                      console.log("Document updated with level: ", level);
-                      // brings user to bookings page
-                      navigation.navigate("AfterLogin");
+                      if (level === '') {
+                        alert("Please select your level!")
+                      } else {
+                        // updates user's level into profile on firestore
+                        const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+                          level: level,
+                        });
+                        console.log("Document updated with level: ", level);
+                        // brings user to bookings page
+                        navigation.navigate("AfterLogin");
+                      }
                     } catch (e) {
                       console.error("Error adding document: ", e);
                     }  

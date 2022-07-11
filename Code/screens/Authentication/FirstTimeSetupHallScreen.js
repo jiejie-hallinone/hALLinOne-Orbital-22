@@ -46,13 +46,17 @@ const FirstTimeSetupHallScreen = () => {
               // button writes "Next"
               onPress={() => {
                   try{
-                    // updates document by adding hall into profile
+                    if (hall === "") {
+                      alert("Please select your hall!")
+                    } else {
+                      // updates document by adding hall into profile
                     const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
                       hall: hall,
                     });
                     console.log("Document updated with hall: ", hall);
                     // next screen is to select block
                     navigation.navigate("FirstTimeSetupBlockScreen");
+                    }
                   } catch (e) {
                     console.error("Error adding document: ", e);
                   }  

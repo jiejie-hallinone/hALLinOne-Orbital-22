@@ -180,30 +180,26 @@ const PostScreen = ({route, navigation}) => {
             <TouchableOpacity
             // makes booking by saving into firestore bookings collection
             onPress={() => {
-              console.log("privacy:" + privacy)
-              console.log(name)
-              console.log(hall)
-              console.log(block)
-              console.log(level)
-              console.log(date)
-              console.log(dateEnd)
-              console.log(location)
-              console.log(description)
-                const docRef = addDoc(collection(db, "posts"), {
-                privacy: privacy,
-                name: name,
-                hall: hall,
-                block: block,
-                level: level,
-                startDateTime: date,
-                endDateTime: dateEnd,
-                location: location,
-                text: description
-              })
-              console.log("Post made");
-              // user notified of successful booking and brought back to main page
-              alert("jio successfully posted")
-              navigation.navigate("Feed");
+                if (description === "" || location === "" || privacy === "") {
+                  alert("Please fill in all fields!")
+                } else {
+                  const docRef = addDoc(collection(db, "posts"), {
+                    privacy: privacy,
+                    name: name,
+                    hall: hall,
+                    block: block,
+                    level: level,
+                    startDateTime: date,
+                    endDateTime: dateEnd,
+                    location: location,
+                    text: description
+                  })
+                  console.log("Post made");
+                  // user notified of successful booking and brought back to main page
+                  alert("jio successfully posted")
+                  navigation.navigate("Feed");
+                }
+                
             }}
               
             style={styles.confirm}

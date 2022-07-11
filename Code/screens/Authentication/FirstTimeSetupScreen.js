@@ -40,14 +40,18 @@ const FirstTimeSetupScreen = () => {
                 // if successful, name and email will be created on Firestore
                 .then(() => {
                   try{
-                    // creates document with name and email in Firestore collection users, using key id as document name
-                    const docRef = setDoc(doc(db, "users", auth.currentUser.uid), {
-                      name: name,
-                      email: auth.currentUser.email,
-                    });
-                    console.log("Document written with email: ", auth.currentUser.email);
-                    // bring to next page to select hall
-                    navigation.navigate("FirstTimeSetupHallScreen");
+                    if (name === '') {
+                      alert("Please fill in your name!")
+                    } else {
+                      // creates document with name and email in Firestore collection users, using key id as document name
+                      const docRef = setDoc(doc(db, "users", auth.currentUser.uid), {
+                        name: name,
+                        email: auth.currentUser.email,
+                      });
+                      console.log("Document written with email: ", auth.currentUser.email);
+                      // bring to next page to select hall
+                      navigation.navigate("FirstTimeSetupHallScreen");
+                    }
                   } catch (e) {
                     console.error("Error adding document: ", e);
                   }  

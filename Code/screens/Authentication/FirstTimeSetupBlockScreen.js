@@ -42,12 +42,16 @@ const FirstTimeSetupBlockScreen = () => {
                 // button writes "Next"
                 onPress={() => {
                     try{
-                      // updates block to corresponding document using current user's
-                      const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
-                        block: block,
-                      });
-                      console.log("Document updated with block: ", block);
-                      navigation.navigate("FirstTimeSetupLevelScreen");
+                      if (block === '') {
+                        alert("Please select your block!")
+                      } else {
+                        // updates block to corresponding document using current user's
+                        const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+                          block: block,
+                        });
+                        console.log("Document updated with block: ", block);
+                        navigation.navigate("FirstTimeSetupLevelScreen");
+                      }
                     } catch (e) {
                       console.error("Error adding document: ", e);
                     }  
