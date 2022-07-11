@@ -4,7 +4,7 @@
     "slug": "hALLinOne",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appicon.jpeg",
+    "icon": "./assets/appicon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",

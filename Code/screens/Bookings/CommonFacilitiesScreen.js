@@ -18,7 +18,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
           }}
         style={styles.button}
       >
-        <Image source={require('../../assets/facilities/commhall.png')} style={{width: 70, height: 70}} />
+        <Image source={require('../../assets/facilities/commhall.png')} style={{width: 70, height: 70, marginBottom: 5}} />
         <Text style={styles.buttonText}>Communal Hall</Text>
       </TouchableOpacity>
 
@@ -47,6 +47,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
           }}
         style={styles.button2}
       >
+        <Image source={require('../../assets/facilities/basketball.png')} style={{width: 70, height: 70, marginBottom: 5}} />
         <Text style={styles.buttonText}>Basketball Court</Text>
       </TouchableOpacity>
 
@@ -75,6 +76,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
           }}
         style={styles.button}
       >
+        <Image source={require('../../assets/facilities/squash.png')} style={{width: 70, height: 70, marginBottom: 5}} />
         <Text style={styles.buttonText}>Squash Court</Text>
       </TouchableOpacity>
 
@@ -103,6 +105,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
           }}
         style={styles.button2}
       >
+        <Image source={require('../../assets/facilities/music.png')} style={{width: 70, height: 70, marginBottom: 10}} />
         <Text style={styles.buttonText}>Band / Music Room</Text>
       </TouchableOpacity>
 
@@ -141,7 +144,7 @@ const styles = StyleSheet.create({
   button2: {
     backgroundColor: 'blue',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
     marginTop: 10,
   },
