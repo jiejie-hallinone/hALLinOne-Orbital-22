@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
 // this screen displays all the facilities of the block selected from the previous page
@@ -18,6 +18,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
           }}
         style={styles.button}
       >
+        <Image source={require('../../assets/facilities/commhall.png')} style={{width: 70, height: 70}} />
         <Text style={styles.buttonText}>Communal Hall</Text>
       </TouchableOpacity>
 
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#0782F9',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
     marginTop: 10,
   },
