@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
@@ -35,6 +35,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.TH}
       >
+        <Image source={require('../../assets/th.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.buttonText}>Temasek Hall </Text>
       </TouchableOpacity>
 
@@ -50,6 +51,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.EH}
       >
+        <Image source={require('../../assets/eh.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.buttonText}>Eusoff Hall </Text>
       </TouchableOpacity>
 
@@ -65,6 +67,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.SH}
       >
+        <Image source={require('../../assets/sh.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.buttonText}>Sheares Hall </Text>
       </TouchableOpacity>
 
@@ -80,6 +83,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KR}
       >
+        <Image source={require('../../assets/kr.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.krbuttonText}>Kent Ridge Hall </Text>
       </TouchableOpacity>
 
@@ -95,6 +99,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.LH}
       >
+        <Image source={require('../../assets/ph.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.krbuttonText}>Prince George's Park Hall </Text>
       </TouchableOpacity>
 
@@ -110,6 +115,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KE}
       >
+        <Image source={require('../../assets/ke.png')} style={{width: 70, height: 70, }}/> 
         <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
       </TouchableOpacity>
     </View>
@@ -127,9 +133,9 @@ const styles = StyleSheet.create({
   TH: {
     backgroundColor: 'white',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     borderColor: 'green',
     borderWidth: 2,
   },
@@ -141,27 +147,27 @@ const styles = StyleSheet.create({
   EH: {
     backgroundColor: 'yellow',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     borderColor: 'red',
     borderWidth: 2,
   },
   SH: {
     backgroundColor: 'orange',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     borderColor: 'black',
     borderWidth: 2,
   },
   KR: {
     backgroundColor: 'blue',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     borderColor: 'black',
     borderWidth: 2,
   },
@@ -173,7 +179,7 @@ const styles = StyleSheet.create({
   LH: {
     backgroundColor: 'gray',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
     marginTop: 10,
     borderColor: 'yellow',
@@ -182,9 +188,9 @@ const styles = StyleSheet.create({
   KE: {
     backgroundColor: 'red',
     width: '100%',
-    padding: 30,
+    padding: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     borderColor: 'yellow',
     borderWidth: 2,
   },

@@ -89,13 +89,14 @@ function AfterLoginTabs() {
       <Tabs.Screen name="Bookings" component={BookingTab} options={{ 
         headerShown: false,
         tabBarIcon: ({focused}) => (
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', top: 2}}>
             <Image 
               source={require('./assets/bookings.png')} 
               style={{
                 width: 30,
                 height: 30,
-                tintColor: focused ? 'blue' : 'black'
+                tintColor: focused ? '#0782F9' : 'black',
+                marginBottom: 5
               }}
             />
           </View>
@@ -104,13 +105,14 @@ function AfterLoginTabs() {
       <Tabs.Screen name="History" component={HistoryTab} options={{ 
         headerShown: false,
         tabBarIcon: ({focused}) => (
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', top: 2}}>
             <Image 
               source={require('./assets/history.png')}
               style={{
                 width: 30,
                 height: 30,
-                tintColor: focused ? 'blue' : 'black'
+                tintColor: focused ? '#0782F9' : 'black',
+                marginBottom: 5
               }}
             />
           </View>
@@ -119,13 +121,14 @@ function AfterLoginTabs() {
       <Tabs.Screen name="Social" component={SocialTab} options={{ 
         headerShown: false,
         tabBarIcon: ({focused}) => (
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', top: 2}}>
             <Image 
               source={require('./assets/social.png')}
               style={{
                 width: 30,
                 height: 30,
-                tintColor: focused ? 'blue' : 'black'
+                tintColor: focused ? '#0782F9' : 'black',
+                marginBottom: 5
               }}
             />
           </View>
@@ -134,13 +137,14 @@ function AfterLoginTabs() {
       <Tabs.Screen name="Settings" component={SettingsTab} options={{ 
         headerShown: false,
         tabBarIcon: ({focused}) => (
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', top: 2}}>
             <Image 
               source={require('./assets/settings.png')}
               style={{
                 width: 30,
                 height: 30,
-                tintColor: focused ? 'blue' : 'black'
+                tintColor: focused ? '#0782F9' : 'black',
+                marginBottom: 5
               }}
             />
           </View>
