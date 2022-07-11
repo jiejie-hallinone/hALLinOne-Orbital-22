@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Image, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/Authentication/LoginScreen';
@@ -85,10 +86,66 @@ function SettingsTab() {
 function AfterLoginTabs() {
   return (
     <Tabs.Navigator>
-      <Tabs.Screen options={{ headerShown: false }} name="Bookings" component={BookingTab}/>
-      <Tabs.Screen options={{ headerShown: false }} name="History" component={HistoryTab} />
-      <Tabs.Screen options={{ headerShown: false }} name="Social" component={SocialTab} />
-      <Tabs.Screen options={{ headerShown: false }} name="Settings" component={SettingsTab} />
+      <Tabs.Screen name="Bookings" component={BookingTab} options={{ 
+        headerShown: false,
+        tabBarIcon: ({focused}) => (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image 
+              source={require('./assets/bookings.png')} 
+              style={{
+                width: 30,
+                height: 30,
+                tintColor: focused ? 'blue' : 'black'
+              }}
+            />
+          </View>
+        )
+        }}/>
+      <Tabs.Screen name="History" component={HistoryTab} options={{ 
+        headerShown: false,
+        tabBarIcon: ({focused}) => (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image 
+              source={require('./assets/history.png')}
+              style={{
+                width: 30,
+                height: 30,
+                tintColor: focused ? 'blue' : 'black'
+              }}
+            />
+          </View>
+        )
+        }}/>
+      <Tabs.Screen name="Social" component={SocialTab} options={{ 
+        headerShown: false,
+        tabBarIcon: ({focused}) => (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image 
+              source={require('./assets/social.png')}
+              style={{
+                width: 30,
+                height: 30,
+                tintColor: focused ? 'blue' : 'black'
+              }}
+            />
+          </View>
+        )
+        }}/>
+      <Tabs.Screen name="Settings" component={SettingsTab} options={{ 
+        headerShown: false,
+        tabBarIcon: ({focused}) => (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image 
+              source={require('./assets/settings.png')}
+              style={{
+                width: 30,
+                height: 30,
+                tintColor: focused ? 'blue' : 'black'
+              }}
+            />
+          </View>
+        )
+        }}/>
     </Tabs.Navigator>
   );  
 }
