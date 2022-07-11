@@ -145,9 +145,10 @@ const HistoryScreen = ({route, navigation}) => {
         // button to amend booking, passes the booking id to the amend screen
           onPress={() => {
             try {
-              setAmend(item.id);
-              console.log("amending: " + amend)
-              navigation.navigate("Amend", {amend: amend});
+              const amendingid = item.id;
+              setAmend(amendingid);
+              console.log("amending: " + amendingid)
+              navigation.navigate("Amend", {amend: amendingid});
             } catch (err) {
               alert("Error! Please try again")
             }
@@ -165,9 +166,10 @@ const HistoryScreen = ({route, navigation}) => {
             try {
               Alert.alert('Cancel Booking', 'Are you sure?', [
               {text: 'Cancel Booking', onPress: () => {
-                setDel(item.id);
-                deleteDoc(doc(db, "bookings", del));
-                console.log("deleted: " + del);
+                const delid = item.id;
+                setDel(delid);
+                deleteDoc(doc(db, "bookings", delid));
+                console.log("deleted: " + delid);
                 setLoading(true);
                 getBookings();
               }},

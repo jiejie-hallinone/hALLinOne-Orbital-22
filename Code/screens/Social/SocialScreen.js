@@ -53,7 +53,7 @@ const SocialScreen = ({navigation}) => {
       const end = data.endDateTime.toDate();
       const date = new Date();
       // if current date is within start and end
-      const withinDate = start <= date && end >= date;
+      const withinDate = end >= date;
       // adds it to the newBookings array as a tuple - with the data and the doc id
       if (withinDate && (
         // privacy setting is open
