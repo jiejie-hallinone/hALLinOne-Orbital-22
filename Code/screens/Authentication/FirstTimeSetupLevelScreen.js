@@ -54,7 +54,7 @@ const FirstTimeSetupLevelScreen = () => {
                         });
                         console.log("Document updated with level: ", level);
                         // brings user to bookings page
-                        navigation.navigate("AfterLogin");
+                        navigation.navigate("Google");
                       }
                     } catch (e) {
                       console.error("Error adding document: ", e);

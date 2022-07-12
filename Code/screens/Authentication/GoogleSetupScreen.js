@@ -1,17 +1,36 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth, db } from '../../Firebase/Firebase';
-import { updateProfile } from 'firebase/auth';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { useNavigation } from '@react-navigation/native';
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, updateDoc } from "firebase/firestore"; 
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
 
+WebBrowser.maybeCompleteAuthSession();
 
-
-const FirstTimeSetupScreen = () => {
+const GoogleSetupScreen = () => {
 
     // to navigate between authentication stack
     const navigation = useNavigation();
+
+    const [accessToken, setAccessToken] = useState();
+    const [userInfo, setUserInfo] = useState();
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: "6235167999-bcra9l8kthnbj93dmvs8d63s7erjmc0i.apps.googleusercontent.com",
+        iosClientId: "6235167999-pu3nqegtoohkb1fnuihc88fa6cartfct.apps.googleusercontent.com",
+        expoClientId: "6235167999-stieei8kqdl62ltt6km6rtilf4pvr7ev.apps.googleusercontent.com"
+    })
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            setAccessToken(response.authentication.accessToken);
+        }
+    }, [response]);
+
+
+
     return (
         <KeyboardAvoidingView
           style={styles.container}
@@ -19,43 +38,53 @@ const FirstTimeSetupScreen = () => {
         >
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              // button that when pressed, updates user displayed name to what was input in above field
-              // button writes "Next"
+              // button that when pressed, brings user to sign in to gmail for Google Calendar
               onPress={() => {
-                updateProfile(auth.currentUser, {
-                    displayName: name
-                })
-                // if successful, name and email will be created on Firestore
-                .then(() => {
-                  try{
-                    if (name === '') {
-                      alert("Please fill in your name!")
-                    } else {
-                      // creates document with name and email in Firestore collection users, using key id as document name
-                      const docRef = setDoc(doc(db, "users", auth.currentUser.uid), {
-                        name: name,
-                        email: auth.currentUser.email,
-                      });
-                      console.log("Document written with email: ", auth.currentUser.email);
-                      // bring to next page to select hall
-                      navigation.navigate("FirstTimeSetupHallScreen");
-                    }
-                  } catch (e) {
-                    console.error("Error adding document: ", e);
-                  }  
-                })
+                try{
+                    promptAsync({showInRecents: true})
+                    .then(() => {
+                        // updates document by adding linked into profile
+                        const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+                            linked: true,
+                        });
+                        // finish set up
+                        navigation.navigate("AfterLogin");
+                    })
+                } catch (e) {
+                  console.error("Error adding document: ", e);
+                }  
               }
             }
               style={[styles.button, styles.buttonOutline]}
             >
-              <Text style={styles.buttonOutlineText}>Next</Text>
+              <Text style={styles.buttonOutlineText}>Link to Google Calendar</Text>
             </TouchableOpacity> 
+
+            <TouchableOpacity
+              // button that when pressed, finishes setup without linking
+              onPress={() => {
+                try{
+                    // updates document by adding unlinked into profile
+                    const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+                        linked: false,
+                    });
+                    // finish set up
+                    navigation.navigate("AfterLogin");
+                } catch (e) {
+                  console.error("Error adding document: ", e);
+                }  
+              }
+            }
+              style={[styles.button, styles.buttonOutline]}
+            >
+              <Text style={styles.buttonOutlineText}>Skip</Text>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       )
     }
     
-    export default FirstTimeSetupScreen
+    export default GoogleSetupScreen
     
     // styles of elements in screen
     const styles = StyleSheet.create({
