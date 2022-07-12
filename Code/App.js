@@ -24,8 +24,6 @@ import ExistingBookingsScreen from './screens/Bookings/ExistingBookingsScreen';
 import ExistingBookingsOnDayScreen from './screens/Bookings/ExistingBookingsOnDayScreen';
 import GoogleSetupScreen from './screens/Authentication/GoogleSetupScreen';
 
-//test
-
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
 const Tabs = createBottomTabNavigator();
 // Stack navigator for authentication - to navigate between login, registering, additional details and then main tabs

@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/appicon.png",
     "userInterfaceStyle": "light",
-    "scheme": "com.JieJie.hALLinOne",
+    "scheme": "com.jiejie.hallinone",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
