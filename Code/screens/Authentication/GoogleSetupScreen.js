@@ -20,7 +20,9 @@ const GoogleSetupScreen = () => {
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: "6235167999-bcra9l8kthnbj93dmvs8d63s7erjmc0i.apps.googleusercontent.com",
         iosClientId: "6235167999-pu3nqegtoohkb1fnuihc88fa6cartfct.apps.googleusercontent.com",
-        expoClientId: "6235167999-stieei8kqdl62ltt6km6rtilf4pvr7ev.apps.googleusercontent.com"
+        expoClientId: "6235167999-stieei8kqdl62ltt6km6rtilf4pvr7ev.apps.googleusercontent.com",
+        scopes: ['https://www.googleapis.com/auth/calendar.events'],
+        useProxy: true
     })
 
     useEffect(() => {
@@ -41,7 +43,9 @@ const GoogleSetupScreen = () => {
               // button that when pressed, brings user to sign in to gmail for Google Calendar
               onPress={() => {
                 try{
-                    promptAsync({showInRecents: true})
+                    promptAsync({
+                      showInRecents: true,
+                    })
                     .then(() => {
                         // updates document by adding linked into profile
                         const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
