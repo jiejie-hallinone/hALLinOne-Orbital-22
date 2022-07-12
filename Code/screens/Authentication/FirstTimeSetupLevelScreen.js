@@ -42,7 +42,6 @@ const FirstTimeSetupLevelScreen = () => {
                <View style={styles.buttonContainer}>
               <TouchableOpacity
                 // button that when pressed, updates user level into firestore profile (in users, document under uid)
-                // button writes "Finish setup"
                 onPress={() => {
                     try{
                       if (level === '') {
@@ -63,7 +62,7 @@ const FirstTimeSetupLevelScreen = () => {
               
                 style={[styles.button, styles.buttonOutline]}
               >
-                <Text style={styles.buttonOutlineText}>Finish Set Up</Text>
+                <Text style={styles.buttonOutlineText}>Next</Text>
               </TouchableOpacity> 
               </View>
   
