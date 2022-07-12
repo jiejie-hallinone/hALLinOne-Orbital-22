@@ -21,6 +21,7 @@ const LoginScreen = () => {
       console.log("Logged in " + user.email);
     })
     .catch(error => alert(error.message))
+    
   }
 
   // to navigate within Authentication stack
