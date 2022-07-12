@@ -15,7 +15,7 @@ const BlocksScreen = ({route, navigation}) => {
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>A Block / Block 1</Text>
+        <Text style={styles.buttonText}>A Block</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -25,7 +25,7 @@ const BlocksScreen = ({route, navigation}) => {
         }}
         style={styles.button2}
       >
-        <Text style={styles.buttonText}>B Block / Block 2</Text>
+        <Text style={styles.buttonText}>B Block</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -35,7 +35,7 @@ const BlocksScreen = ({route, navigation}) => {
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>C Block / Block 3</Text>
+        <Text style={styles.buttonText}>C Block</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -45,7 +45,7 @@ const BlocksScreen = ({route, navigation}) => {
         }}
         style={styles.button2}
       >
-        <Text style={styles.buttonText}>D Block / Block 4</Text>
+        <Text style={styles.buttonText}>D Block</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -55,7 +55,7 @@ const BlocksScreen = ({route, navigation}) => {
         }}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>E Block / Block 5</Text>
+        <Text style={styles.buttonText}>E Block</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

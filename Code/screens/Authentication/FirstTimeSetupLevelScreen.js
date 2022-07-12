@@ -42,7 +42,6 @@ const FirstTimeSetupLevelScreen = () => {
                <View style={styles.buttonContainer}>
               <TouchableOpacity
                 // button that when pressed, updates user level into firestore profile (in users, document under uid)
-                // button writes "Finish setup"
                 onPress={() => {
                     try{
                       if (level === '') {
@@ -54,7 +53,7 @@ const FirstTimeSetupLevelScreen = () => {
                         });
                         console.log("Document updated with level: ", level);
                         // brings user to bookings page
-                        navigation.navigate("AfterLogin");
+                        navigation.navigate("Google");
                       }
                     } catch (e) {
                       console.error("Error adding document: ", e);
@@ -63,7 +62,7 @@ const FirstTimeSetupLevelScreen = () => {
               
                 style={[styles.button, styles.buttonOutline]}
               >
-                <Text style={styles.buttonOutlineText}>Finish Set Up</Text>
+                <Text style={styles.buttonOutlineText}>Next</Text>
               </TouchableOpacity> 
               </View>
   
