@@ -19,14 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "hALLinOne"
+      "bundleIdentifier": "com.JieJie.hALLinOne"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "JieJie.Orbital22.hALLinOne"
+      "package": "com.JieJie.hALLinOne"
     },
     "web": {
       "favicon": "./assets/favicon.png"
