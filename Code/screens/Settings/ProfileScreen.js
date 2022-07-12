@@ -47,19 +47,19 @@ const ProfileScreen = () => {
   // to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
   const blockName = letter => {
     if (letter === "A") {
-      return "A / 1";
+      return "A";
     }
     else if (letter === "B") {
-      return "B / 2";
+      return "B";
     }
     else if (letter === "C") {
-      return "C / 3";
+      return "C";
     }
     else if (letter === "D") {
-      return "D / 4";
+      return "D";
     }
     else {
-      return "E / 5";
+      return "E";
     }
   }
 
