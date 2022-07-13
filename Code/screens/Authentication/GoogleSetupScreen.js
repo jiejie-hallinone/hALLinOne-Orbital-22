@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
@@ -14,8 +14,7 @@ const GoogleSetupScreen = () => {
     // to navigate between authentication stack
     const navigation = useNavigation();
 
-    const [accessToken, setAccessToken] = useState();
-    const [userInfo, setUserInfo] = useState();
+    var accessToken;
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: "6235167999-bcra9l8kthnbj93dmvs8d63s7erjmc0i.apps.googleusercontent.com",
@@ -27,63 +26,61 @@ const GoogleSetupScreen = () => {
 
     useEffect(() => {
         if (response?.type === 'success') {
-            setAccessToken(response.authentication.accessToken);
+            // console.log("success")
+            accessToken = response.authentication.accessToken;
+            // console.log(accessToken)
+            // updates document by adding linked into profile
+            const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+              accessToken: accessToken ? accessToken : "",
+            });
+            console.log("updated: " + accessToken);
+            navigation.navigate("AfterLogin");
         }
     }, [response]);
-
-
 
     return (
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
         >
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              // button that when pressed, brings user to sign in to gmail for Google Calendar
-              onPress={() => {
-                try{
-                    promptAsync({
-                      showInRecents: true,
-                    })
-                    .then(() => {
-                        // updates document by adding linked into profile
-                        const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
-                            linked: true,
-                        });
-                        // finish set up
-                        navigation.navigate("AfterLogin");
-                    })
-                } catch (e) {
-                  console.error("Error adding document: ", e);
-                }  
-              }
+           <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            // button that when pressed, brings user to sign in to gmail for Google Calendar
+            onPress={() => {
+              try{
+                  promptAsync({
+                    showInRecents: true,
+                  })
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }  
             }
-              style={[styles.button, styles.buttonOutline]}
-            >
-              <Text style={styles.buttonOutlineText}>Link to Google Calendar</Text>
-            </TouchableOpacity> 
+          }
+            style={[styles.button, styles.buttonOutline]}
+          >
+            <Text style={styles.buttonOutlineText}>Link to Google Calendar</Text>
+          </TouchableOpacity> 
 
-            <TouchableOpacity
-              // button that when pressed, finishes setup without linking
-              onPress={() => {
-                try{
-                    // updates document by adding unlinked into profile
-                    const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
-                        linked: false,
-                    });
-                    // finish set up
-                    navigation.navigate("AfterLogin");
-                } catch (e) {
-                  console.error("Error adding document: ", e);
-                }  
-              }
+          <TouchableOpacity
+            // button that when pressed, finishes setup without linking
+            onPress={() => {
+              try{
+                  // updates document by adding unlinked into profile
+                  const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
+                      accessToken: ""
+                  });
+                  // finish set up
+                  navigation.navigate("AfterLogin");
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }  
             }
-              style={[styles.button, styles.buttonOutline]}
-            >
-              <Text style={styles.buttonOutlineText}>Skip</Text>
-            </TouchableOpacity>
-          </View>
+          }
+            style={[styles.button, styles.buttonOutline]}
+          >
+            <Text style={styles.buttonOutlineText}>Skip</Text>
+          </TouchableOpacity>
+        </View>
         </KeyboardAvoidingView>
       )
     }

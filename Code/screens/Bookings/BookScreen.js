@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import React, {useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
+// import { google } from 'googleapis';
 
 // this screen is to fill in the details of the booking of the facility selected in previous page - date and time
 const BookScreen = ({route, navigation}) => {
@@ -10,6 +11,16 @@ const BookScreen = ({route, navigation}) => {
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
   const name = currentUser.displayName;
+
+  const [accessToken, setAccessToken] = useState('')
+  const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+    const data = doc.data();
+    if (data) {
+      setAccessToken(data.accessToken);
+    } else {
+      setAccessToken('');
+    }
+  }); 
 
   const {hall, block, facility} = route.params;
 
@@ -147,10 +158,39 @@ const BookScreen = ({route, navigation}) => {
           })
           console.log("Booking made");
           // user notified of successful booking and brought back to main page
-          alert("Booking successfully made")
-          navigation.navigate("History", {
-            amended: true
-          });
+          Alert.alert('Booking successfully made', 'Add to Google Calendar?', [
+            {text:'Add to Google Calendar', onPress: () => {
+              if (accessToken === '') {
+                alert("No Google Account Linked! Proceed to Settings to link account.")
+              } else {
+                var event = {
+                  'summary': 'Booking',
+                  'location': 'test',
+                  'start': date,
+                  'end': dateEnd
+                }
+                /*
+                const calendar = google.calendar({version: 'v3', auth: accessToken})
+                calendar.events.insert({
+                  auth: accessToken,
+                  calendarId: 'primary',
+                  resource: event,
+                }, (err, event) => {
+                  if (err) {
+                    console.log('Error contacting Calender service: ' + err);
+                  } else {
+                    console.log('Event created')
+                  }
+                })
+                */
+              }
+            }},
+            {text:'No', onPress: () => {
+              navigation.navigate("History", {
+                amended: true
+              });
+            }}
+          ])
         }}
           
         style={styles.confirm}
