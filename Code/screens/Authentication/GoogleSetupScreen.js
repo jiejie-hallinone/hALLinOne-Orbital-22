@@ -20,9 +20,29 @@ const GoogleSetupScreen = () => {
         androidClientId: "6235167999-bcra9l8kthnbj93dmvs8d63s7erjmc0i.apps.googleusercontent.com",
         iosClientId: "6235167999-pu3nqegtoohkb1fnuihc88fa6cartfct.apps.googleusercontent.com",
         expoClientId: "6235167999-stieei8kqdl62ltt6km6rtilf4pvr7ev.apps.googleusercontent.com",
-        scopes: ['https://www.googleapis.com/auth/calendar.events'],
+        scopes: [
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+          'https://www.googleapis.com/auth/calendar.events'],
         useProxy: true
     })
+
+    const insertEvent = async () => {
+      let calendar = await fetch('https://www.googleapis.com/calendar/v3/users/me', {
+        headers: { Authorization: `Bearer ${accessToken}`},
+      }); 
+      calendar?.events.insert({
+        calendarId: 'primary',
+        resource: {
+          'summary': 'test',
+          'location': 'test',
+          'description': 'test',
+          'start': Date(),
+          'end': Date()
+        }
+      })
+      console.log("inserted event")
+    }
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -34,6 +54,8 @@ const GoogleSetupScreen = () => {
               accessToken: accessToken ? accessToken : "",
             });
             console.log("updated: " + accessToken);
+            insertEvent();
+            console.log("inserted")
             navigation.navigate("AfterLogin");
         }
     }, [response]);
