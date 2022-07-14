@@ -265,7 +265,7 @@ const facName = facAbbreviation => {
             startDateTime: date,
             endDateTime: dateEnd,
           })
-          setBookingId(docRef?.id);
+          await setBookingId(docRef.id);
           console.log("Booking made with ID: " + docRef?.id);
           // user notified of successful booking and brought back to main page
           Alert.alert('Booking successfully made', 'Add to Calendar?', [
@@ -289,22 +289,24 @@ const facName = facAbbreviation => {
                     // create event for booking
                     const event = await createEvent();
                     console.log("event created with ID: " + event);
-                    const docRef2 = updateDoc(doc(db, 'bookings', BookingId), {
+                    const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
                       eventID: event
                     })
                     .catch(err => {
                       alert("Unable to update calendar")
                     })
+                    console.log("Event ID updated");
                   // hall bookings calendar created, just create event
                   } else {
                     const event = await createEvent(calendarId);
                     console.log("event created with ID: " + event);
-                    const docRef = updateDoc(doc(db, 'bookings', BookingId), {
+                    const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
                       eventID: event
                     })
                     .catch(err => {
                       alert("Unable to update calendar")
                     })
+                    console.log("Event ID updated");
                   }
                 }
                 else {
