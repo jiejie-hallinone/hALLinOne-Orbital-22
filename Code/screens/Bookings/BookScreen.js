@@ -86,19 +86,19 @@ const hallName = hallAbbreviation => {
 // to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
 const blockName = letter => {
   if (letter === "A") {
-    return "A / 1";
+    return "A Block";
   }
   else if (letter === "B") {
-    return "B / 2";
+    return "B Block";
   }
   else if (letter === "C") {
-    return "C / 3";
+    return "C Block";
   }
   else if (letter === "D") {
-    return "D / 4";
+    return "D Block";
   }
   else if (letter === 'E') {
-    return "E / 5";
+    return "E Block";
   } else {
     return "";
   }
@@ -265,9 +265,8 @@ const facName = facAbbreviation => {
             startDateTime: date,
             endDateTime: dateEnd,
           })
-          console.log("ID:" + docRef?.id);
           setBookingId(docRef?.id);
-          console.log("Booking made");
+          console.log("Booking made with ID: " + docRef?.id);
           // user notified of successful booking and brought back to main page
           Alert.alert('Booking successfully made', 'Add to Calendar?', [
             {text:'Add to Calendar', onPress: () => {
