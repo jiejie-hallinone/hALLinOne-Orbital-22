@@ -35,7 +35,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.TH}
       >
-        <Image source={require('../../assets/th.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/th.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.buttonText}>Temasek Hall </Text>
       </TouchableOpacity>
 
@@ -51,7 +51,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.EH}
       >
-        <Image source={require('../../assets/eh.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/eh.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.buttonText}>Eusoff Hall </Text>
       </TouchableOpacity>
 
@@ -67,7 +67,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.SH}
       >
-        <Image source={require('../../assets/sh.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/sh.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.buttonText}>Sheares Hall </Text>
       </TouchableOpacity>
 
@@ -83,7 +83,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KR}
       >
-        <Image source={require('../../assets/kr.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/kr.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.krbuttonText}>Kent Ridge Hall </Text>
       </TouchableOpacity>
 
@@ -99,7 +99,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.LH}
       >
-        <Image source={require('../../assets/ph.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/ph.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.krbuttonText}>Prince George's Park Hall </Text>
       </TouchableOpacity>
 
@@ -115,7 +115,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KE}
       >
-        <Image source={require('../../assets/ke.png')} style={{width: 70, height: 70, }}/> 
+        <Image source={require('../../assets/ke.png')} style={{width: 50, height: 50, }}/> 
         <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
       </TouchableOpacity>
     </View>

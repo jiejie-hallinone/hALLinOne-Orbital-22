@@ -10,7 +10,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button to select Comm Hall, brings user to page to book the lounge when pressed
         onPress={() => {
-            navigation.navigate("Book", {
+            navigation.navigate("Date", {
               hall: hall,
               block: block,
               facility: 'C'
@@ -23,23 +23,9 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to check existing bookings for Comm Hall, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'C'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         // button to select Basketball Court, brings user to page to book the lounge when pressed
         onPress={() => {
-            navigation.navigate("Book", {
+            navigation.navigate("Date", {
               hall: hall,
               block: block,
               facility: 'B'
@@ -52,23 +38,9 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to check existing bookings for BBall Court, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'C'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         // button to select Squash Court, brings user to page to book the lounge when pressed
         onPress={() => {
-            navigation.navigate("Book", {
+            navigation.navigate("Date", {
               hall: hall,
               block: block,
               facility: 'S'
@@ -81,23 +53,9 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to check existing bookings for Squash Courts, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'S'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         // button to select Band Room, brings user to page to book the lounge when pressed
         onPress={() => {
-            navigation.navigate("Book", {
+            navigation.navigate("Date", {
               hall: hall,
               block: block,
               facility: 'M'
@@ -107,20 +65,6 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       >
         <Image source={require('../../assets/facilities/music.png')} style={{width: 70, height: 70, marginBottom: 10}} />
         <Text style={styles.buttonText}>Band / Music Room</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        // button to check existing bookings for Band Rm, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'M'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
       </TouchableOpacity>
     </View>
   )

@@ -22,7 +22,7 @@ import FirstTimeSetupLevelScreen from './screens/Authentication/FirstTimeSetupLe
 import CommonFacilitiesScreen from './screens/Bookings/CommonFacilitiesScreen';
 import ExistingBookingsScreen from './screens/Bookings/ExistingBookingsScreen';
 import ExistingBookingsOnDayScreen from './screens/Bookings/ExistingBookingsOnDayScreen';
-import GoogleSetupScreen from './screens/Authentication/GoogleSetupScreen';
+// import GoogleSetupScreen from './screens/Authentication/GoogleSetupScreen';
 
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
 const Tabs = createBottomTabNavigator();
@@ -66,7 +66,6 @@ function HistoryTab() {
 function SocialTab() {
   return (
     <SocialStack.Navigator>
-      <SocialStack.Screen name="G" component={GoogleSetupScreen}/>
       <SocialStack.Screen name="Feed" component={SocialScreen}/>
       <SocialStack.Screen name="Post" component={PostScreen}/>
     </SocialStack.Navigator>
@@ -167,7 +166,6 @@ export default function App() {
         <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupHallScreen" component={FirstTimeSetupHallScreen} />
         <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupBlockScreen" component={FirstTimeSetupBlockScreen} />
         <Stack.Screen options={{headerShown:false}} name="FirstTimeSetupLevelScreen" component={FirstTimeSetupLevelScreen} />
-
         <Stack.Screen options={{headerShown:false}} name="AfterLogin" component={AfterLoginTabs} />
       </Stack.Navigator>
     </NavigationContainer>

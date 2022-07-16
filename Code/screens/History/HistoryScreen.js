@@ -184,7 +184,7 @@ const HistoryScreen = ({route, navigation}) => {
           }}
           style={[styles.cancelButton, styles.cancelButtonOutline]}
         >
-          <Text style={styles.cancelButtonOutlineText}>Cancel booking</Text>
+          <Text style={styles.cancelButtonOutlineText}>Cancel</Text>
       </TouchableOpacity>
       </View>
     )
