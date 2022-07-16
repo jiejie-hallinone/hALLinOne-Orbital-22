@@ -11,7 +11,7 @@ const FacilitiesScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button to select Lounge, brings user to page to book the lounge when pressed
         onPress={() => {
-          navigation.navigate("Book", {
+          navigation.navigate("Date", {
             hall: hall,
             block: block,
             facility: 'L'
@@ -24,23 +24,9 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to check existing bookings for Lounge, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'L'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         // button to select Washing Machine, brings user to page to book the lounge when pressed
         onPress={() => {
-          navigation.navigate("Book", {
+          navigation.navigate("Date", {
             hall: hall,
             block: block,
             facility: 'W'
@@ -53,23 +39,9 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to check existing bookings for WM, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'W'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         // button to select Dryer, brings user to page to book the lounge when pressed
         onPress={() => {
-          navigation.navigate("Book", {
+          navigation.navigate("Date", {
             hall: hall,
             block: block,
             facility: 'D'
@@ -79,20 +51,6 @@ const FacilitiesScreen = ({route, navigation}) => {
       >
         <Image source={require('../../assets/facilities/dryer.png')} style={{width: 70, height: 70, marginBottom: 5}} />
         <Text style={styles.buttonText}>Dryer</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        // button to check existing bookings for Dryer, brings user to page to existing bookings page
-        onPress={() => {
-          navigation.navigate("Date", {
-            hall: hall,
-            block: block,
-            facility: 'D'
-          })
-        }}
-        style={styles.ebButton}
-      >
-        <Text style={styles.ebbuttonText}>Check Existing Bookings</Text>
       </TouchableOpacity>
     </View>
   )

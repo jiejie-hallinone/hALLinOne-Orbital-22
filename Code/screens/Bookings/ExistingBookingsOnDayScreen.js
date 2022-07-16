@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { db } from '../../Firebase/Firebase';
 import { getDocs, collection, query, where } from "firebase/firestore";
@@ -28,6 +28,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           const start = data.startDateTime.toDate();
           const end = data.endDateTime.toDate();
           // console.log(date.year);
+          // console.log(start)
           // console.log(doc.id + " retrieved")
           // adds it to the newBookings array as a tuple - with the data and the doc id
           if (start.getDate() <= date.day && (start.getMonth() + 1) <= date.month && (start.getYear() + 1900) <= date.year 
@@ -76,15 +77,36 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
   // function to render the screen after all bookings retrieved i.e. load finished
   function Loaded(props) {
     return (
-      <View style={styles.listContainer}>
-        
-        <FlatList
-          style={styles.item}
-          data={bookings}
-          renderItem={renderList}
-          keyExtractor={item => item.id}
-        />
+      <View style={styles.container}>
+        <View style={styles.listContainer}>
+          <FlatList
+            style={styles.item}
+            data={bookings}
+            renderItem={renderList}
+            keyExtractor={item => item.id}
+          />
+          <Text style={styles.text}>No more existing bookings</Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Book", {
+                hall: hall,
+                block: block,
+                facility: facility,
+                startDate: date,
+                endDate: date,
+              })
+            }}
+          >
+            <Image source={require('../../assets/plus.png')} style={{width: 30, height: 30, tintColor: '#0782F9'}} />
+          </TouchableOpacity>
+        </View>
+
       </View>
+      
     )
   }
 
@@ -110,7 +132,6 @@ export default ExistingBookingsOnDayScreen
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
@@ -118,20 +139,32 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'column',
         width: '100%',
-        marginVertical: 8,
-        marginHorizontal: 16,
     },
     itemContainer: {
         alignItems: 'center',
         width: '100%',
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        marginBottom: 10,
+        padding: 5
     },
     listContainer: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%'
       },
+    button: {
+      width: '20%',
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    buttonContainer: {
+      width: '100%',
+      marginBottom: 5,
+      alignItems: 'center',
+      padding: 5
+    },
+    text: {
+      marginTop: 5,
+      marginBottom: 5,
+    }
 })

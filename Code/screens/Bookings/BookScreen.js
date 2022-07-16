@@ -59,7 +59,7 @@ const BookScreen = ({route, navigation}) => {
     return `${newEventID}`; 
   }
 
-  const {hall, block, facility} = route.params;
+  const {hall, block, facility, startDate, endDate} = route.params;
 
   // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
 const hallName = hallAbbreviation => {
@@ -145,31 +145,38 @@ const facName = facAbbreviation => {
   // toggle visibility of picker for end time and date
   const [showEnd, setShowEnd] = useState(false)
   // text for checking selected date and time
-  const [text, setText] = useState("Start Date:\nStart time:")
-  const [textEnd, setTextEnd] = useState("End Date:\nEnd time:")
+  const [text, setText] = useState("Start time:")
+  const [textEnd, setTextEnd] = useState("End time:")
 
   // updates start date and time when changed
-  const onChangeStart = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
+  const onChangeStart = (event, selectedTime) => {
+    const begin = new Date();
+    begin.setDate(startDate.day);
+    begin.setMonth(startDate.month);
+    begin.setFullYear(startDate.year);
+    begin.setTime(selectedTime.getTime());
+    setDate(begin);
 
     // shows selected start date and time for debugging
-    let tempDate = new Date(currentDate);
-    let fullDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    let tempDate = new Date(begin);
     let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
-    setText("Start Date: " + fullDate + '\n' + "Start Time: " + fullTime);
+    setText("Start Time: " + fullTime);
+    
   }
 
   // updates end date and time when changed
-  const onChangeEnd = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDateEnd(currentDate);
+  const onChangeEnd = (event, selectedTime) => {
+    const finish = new Date();
+    finish.setDate(startDate.day);
+    finish.setMonth(startDate.month);
+    finish.setFullYear(startDate.year);
+    finish.setTime(selectedTime.getTime());
+    setDateEnd(finish);
 
     // shows selected end date and time for debugging
-    let tempDate = new Date(currentDate);
-    let fullDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    let tempDate = new Date(finish);
     let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
-    setTextEnd("End Date: " + fullDate + '\n' + "End Time: " + fullTime);
+    setTextEnd("End Time: " + fullTime);
   }
 
   // toggles mode and visibility for start picker (makes end invisible)
@@ -193,28 +200,11 @@ const facName = facAbbreviation => {
       <Text>{textEnd}</Text>
 
       <TouchableOpacity
-        // for selecting start date - shows start picker on date mode
-        title='Select Start Date'
-        onPress={() => showModeStart('date')}
-        style={styles.button}
-       >
-         <Text>Select Start Date </Text> 
-       </TouchableOpacity> 
-
-      <TouchableOpacity
       // for selecting start time - shows start picker on time mode
         onPress={() => showModeStart('time')}
         style={styles.button}
       > 
         <Text>Select Start Time </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-      // for selecting end date - shows end picker on date mode
-        onPress={() => showModeEnd('date')}
-        style={styles.button}
-      > 
-        <Text>Select End Date </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -267,6 +257,7 @@ const facName = facAbbreviation => {
           })
           await setBookingId(docRef.id);
           console.log("Booking made with ID: " + docRef?.id);
+          navigation.popToTop();
           // user notified of successful booking and brought back to main page
           Alert.alert('Booking successfully made', 'Add to Calendar?', [
             {text:'Add to Calendar', onPress: () => {
@@ -300,6 +291,7 @@ const facName = facAbbreviation => {
                   } else {
                     const event = await createEvent(calendarId);
                     console.log("event created with ID: " + event);
+                    /*
                     const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
                       eventID: event
                     })
@@ -307,6 +299,7 @@ const facName = facAbbreviation => {
                       alert("Unable to update calendar")
                     })
                     console.log("Event ID updated");
+                    */
                   }
                 }
                 else {
