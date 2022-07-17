@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator, Image } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, getDocs, collection, onSnapshot, getDoc } from "firebase/firestore";
@@ -118,6 +118,8 @@ const SocialScreen = ({navigation}) => {
           data={jios}
           renderItem={renderList}
           keyExtractor={item => item.id}
+          ListFooterComponent={<Text>No more posts</Text>}
+          ListFooterComponentStyle={styles.footer}
         />
 
         <TouchableOpacity
@@ -132,7 +134,7 @@ const SocialScreen = ({navigation}) => {
           }}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Post</Text>
+          <Image source={require('../../assets/plus.png')} style={{width: 30, height: 30, tintColor: '#0782F9'}} />
         </TouchableOpacity>
       </View>
     )
@@ -162,26 +164,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#0782F9',
     width: '30%',
-    borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 5
   },
   buttonOutline: {
-    backgroundColor: 'white',
     marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
   },
   buttonOutlineText: {
     color: '#0782F9',
     fontSize: 16,
   },
   item: {
-    flexDirection: 'column',
     width: '100%',
-    marginVertical: 8,
-    marginHorizontal: 16,
 },
 itemContainer: {
     alignItems: 'center',
@@ -196,4 +191,9 @@ listContainer: {
     justifyContent: 'center',
     width: '100%'
   },
+  footer: {
+    marginTop: 2,
+    marginBottom: 5,
+    alignItems: 'center'
+  }
 })

@@ -207,7 +207,7 @@ const HistoryScreen = ({route, navigation}) => {
           data={bookings}
           renderItem={renderList}
           keyExtractor={item => item.id}
-          ListFooterComponent={<Text>No more existing bookings</Text>}
+          ListFooterComponent={<Text>No more made bookings</Text>}
           ListFooterComponentStyle={styles.footer}
         />
   
