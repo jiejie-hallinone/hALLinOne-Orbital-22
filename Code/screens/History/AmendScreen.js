@@ -192,7 +192,7 @@ function Loaded(props) {
          
         }
         if (booked) {
-          alert("Selected time period already has a booking! Check previous page for existing bookings!");
+          alert("Selected time period already has a booking!");
         } else {
           const docRef = updateDoc(doc(db, "bookings", amend), {
             startDateTime: date,
