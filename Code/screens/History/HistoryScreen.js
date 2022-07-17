@@ -148,7 +148,13 @@ const HistoryScreen = ({route, navigation}) => {
               const amendingid = item.id;
               setAmend(amendingid);
               console.log("amending: " + amendingid)
-              navigation.navigate("Amend", {amend: amendingid});
+              navigation.navigate("Amend", {
+                hall: item.data.hall,
+                block: item.data.block,
+                facility: item.data.facility,
+                bookedDate: item.data.startDateTime,
+                amend: amendingid
+              });
             } catch (err) {
               alert("Error! Please try again")
             }

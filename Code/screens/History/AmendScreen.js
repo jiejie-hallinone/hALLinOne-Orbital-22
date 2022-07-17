@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import React, {useState, useEffect} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
-import { doc, updateDoc, collection } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native'
 
@@ -12,7 +12,52 @@ const currentUser = auth.currentUser;
 const uid = currentUser.uid;
 const name = currentUser.displayName;
 
-const {amend} = route.params;
+const {hall, block, facility, bookedDate, amend} = route.params;
+const selectedDate = bookedDate.toDate();
+
+const [bookings, setBookings] = useState();
+const [loading, setLoading] = useState(true);
+
+const getBookings = async () => {
+  // to store data
+  const newBookings = new Array();
+  // queries under bookings those bookings in firestore made by the user that has not expired yet
+  const q = query(collection(db, "bookings"), 
+      where("hall", "==", hall), 
+      where("block", "==", block), 
+      where("facility", "==", facility));
+      // where("startDateTime", "<=", date));
+      // where("endDateTime", ">=", date));
+  // retrieves the documents
+  const querySnapshot = await getDocs(q);
+  // for each document
+  await querySnapshot.forEach(doc => {
+    // retrieves document data (name, hall, time etc)
+    let data = doc.data()
+    // console.log("retrieved: " + doc.id);
+    const start = data.startDateTime.toDate();
+    // console.log(date.year);
+    // console.log(start)
+    // console.log(doc.id + " retrieved")
+    // adds it to the newBookings array as a tuple - with the data and the doc id
+    if (start.getDate() === selectedDate.getDate() && start.getMonth() === selectedDate.getMonth() && start.getFullYear() === selectedDate.getFullYear()) {
+          newBookings.push({data: data, id: doc.id});
+          // console.log("added: " + doc.id)
+    }
+    
+  })
+
+  setLoading(false);
+
+  setBookings(newBookings);
+  // console.log(bookings);
+}
+
+useEffect(() => {
+  const unsub = navigation.addListener('focus', () => {
+    getBookings();
+  });
+}, [navigation])
 
 // states used to capture information for booking
 // start date and time
@@ -26,33 +71,41 @@ const [showStart, setShowStart] = useState(false)
 // toggle visibility of picker for end time and date
 const [showEnd, setShowEnd] = useState(false)
 // text for checking selected date and time
-const [text, setText] = useState("Start Date:\nStart time:")
-const [textEnd, setTextEnd] = useState("End Date:\nEnd time:")
+const [text, setText] = useState("Start time:")
+const [textEnd, setTextEnd] = useState("End time:")
 // to pass back to history page after confirming amend
 const [amended, setAmended] = useState(false);
 
 // updates start date and time when changed
-const onChangeStart = (event, selectedDate) => {
-  const currentDate = selectedDate || date;
-  setDate(currentDate);
+const onChangeStart = (event, selectedTime) => {
+  const begin = new Date();
+  begin.setDate(selectedDate.day)
+  begin.setDate(selectedDate.day);
+  begin.setMonth(selectedDate.month);
+  begin.setFullYear(selectedDate.year);
+  begin.setTime(selectedTime.getTime());
+  setDate(begin);
 
   // shows selected start date and time for debugging
-  let tempDate = new Date(currentDate);
-  let fullDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+  let tempDate = new Date(begin);
   let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
-  setText("Start Date: " + fullDate + '\n' + "Start Time: " + fullTime);
+  setText("Start Time: " + fullTime);
 }
 
 // updates end date and time when changed
-const onChangeEnd = (event, selectedDate) => {
-  const currentDate = selectedDate || date;
-  setDateEnd(currentDate);
+const onChangeEnd = (event, selectedTime) => {
+  const finish = new Date();
+  finish.setDate(selectedDate.day)
+  finish.setDate(selectedDate.day);
+  finish.setMonth(selectedDate.month);
+  finish.setFullYear(selectedDate.year);
+  finish.setTime(selectedTime.getTime());
+  setDateEnd(finish);
 
-  // shows selected end date and time for debugging
-  let tempDate = new Date(currentDate);
-  let fullDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+  // shows selected start date and time for debugging
+  let tempDate = new Date(finish);
   let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
-  setTextEnd("End Date: " + fullDate + '\n' + "End Time: " + fullTime);
+  setTextEnd("End Time: " + fullTime);
 }
 
 // toggles mode and visibility for start picker (makes end invisible)
@@ -69,20 +122,12 @@ const showModeEnd = (currentMode) => {
   setMode(currentMode);
 }
 
-return (
-  <View style={styles.container}>
+function Loaded(props) {
+  return (
+    <View style={styles.container}>
     <Text>{text}</Text>
     
     <Text>{textEnd}</Text>
-
-    <TouchableOpacity
-      // for selecting start date - shows start picker on date mode
-      title='Select Start Date'
-      onPress={() => showModeStart('date')}
-      style={styles.button}
-     >
-       <Text>Select Start Date </Text> 
-     </TouchableOpacity> 
 
     <TouchableOpacity
     // for selecting start time - shows start picker on time mode
@@ -90,14 +135,6 @@ return (
       style={styles.button}
     > 
       <Text>Select Start Time </Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity
-    // for selecting end date - shows end picker on date mode
-      onPress={() => showModeEnd('date')}
-      style={styles.button}
-    > 
-      <Text>Select End Date </Text>
     </TouchableOpacity>
 
     <TouchableOpacity
@@ -139,6 +176,24 @@ return (
     <TouchableOpacity
     // makes booking by saving into firestore bookings collection
       onPress={() => {
+        var booked = false;
+        for (let i = 0; i < bookings.length; i++) {
+          const id = bookings[i].id;
+          if (id != amend) {
+            const existingStart = bookings[i].data.startDateTime.seconds;
+            const existingEnd = bookings[i].data.endDateTime.seconds;
+            const selectedStart = date.getTime() / 1000;
+            const selectedEnd = dateEnd.getTime() / 1000;
+            // overlaps if it doesnt end before selected start timing or doesnt start after selected end timing
+            const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
+            booked = booked || !available;
+            console.log(booked);
+          }
+         
+        }
+        if (booked) {
+          alert("Selected time period already has a booking! Check previous page for existing bookings!");
+        } else {
           const docRef = updateDoc(doc(db, "bookings", amend), {
             startDateTime: date,
             endDateTime: dateEnd,
@@ -153,8 +208,7 @@ return (
             alert("Booking successfully updated")
             navigation.navigate("Bookings", {amended: amended})
           })
-         
-          
+        }
       }}
         
       style={styles.confirm}
@@ -162,6 +216,22 @@ return (
        <Text style={styles.text}>Amend Booking</Text>
     </TouchableOpacity> 
   </View>
+  )
+}
+
+return (
+  <View
+      style={styles.container}
+    >
+   {loading 
+    ? <ActivityIndicator 
+        size="large"
+        color="black"
+      />
+    : <Loaded />
+    }     
+
+    </View>
 )
 }
 
@@ -169,7 +239,7 @@ export default AmendScreen;
 
 const styles = StyleSheet.create({
 container: {
-  flex: 1,
+  width: '100%',
   alignItems: 'center',
 },
 button: {
