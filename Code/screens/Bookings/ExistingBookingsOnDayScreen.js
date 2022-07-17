@@ -84,8 +84,9 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
             data={bookings}
             renderItem={renderList}
             keyExtractor={item => item.id}
+            ListFooterComponent={<Text>No more existing bookings</Text>}
+            ListFooterComponentStyle={styles.text}
           />
-          <Text style={styles.text}>No more existing bookings</Text>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -165,7 +166,8 @@ const styles = StyleSheet.create({
       padding: 5
     },
     text: {
-      marginTop: 5,
+      marginTop: 2,
       marginBottom: 5,
+      alignItems: 'center'
     }
 })

@@ -71,6 +71,7 @@ const SocialScreen = ({navigation}) => {
 
     setLoading(false);
 
+    posts.sort((post1, post2) => post1.data.startDateTime.seconds - post2.data.startDateTime.seconds);
     setJios(posts);
     // console.log(jios);
   }

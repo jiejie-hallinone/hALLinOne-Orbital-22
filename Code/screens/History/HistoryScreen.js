@@ -100,6 +100,7 @@ const HistoryScreen = ({route, navigation}) => {
     })
     setLoading(false);
 
+    newBookings.sort((booking1, booking2) => booking1.data.startDateTime.seconds - booking2.data.startDateTime.seconds);
     setBookings(newBookings);
   }
   
@@ -206,6 +207,8 @@ const HistoryScreen = ({route, navigation}) => {
           data={bookings}
           renderItem={renderList}
           keyExtractor={item => item.id}
+          ListFooterComponent={<Text>No more existing bookings</Text>}
+          ListFooterComponentStyle={styles.footer}
         />
   
       </View>
@@ -292,6 +295,11 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomColor: 'black',
     borderBottomWidth: 2,
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  footer: {
+    marginTop: 2,
+    marginBottom: 5,
+    alignItems: 'center'
   }
 })
