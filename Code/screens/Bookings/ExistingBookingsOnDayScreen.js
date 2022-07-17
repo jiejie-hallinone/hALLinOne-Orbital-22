@@ -7,6 +7,8 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
     const {hall, block, facility, date, reload} = route.params;
     const [bookings, setBookings] = useState();
     const [loading, setLoading] = useState(reload);
+    const currentDate = new Date();
+    const upcoming = date.day >= currentDate.getDate() && date.month >= (currentDate.getMonth() + 1) && date.year >= currentDate.getFullYear();
 
     const getBookings = async () => {
         // to store data
@@ -88,25 +90,29 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
             ListFooterComponentStyle={styles.text}
           />
         </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate("Book", {
-                hall: hall,
-                block: block,
-                facility: facility,
-                startDate: date,
-                endDate: date,
-                existingBookings: bookings
-              })
-            }}
-          >
-            <Image source={require('../../assets/plus.png')} style={{width: 30, height: 30, tintColor: '#0782F9'}} />
-          </TouchableOpacity>
-        </View>
-
+        
+        {upcoming 
+          ? 
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate("Book", {
+                  hall: hall,
+                  block: block,
+                  facility: facility,
+                  startDate: date,
+                  endDate: date,
+                  existingBookings: bookings
+                })
+              }}
+            >
+              <Image source={require('../../assets/plus.png')} style={{width: 30, height: 30, tintColor: '#0782F9'}} />
+            </TouchableOpacity>
+          </View>
+        :
+          <Text></Text>
+        }
       </View>
       
     )
