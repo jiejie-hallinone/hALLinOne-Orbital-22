@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { auth } from '../../Firebase/Firebase';
@@ -42,6 +42,7 @@ const LoginScreen = () => {
       style={styles.container}
       behavior="padding"
     >
+      <Image source={require('../../assets/hALLinOne.png')} style={{width: 320, height: 320, }} />
       <View style={styles.inputContainer}>
         <TextInput
           // input field for email to log in
@@ -86,6 +87,7 @@ export default LoginScreen
 // styles used within screen
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -94,7 +96,8 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   input: {
-    backgroundColor: 'white',
+    borderColor: '#D3D3D3',
+    borderWidth: 2,
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
@@ -111,6 +114,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 15,
     borderRadius: 10,
+    alignItems: 'center'
   },
   buttonOutline: {
     backgroundColor: 'white',
