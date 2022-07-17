@@ -59,7 +59,7 @@ const BookScreen = ({route, navigation}) => {
     return `${newEventID}`; 
   }
 
-  const {hall, block, facility, startDate, endDate} = route.params;
+  const {hall, block, facility, startDate, endDate, existingBookings} = route.params;
 
   // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
 const hallName = hallAbbreviation => {
@@ -167,9 +167,9 @@ const facName = facAbbreviation => {
   // updates end date and time when changed
   const onChangeEnd = (event, selectedTime) => {
     const finish = new Date();
-    finish.setDate(startDate.day);
-    finish.setMonth(startDate.month);
-    finish.setFullYear(startDate.year);
+    finish.setDate(endDate.day);
+    finish.setMonth(endDate.month);
+    finish.setFullYear(endDate.year);
     finish.setTime(selectedTime.getTime());
     setDateEnd(finish);
 
@@ -246,76 +246,181 @@ const facName = facAbbreviation => {
       <TouchableOpacity
       // makes booking by saving into firestore bookings collection
         onPress={async () => {
-          const docRef = await addDoc(collection(db, "bookings"), {
-            uid: uid,
-            name: name,
-            hall: hall,
-            block: block,
-            facility: facility,
-            startDateTime: date,
-            endDateTime: dateEnd,
-          })
-          await setBookingId(docRef.id);
-          console.log("Booking made with ID: " + docRef?.id);
-          navigation.popToTop();
-          // user notified of successful booking and brought back to main page
-          Alert.alert('Booking successfully made', 'Add to Calendar?', [
-            {text:'Add to Calendar', onPress: () => {
-              (async () => {
-                const { status } = await Calendar.requestCalendarPermissionsAsync();
-                // permission to access calendar granted
-                if (status === 'granted') {
-                  // yet to create a new calendar for hall bookings
-                    if (calendarId === '') {
-                    // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
-                    const calendar = await createCalendar();
-                    setCalendarId(calendar)
-                    console.log("calender " + calendar);
-                    const docRef = updateDoc(doc(db, 'users', uid), {
-                      calendarId: calendar
-                    })
-                    .catch(err => {
-                      alert("Unable to update calendar")
-                    })
-                    // create event for booking
-                    const event = await createEvent();
-                    console.log("event created with ID: " + event);
-                    const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
-                      eventID: event
-                    })
-                    .catch(err => {
-                      alert("Unable to update calendar")
-                    })
-                    console.log("Event ID updated");
-                  // hall bookings calendar created, just create event
-                  } else {
-                    const event = await createEvent(calendarId);
-                    console.log("event created with ID: " + event);
-                    /*
-                    const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
-                      eventID: event
-                    })
-                    .catch(err => {
-                      alert("Unable to update calendar")
-                    })
-                    console.log("Event ID updated");
-                    */
+          if (facility === 'W' || facility === 'D') {
+            const docRef = await addDoc(collection(db, "bookings"), {
+              uid: uid,
+              name: name,
+              hall: hall,
+              block: block,
+              facility: facility,
+              startDateTime: date,
+              endDateTime: dateEnd,
+            })
+            await setBookingId(docRef.id);
+            console.log("Booking made with ID: " + docRef?.id);
+            navigation.popToTop();
+            // user notified of successful booking and brought back to main page
+            Alert.alert('Booking successfully made', 'Add to Calendar?', [
+              {text:'Add to Calendar', onPress: () => {
+                (async () => {
+                  const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  // permission to access calendar granted
+                  if (status === 'granted') {
+                    // yet to create a new calendar for hall bookings
+                      if (calendarId === '') {
+                      // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
+                      const calendar = await createCalendar();
+                      setCalendarId(calendar)
+                      console.log("calender " + calendar);
+                      const docRef = updateDoc(doc(db, 'users', uid), {
+                        calendarId: calendar
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      // create event for booking
+                      const event = await createEvent();
+                      console.log("event created with ID: " + event);
+                      const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
+                        eventID: event
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      console.log("Event ID updated");
+                    // hall bookings calendar created, just create event
+                    } else {
+                      const event = await createEvent(calendarId);
+                      console.log("event created with ID: " + event);
+                      /*
+                      const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
+                        eventID: event
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      console.log("Event ID updated");
+                      */
+                    }
                   }
-                }
-                else {
-                  alert("Unable to access calendar")
-                }
-              })();
-              navigation.navigate("History", {
-                amended: true
-              });
-            }},
-            {text:'No', onPress: () => {
-              navigation.navigate("History", {
-                amended: true
-              });
-            }}
-          ])
+                  else {
+                    alert("Unable to access calendar")
+                  }
+                })();
+                navigation.navigate("History", {
+                  amended: true
+                });
+              }},
+              {text:'No', onPress: () => {
+                navigation.navigate("History", {
+                  amended: true
+                });
+              }}
+            ])
+          } else {
+            var booked = false;
+            for (let i = 0; i < existingBookings.length; i++) {
+              const existingStart = existingBookings[i].data.startDateTime.seconds;
+              const existingEnd = existingBookings[i].data.endDateTime.seconds;
+              const selectedStart = date.getTime() / 1000;
+              const selectedEnd = dateEnd.getTime() / 1000;
+              // overlaps if it doesnt end before selected start timing or doesnt start after selected end timing
+              const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
+              booked = booked || !available;
+            }
+            // console.log(booked);
+            if (booked) {
+              alert("Selected time period already has a booking! Check previous page for existing bookings!");
+            } else {
+              const docRef = await addDoc(collection(db, "bookings"), {
+                uid: uid,
+                name: name,
+                hall: hall,
+                block: block,
+                facility: facility,
+                startDateTime: date,
+                endDateTime: dateEnd,
+              })
+              await setBookingId(docRef.id);
+              console.log("Booking made with ID: " + docRef?.id);
+              navigation.popToTop();
+              // user notified of successful booking and brought back to main page
+              Alert.alert('Booking successfully made', 'Add to Calendar?', [
+                {text:'Add to Calendar', onPress: () => {
+                  (async () => {
+                    const { status } = await Calendar.requestCalendarPermissionsAsync();
+                    // permission to access calendar granted
+                    if (status === 'granted') {
+                      // yet to create a new calendar for hall bookings
+                        if (calendarId === '') {
+                        // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
+                        const calendar = await createCalendar();
+                        setCalendarId(calendar)
+                        console.log("calender " + calendar);
+                        const docRef = updateDoc(doc(db, 'users', uid), {
+                          calendarId: calendar
+                        })
+                        .catch(err => {
+                          alert("Unable to update calendar")
+                        })
+                        // create event for booking
+                        const event = await createEvent(calendarId);
+                        console.log("event created with ID: " + event);
+                        const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
+                          eventID: event
+                        })
+                        .catch(err => {
+                          alert("Unable to update calendar")
+                        })
+                        console.log("Event ID updated");
+                      // hall bookings calendar created, just create event
+                      } else {
+                        // console.log("creating")
+                        const event = await createEvent(calendarId)
+                        .catch(async err => {
+                          console.log("caught")
+                          const calendar = await createCalendar();
+                          setCalendarId(calendar)
+                          console.log("calender " + calendar);
+                          const docRef = updateDoc(doc(db, 'users', uid), {
+                            calendarId: calendar
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          })
+                          await createEvent(calendarId);
+                          console.log("event recreated with ID: " + event);
+                        });
+                        console.log("event created with ID: " + event);
+                        /*
+                        const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
+                          eventID: event
+                        })
+                        .catch(err => {
+                          alert("Unable to update calendar")
+                        })
+                        console.log("Event ID updated");
+                        */
+                      }
+                    }
+                    else {
+                      alert("Unable to access calendar")
+                    }
+                  })();
+                  navigation.navigate("History", {
+                    amended: true
+                  });
+                }},
+                {text:'No', onPress: () => {
+                  navigation.navigate("History", {
+                    amended: true
+                  });
+                }}
+              ])
+            }
+            
+          }
+          
         }}
           
         style={styles.confirm}

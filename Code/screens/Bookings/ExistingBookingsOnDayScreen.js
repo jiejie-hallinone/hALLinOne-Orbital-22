@@ -98,6 +98,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
                 facility: facility,
                 startDate: date,
                 endDate: date,
+                existingBookings: bookings
               })
             }}
           >
