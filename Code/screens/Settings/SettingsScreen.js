@@ -35,7 +35,7 @@ const SettingsScreen = () => {
         onPress={handleSignOut}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Sign out</Text>
+        <Text style={styles.SObuttonText}>Sign out</Text>
       </TouchableOpacity>
     </View>
   )
@@ -50,18 +50,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   prof: {
-    backgroundColor: '#0782F9',
+    backgroundColor: 'white',
     width: '100%',
     padding: 15,
     alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 10
   },
   button: {
-    backgroundColor: 'red',
+    backgroundColor: '#ff6961',
     width: '100%',
     padding: 15,
     alignItems: 'center',
   },
   buttonText: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  SObuttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
