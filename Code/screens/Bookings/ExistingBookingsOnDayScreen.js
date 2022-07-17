@@ -40,7 +40,7 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
         })
 
         setLoading(false);
-    
+        newBookings.sort((booking1, booking2) => booking1.data.startDateTime.seconds - booking2.data.startDateTime.seconds);
         setBookings(newBookings);
         // console.log(bookings);
       }
