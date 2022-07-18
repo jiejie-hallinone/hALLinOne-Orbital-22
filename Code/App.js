@@ -22,6 +22,7 @@ import FirstTimeSetupLevelScreen from './screens/Authentication/FirstTimeSetupLe
 import CommonFacilitiesScreen from './screens/Bookings/CommonFacilitiesScreen';
 import ExistingBookingsScreen from './screens/Bookings/ExistingBookingsScreen';
 import ExistingBookingsOnDayScreen from './screens/Bookings/ExistingBookingsOnDayScreen';
+import ChangePasswordScreen from './screens/Settings/ChangePasswordScreen';
 // import GoogleSetupScreen from './screens/Authentication/GoogleSetupScreen';
 
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
@@ -78,6 +79,7 @@ function SettingsTab() {
     <SettingsStack.Navigator>
       <SettingsStack.Screen name="Menu" component={SettingsScreen}/>
       <SettingsStack.Screen name="Profile" component={ProfileScreen}/>
+      <SettingsStack.Screen name="Change Password" component={ChangePasswordScreen}/>
     </SettingsStack.Navigator>
   );
 }

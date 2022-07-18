@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, onSnapshot } from "firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
 
 // users will be brought here if profile is selected from settings 
 // users can view and edit their profile information
@@ -21,6 +22,8 @@ const ProfileScreen = () => {
      setBlock(data.block)
      setLevel(data.level)
   });
+
+  const navigation = useNavigation();
   
   // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
   const hallName = hallAbbreviation => {
@@ -71,6 +74,13 @@ const ProfileScreen = () => {
       <Text>Hall: {hallName(hall)}</Text>
       <Text>Block: {blockName(block)}</Text>
       <Text>Level: {level} </Text>
+
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Change Password")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Change Password</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -83,4 +93,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  button: {
+    backgroundColor: 'white',
+    width: '40%',
+    padding: 2,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#0782F9',
+    marginTop: 10
+  },
+  text: {
+    color: '#0782F9',
+    fontWeight: '700',
+    fontSize: 16,
+  }
 })
