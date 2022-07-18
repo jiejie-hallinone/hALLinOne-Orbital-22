@@ -317,7 +317,7 @@ const facName = facAbbreviation => {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendarId);
+                          await createEvent(calendar);
                           console.log("event recreated with ID: " + event);
                         });
                         console.log("event created with ID: " + event);
@@ -425,7 +425,7 @@ const facName = facAbbreviation => {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendarId);
+                          await createEvent(calendar);
                           console.log("event recreated with ID: " + event);
                         });
                         console.log("event created with ID: " + event);

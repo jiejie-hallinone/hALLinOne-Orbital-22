@@ -109,7 +109,7 @@ async function createCalendar() {
 // function to create a new event in a given calendar, with fields based on selection of booking
 async function createEvent(calendarId) {
   const newEventID = await Calendar.createEventAsync(calendarId, {
-    title: "Booking",
+    title: "Booking: " + facName(facility),
     location: paramsToLocation(),
     startDate: date,
     endDate: dateEnd,
@@ -339,42 +339,55 @@ function Loaded(props) {
             if (calendarId && eventId) {
               Alert.alert("Booking successfully updated", "Amend event on calendar?", [
                 {text: 'Amend existing event', onPress: async () => {
-                  await Calendar.updateEventAsync(eventId, {
-                    startDate: date,
-                    endDate: dateEnd
-                  })
-                  console.log("event updated");
+                  // request permission to access device calendar
+                  const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  if (status === 'granted') {
+                    await Calendar.updateEventAsync(eventId, {
+                      startDate: date,
+                      endDate: dateEnd
+                    })
+                    .catch(err => {alert("Event unable to be updated, add new event or skip!")})
+                    console.log("event updated");
+                  } else {
+                    alert("access denied")
+                  }
                 }},
 
                 {text: 'Add new event', onPress: async () => {
-                  // create event in calendar whose ID was stored in the user profile
-                  const event = await createEvent(calendarId)
-                  // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
-                  .catch(async err => {
-                    console.log("caught")
-                    // create new calendar and event, same process as above
-                    const calendar = await createCalendar();
-                    setCalendarId(calendar)
-                    console.log("calender " + calendar);
-                    const docRef = await updateDoc(doc(db, 'users', uid), {
-                      calendarId: calendar
+                  // request permission to access device calendar
+                  const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  if (status === 'granted') {
+                    // create event in calendar whose ID was stored in the user profile
+                    const event = await createEvent(calendarId)
+                    // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
+                    .catch(async err => {
+                      console.log("caught")
+                      // create new calendar and event, same process as above
+                      const calendar = await createCalendar();
+                      await setCalendarId(calendar)
+                      console.log("calender " + calendar);
+                      await updateDoc(doc(db, 'users', uid), {
+                        calendarId: calendar
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      await createEvent(calendar);
+                      console.log("event recreated with ID: " + event);
+                    });
+                    console.log("event created with ID: " + event);
+                    // store event ID
+                    await updateDoc(doc(db, 'bookings', amend), {
+                      eventID: event
                     })
                     .catch(err => {
                       alert("Unable to update calendar")
-                    })
-                    await createEvent(calendarId);
-                    console.log("event recreated with ID: " + event);
-                  });
-                  console.log("event created with ID: " + event);
-                  // store event ID
-                  await updateDoc(doc(db, 'bookings', amend), {
-                    eventID: event
-                  })
-                  .catch(err => {
-                    alert("Unable to update calendar")
-                  });
-                  console.log("Event ID updated");
-                  navigation.navigate("Bookings", {amended: amended})
+                    });
+                    console.log("Event ID updated");
+                    navigation.navigate("Bookings", {amended: amended})
+                  } else {
+                    alert("access denied")
+                  }
                 }},
 
                 {text: 'Skip', onPress: () => {
@@ -423,7 +436,7 @@ function Loaded(props) {
                           console.log("caught")
                           // create new calendar and event, same process as above
                           const calendar = await createCalendar();
-                          setCalendarId(calendar)
+                          await setCalendarId(calendar)
                           console.log("calender " + calendar);
                           const docRef = await updateDoc(doc(db, 'users', uid), {
                             calendarId: calendar
@@ -431,7 +444,7 @@ function Loaded(props) {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendarId);
+                          await createEvent(calendar);
                           console.log("event recreated with ID: " + event);
                         });
                         console.log("event created with ID: " + event);
