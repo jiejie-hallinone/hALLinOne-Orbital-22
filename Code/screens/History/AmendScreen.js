@@ -287,7 +287,6 @@ function Loaded(props) {
         display='default'
         onChange={onChangeStart}
         style={styles.dtpicker}
-        minimumDate={new Date()}
       />
     )}
 

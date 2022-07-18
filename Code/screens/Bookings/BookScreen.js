@@ -163,7 +163,6 @@ const facName = facAbbreviation => {
     let tempDate = new Date(begin);
     let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
     setText("Start Time: " + fullTime);
-    
   }
 
   // updates end date and time when changed
