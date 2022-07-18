@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
-import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs, onSnapshot } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useNavigation } from '@react-navigation/native'
+import * as Calendar from 'expo-calendar';
 
 // users will be brought here to ammend their selected exising booking from the previous page
 const AmendScreen = ({route, navigation}) => {
@@ -17,6 +17,27 @@ const selectedDate = bookedDate.toDate();
 
 const [bookings, setBookings] = useState();
 const [loading, setLoading] = useState(true);
+
+// get calendar ID from profile in firestore
+const[calendarId, setCalendarId] = useState('');
+const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+  const data = doc.data();
+  if (data && data.calendarId) {
+    setCalendarId(data.calendarId);
+  } else {
+    setCalendarId('');
+  }
+}); 
+// get event ID from booking document in firestore
+const[eventId, setEventId] = useState('');
+const unsub2 = onSnapshot(doc(db, "bookings", amend), (doc) => {
+  const data = doc.data();
+  if (data && data.eventID) {
+    setEventId(data.eventID);
+  } else {
+    setEventId('');
+  }
+}); 
 
 const getBookings = async () => {
   // to store data
@@ -58,6 +79,117 @@ useEffect(() => {
     getBookings();
   });
 }, [navigation])
+
+// function for expo calendar to obtain the default (native) calendar ID, from expo API
+async function getDefaultCalendarSource() {
+  const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+  return defaultCalendar.source;
+}
+
+// function to create a new calendar in device, from expo API
+async function createCalendar() {
+  const defaultCalendarSource =
+    Platform.OS === 'ios'
+      ? await getDefaultCalendarSource()
+      : { isLocalAccount: true, name: 'Hall Bookings' };
+  const newCalendarID = await Calendar.createCalendarAsync({
+    title: 'Hall Bookings',
+    color: 'blue',
+    entityType: Calendar.EntityTypes.EVENT,
+    sourceId: defaultCalendarSource.id,
+    source: defaultCalendarSource,
+    name: 'hALLinOne',
+    ownerAccount: 'personal',
+    accessLevel: Calendar.CalendarAccessLevel.OWNER,
+  });
+  // console.log(`${newCalendarID}`);
+  return `${newCalendarID}`;
+}
+
+// function to create a new event in a given calendar, with fields based on selection of booking
+async function createEvent(calendarId) {
+  const newEventID = await Calendar.createEventAsync(calendarId, {
+    title: "Booking",
+    location: paramsToLocation(),
+    startDate: date,
+    endDate: dateEnd,
+    calendarId: calendarId,
+    notes: "added from hALLinOne application"
+  })
+  return `${newEventID}`; 
+}
+
+// to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+const hallName = hallAbbreviation => {
+if (hallAbbreviation === "TH") {
+  return "Temasek Hall";
+}
+else if (hallAbbreviation === "EH") {
+  return "Eusoff Hall";
+}
+else if (hallAbbreviation === "SH") {
+  return "Sheares Hall";
+}
+else if (hallAbbreviation === "KR") {
+  return "Kent Ridge Hall";
+}
+else if (hallAbbreviation === "LH") {
+  return "Prince George's Park Hall";
+}
+else {
+  return "King Edwards VII Hall"
+}
+}
+
+// to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+const blockName = letter => {
+if (letter === "A") {
+  return "A Block";
+}
+else if (letter === "B") {
+  return "B Block";
+}
+else if (letter === "C") {
+  return "C Block";
+}
+else if (letter === "D") {
+  return "D Block";
+}
+else if (letter === 'E') {
+  return "E Block";
+} else {
+  return "";
+}
+}
+
+// to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+const facName = facAbbreviation => {
+if (facAbbreviation === 'L') {
+  return "Lounge";
+}
+else if (facAbbreviation === 'W') {
+  return "Washing Machine";
+}
+else if (facAbbreviation === 'D') {
+  return "Dryer";
+}
+else if (facAbbreviation === 'B') {
+  return "Basketball Court";
+}
+else if (facAbbreviation === 'S') {
+  return "Squash Court";
+}
+else if (facAbbreviation === 'M') {
+  return "Band / Music Room";
+}
+else {
+  return "Communal Hall"
+}
+}
+
+const paramsToLocation = () => {
+  return hallName(hall) + " " + blockName(block) + " " + facName(facility);
+}
 
 // states used to capture information for booking
 // start date and time
@@ -187,10 +319,11 @@ function Loaded(props) {
             // overlaps if it doesnt end before selected start timing or doesnt start after selected end timing
             const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
             booked = booked || !available;
-            console.log(booked);
+            // console.log(booked);
           }
         }
-        if (booked) {
+        // if facility is not washing machine or dryer and already has existing booking
+        if (booked && !(facility === 'W' || facility === 'D')) {
           alert("Selected time period already has a booking!");
         } else {
           const docRef = updateDoc(doc(db, "bookings", amend), {
@@ -203,9 +336,128 @@ function Loaded(props) {
           .then(() => {
             setAmended(true);
             console.log("Booking updated");
-            // user notified of successful booking and brought back to main page
-            alert("Booking successfully updated")
-            navigation.navigate("Bookings", {amended: amended})
+            // user asked if want to amend booking on calendar, or want to add new event on calendar
+            if (calendarId && eventId) {
+              Alert.alert("Booking successfully updated", "Amend event on calendar?", [
+                {text: 'Amend existing event', onPress: async () => {
+                  await Calendar.updateEventAsync(eventId, {
+                    startDate: date,
+                    endDate: dateEnd
+                  })
+                  console.log("event updated");
+                }},
+
+                {text: 'Add new event', onPress: async () => {
+                  // create event in calendar whose ID was stored in the user profile
+                  const event = await createEvent(calendarId)
+                  // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
+                  .catch(async err => {
+                    console.log("caught")
+                    // create new calendar and event, same process as above
+                    const calendar = await createCalendar();
+                    setCalendarId(calendar)
+                    console.log("calender " + calendar);
+                    const docRef = await updateDoc(doc(db, 'users', uid), {
+                      calendarId: calendar
+                    })
+                    .catch(err => {
+                      alert("Unable to update calendar")
+                    })
+                    await createEvent(calendarId);
+                    console.log("event recreated with ID: " + event);
+                  });
+                  console.log("event created with ID: " + event);
+                  // store event ID
+                  await updateDoc(doc(db, 'bookings', amend), {
+                    eventID: event
+                  })
+                  .catch(err => {
+                    alert("Unable to update calendar")
+                  });
+                  console.log("Event ID updated");
+                  navigation.navigate("Bookings", {amended: amended})
+                }},
+
+                {text: 'Skip', onPress: () => {
+                  navigation.navigate("Bookings", {amended: amended})
+                }}
+              ])
+            // add to calendar (event not created and maybe calendar not created)  
+            } else {
+              Alert.alert("Booking successfully updated", "Add to calendar?", [
+                {text: 'Add to calendar', onPress: async () => {
+                  // request permission to access device calendar
+                  const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  if (status === 'granted') {
+                    // yet to create a new calendar for hall bookings
+                    if (calendarId === '') {
+                      // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
+                      const calendar = await createCalendar();
+                      // store ID
+                      await setCalendarId(calendar)
+                      console.log("calender " + calendar);
+                      // add calendar ID of device into profile
+                      const docRef = await updateDoc(doc(db, 'users', uid), {
+                        calendarId: calendar
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      // create event for booking in the calendar that was just created
+                      const event = await createEvent(calendar);
+                      console.log("event created with ID: " + event);
+                      // update event ID into the booking document for edits in the future
+                      await updateDoc(doc(db, 'bookings', amend), {
+                        eventID: event
+                      })
+                      .catch(err => {
+                        alert("Unable to update calendar")
+                      })
+                      console.log("Event ID updated");
+                      navigation.navigate("Bookings", {amended: amended})
+                    // hall bookings calendar created, just create event
+                    } else {
+                      // create event in calendar whose ID was stored in the user profile
+                      const event = await createEvent(calendarId)
+                      // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
+                        .catch(async err => {
+                          console.log("caught")
+                          // create new calendar and event, same process as above
+                          const calendar = await createCalendar();
+                          setCalendarId(calendar)
+                          console.log("calender " + calendar);
+                          const docRef = await updateDoc(doc(db, 'users', uid), {
+                            calendarId: calendar
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          })
+                          await createEvent(calendarId);
+                          console.log("event recreated with ID: " + event);
+                        });
+                        console.log("event created with ID: " + event);
+                        // store event ID
+                        await updateDoc(doc(db, 'bookings', amend), {
+                          eventID: event
+                        })
+                        .catch(err => {
+                          alert("Unable to update calendar")
+                        });
+                        console.log("Event ID updated");
+                        navigation.navigate("Bookings", {amended: amended})
+                    }
+                  // access denied
+                  } else {
+                    alert("Unable to access calendar");
+                    navigation.navigate("Bookings", {amended: amended})
+                  }
+                }},
+
+                {text: "No", onPress: () => {
+                  navigation.navigate("Bookings", {amended: amended})
+                }}
+              ])
+            } 
           })
         }
       }}
