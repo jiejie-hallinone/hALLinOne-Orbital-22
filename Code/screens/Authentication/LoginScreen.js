@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'reac
 import React, { useEffect, useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { auth } from '../../Firebase/Firebase';
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -58,7 +58,21 @@ const LoginScreen = () => {
           onChangeText={text => setPassword(text)}
           style={styles.input}
           secureTextEntry
-        />   
+        />
+        <TouchableOpacity 
+          style={styles.pw}
+          onPress={() => {
+            if (email) {
+              sendPasswordResetEmail(auth, email)
+              .then(() => alert("Password reset email sent!"))
+              .catch(err => alert("Error sending reset email: " + err))
+            } else {
+              alert("Fill in email to send Password Reset Email!")
+            }
+          }}
+        >
+          <Text style={styles.pwText}>Forgot Password</Text>
+        </TouchableOpacity>   
       </View>
 
       <View style={styles.buttonContainer}>
@@ -93,15 +107,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainer: {
-    width: '80%'
+    width: '80%',
+    alignItems: 'center'
   },
   input: {
+    width: '100%',
     borderColor: '#D3D3D3',
     borderWidth: 2,
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 5,
+    marginTop: 10,
   },
   buttonContainer: {
     width: '60%',
@@ -132,4 +148,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+  pw: {
+    marginTop: 5,
+    alignItems: 'center',
+    width: '40%',
+  },
+  pwText: {
+    color: '#cbcbcb'
+  }
 })
