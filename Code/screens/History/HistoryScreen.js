@@ -142,57 +142,60 @@ const HistoryScreen = ({route, navigation}) => {
         <Text>From: {starting}</Text>
         <Text>To: {ending}</Text>
 
-        <TouchableOpacity
-        // button to amend booking, passes the booking id to the amend screen
-          onPress={() => {
-            try {
-              const amendingid = item.id;
-              setAmend(amendingid);
-              console.log("amending: " + amendingid)
-              navigation.navigate("Amend", {
-                hall: item.data.hall,
-                block: item.data.block,
-                facility: item.data.facility,
-                bookedDate: item.data.startDateTime,
-                amend: amendingid
-              });
-            } catch (err) {
-              alert("Error! Please try again")
-            }
-            
-          }}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Amend</Text>
-      </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+          // button to amend booking, passes the booking id to the amend screen
+            onPress={() => {
+              try {
+                const amendingid = item.id;
+                setAmend(amendingid);
+                console.log("amending: " + amendingid)
+                navigation.navigate("Amend", {
+                  hall: item.data.hall,
+                  block: item.data.block,
+                  facility: item.data.facility,
+                  bookedDate: item.data.startDateTime,
+                  amend: amendingid
+                });
+              } catch (err) {
+                alert("Error! Please try again")
+              }
+              
+            }}
+            style={[styles.button, styles.buttonOutline]}
+          >
+            <Text style={styles.buttonOutlineText}>Amend</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        // button to cancel booking
-          onPress={() => {
-            // user has to confirm cancellation
-            try {
-              Alert.alert('Cancel Booking', 'Are you sure?', [
-              {text: 'Cancel Booking', onPress: () => {
-                const delid = item.id;
-                setDel(delid);
-                deleteDoc(doc(db, "bookings", delid));
-                console.log("deleted: " + delid);
-                setLoading(true);
-                getBookings();
-              }},
-              {text: 'Go back', onPress: () => {
-                navigation.navigate("Bookings");
+          <TouchableOpacity
+            // button to cancel booking
+              onPress={() => {
+                // user has to confirm cancellation
+                try {
+                  Alert.alert('Cancel Booking', 'Are you sure?', [
+                  {text: 'Cancel Booking', onPress: () => {
+                    const delid = item.id;
+                    setDel(delid);
+                    deleteDoc(doc(db, "bookings", delid));
+                    console.log("deleted: " + delid);
+                    setLoading(true);
+                    getBookings();
+                  }},
+                  {text: 'Go back', onPress: () => {
+                    navigation.navigate("Bookings");
+                  }}
+                ])
+                } catch (err) {
+                  alert("Error! Please try again.")
+                }
+                
               }}
-            ])
-            } catch (err) {
-              alert("Error! Please try again.")
-            }
-            
-          }}
-          style={[styles.cancelButton, styles.cancelButtonOutline]}
-        >
-          <Text style={styles.cancelButtonOutlineText}>Cancel</Text>
-      </TouchableOpacity>
+              style={[styles.cancelButton, styles.cancelButtonOutline]}
+            >
+              <Text style={styles.cancelButtonOutlineText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+        
       </View>
     )
   }
@@ -253,9 +256,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#0782F9',
-    width: '30%',
+    width: '25%',
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 5, 
+    marginRight: 30,
   },
   buttonOutline: {
     backgroundColor: 'white',
@@ -275,10 +280,11 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: '#0782F9',
-    width: '30%',
+    width: '25%',
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 5,
+    marginLeft: 30
   },
   cancelButtonOutline: {
     backgroundColor: 'white',
@@ -301,5 +307,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 5,
     alignItems: 'center'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 })

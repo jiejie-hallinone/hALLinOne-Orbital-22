@@ -51,7 +51,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.EH}
       >
-        <Image source={require('../../assets/eh.png')} style={{width: 50, height: 50, }}/> 
+        <Image source={require('../../assets/eh.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
         <Text style={styles.buttonText}>Eusoff Hall </Text>
       </TouchableOpacity>
 
@@ -67,7 +67,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.SH}
       >
-        <Image source={require('../../assets/sh.png')} style={{width: 50, height: 50, }}/> 
+        <Image source={require('../../assets/sh.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
         <Text style={styles.buttonText}>Sheares Hall </Text>
       </TouchableOpacity>
 
@@ -83,7 +83,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KR}
       >
-        <Image source={require('../../assets/kr.png')} style={{width: 50, height: 50, }}/> 
+        <Image source={require('../../assets/kr.png')} style={{width: 50, height: 50, marginRight: 8}}/> 
         <Text style={styles.krbuttonText}>Kent Ridge Hall </Text>
       </TouchableOpacity>
 
@@ -99,7 +99,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.LH}
       >
-        <Image source={require('../../assets/ph.png')} style={{width: 50, height: 50, }}/> 
+        <Image source={require('../../assets/ph.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
         <Text style={styles.krbuttonText}>Prince George's Park Hall </Text>
       </TouchableOpacity>
 
@@ -115,7 +115,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.KE}
       >
-        <Image source={require('../../assets/ke.png')} style={{width: 50, height: 50, }}/> 
+        <Image source={require('../../assets/ke.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
         <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
       </TouchableOpacity>
     </View>
@@ -133,11 +133,13 @@ const styles = StyleSheet.create({
   TH: {
     backgroundColor: 'white',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: 'green',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonText: {
     color: 'black',
@@ -147,29 +149,35 @@ const styles = StyleSheet.create({
   EH: {
     backgroundColor: 'gold',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: 'red',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   SH: {
     backgroundColor: 'orange',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: 'black',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   KR: {
     backgroundColor: '#001aa7',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: '#fff500',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   krbuttonText: {
     color: 'white',
@@ -179,19 +187,23 @@ const styles = StyleSheet.create({
   LH: {
     backgroundColor: '#2a3086',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: '#dbb526',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   KE: {
     backgroundColor: 'maroon',
     width: '100%',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
     marginTop: 5,
     borderColor: 'yellow',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
 })

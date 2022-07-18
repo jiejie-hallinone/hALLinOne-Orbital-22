@@ -69,50 +69,61 @@ const ProfileScreen = () => {
   return (
     // display profile fields, yet to implement edit
     <View style={styles.container}>
-      <Text>Email: {email}</Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details} >Email: {email}</Text>
       
-      <TouchableOpacity 
-        onPress={() => navigation.navigate("Email")}
-        style={styles.button}
-      >
-        <Text style={styles.text} >Edit Email</Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Email")}
+          style={styles.editButton}
+        >
+        <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
+        </TouchableOpacity>
+      </View>
       
-      <Text>Name: {name}</Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details} >Name: {name}</Text>
+        
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Name")}
+          style={styles.editButton}
+        >
+          <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
+        </TouchableOpacity>
+      </View>
       
-      <TouchableOpacity 
-        onPress={() => navigation.navigate("Name")}
-        style={styles.button}
-      >
-        <Text style={styles.text} >Edit Name</Text>
-      </TouchableOpacity>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details} >Hall: {hallName(hall)}</Text>
       
-      <Text>Hall: {hallName(hall)}</Text>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Edit Hall")}
+          style={styles.editButton}
+        >
+          <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
+        </TouchableOpacity>
+      </View>
       
-      <TouchableOpacity 
-        onPress={() => navigation.navigate("Edit Hall")}
-        style={styles.button}
-      >
-        <Text style={styles.text} >Edit Hall</Text>
-      </TouchableOpacity>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details} >Block: {blockName(block)}</Text>
 
-      <Text>Block: {blockName(block)}</Text>
-
-      <TouchableOpacity 
-        onPress={() => navigation.navigate("Edit Block")}
-        style={styles.button}
-      >
-        <Text style={styles.text} >Edit Block</Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Edit Block")}
+          style={styles.editButton}
+        >
+          <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
+        </TouchableOpacity>
+      </View>
       
-      <Text>Level: {level} </Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.details} >Level: {level} </Text>
 
-      <TouchableOpacity 
-        onPress={() => navigation.navigate("Edit Level")}
-        style={styles.button}
-      >
-        <Text style={styles.text} >Edit Level</Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Edit Level")}
+          style={styles.editButton}
+        >
+          <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
+        </TouchableOpacity>
+      </View>
+      
 
       <TouchableOpacity 
         onPress={() => navigation.navigate("Change Password")}
@@ -146,5 +157,21 @@ const styles = StyleSheet.create({
     color: '#0782F9',
     fontWeight: '700',
     fontSize: 16,
+  },
+  editButton: {
+    alignItems: 'flex-end',
+    marginBottom: 10,
+  },
+  details: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  detailsContainer: {
+    width: '80%',
+    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })

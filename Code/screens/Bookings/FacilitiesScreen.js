@@ -19,7 +19,7 @@ const FacilitiesScreen = ({route, navigation}) => {
         }}
         style={styles.button}
       >
-        <Image source={require('../../assets/facilities/lounge.png')} style={{width: 70, height: 70, marginBottom: 5}} />
+        <Image source={require('../../assets/facilities/lounge.png')} style={{width: 70, height: 70, marginRight: 10}} />
         <Text style={styles.buttonText}>Lounge</Text>
       </TouchableOpacity>
 
@@ -34,7 +34,7 @@ const FacilitiesScreen = ({route, navigation}) => {
         }}
         style={styles.button2}
       >
-        <Image source={require('../../assets/facilities/washingmachine.png')} style={{width: 70, height: 70, marginBottom: 5}} />
+        <Image source={require('../../assets/facilities/washingmachine.png')} style={{width: 70, height: 70}} />
         <Text style={styles.buttonText}>Washing Machine</Text>
       </TouchableOpacity>
 
@@ -49,7 +49,7 @@ const FacilitiesScreen = ({route, navigation}) => {
         }}
         style={styles.button}
       >
-        <Image source={require('../../assets/facilities/dryer.png')} style={{width: 70, height: 70, marginBottom: 5}} />
+        <Image source={require('../../assets/facilities/dryer.png')} style={{width: 70, height: 70,}} />
         <Text style={styles.buttonText}>Dryer</Text>
       </TouchableOpacity>
     </View>
@@ -68,16 +68,20 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: 'white',
     width: '100%',
-    padding: 10,
+    padding: 20,
     alignItems: 'center',
     marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   button2: {
     backgroundColor: 'white',
     width: '100%',
-    padding: 10,
+    padding: 20,
     alignItems: 'center',
     marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonText: {
     color: 'black',
