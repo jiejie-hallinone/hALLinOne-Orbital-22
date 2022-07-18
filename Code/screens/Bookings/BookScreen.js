@@ -13,7 +13,6 @@ const BookScreen = ({route, navigation}) => {
   const name = currentUser.displayName;
 
   const[calendarId, setCalendarId] = useState('');
-  const[BookingId, setBookingId] = useState('');
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     const data = doc.data();
     if (data && data.calendarId) {
@@ -23,11 +22,13 @@ const BookScreen = ({route, navigation}) => {
     }
   }); 
 
+  // function for expo calendar to obtain the default (native) calendar ID, from expo API
   async function getDefaultCalendarSource() {
     const defaultCalendar = await Calendar.getDefaultCalendarAsync();
     return defaultCalendar.source;
   }
   
+  // function to create a new calendar in device, from expo API
   async function createCalendar() {
     const defaultCalendarSource =
       Platform.OS === 'ios'
@@ -47,6 +48,7 @@ const BookScreen = ({route, navigation}) => {
     return `${newCalendarID}`;
   }
 
+  // function to create a new event in a given calendar, with fields based on selection of booking
   async function createEvent(calendarId) {
     const newEventID = await Calendar.createEventAsync(calendarId, {
       title: "Booking",
@@ -246,7 +248,11 @@ const facName = facAbbreviation => {
       <TouchableOpacity
       // makes booking by saving into firestore bookings collection
         onPress={async () => {
+          // variable to store document ID of booking in firestore after creating
+          var bookingID;
+          // if washing machine or dryer, no need to check existing bookings
           if (facility === 'W' || facility === 'D') {
+            // create booking in firestore
             const docRef = await addDoc(collection(db, "bookings"), {
               uid: uid,
               name: name,
@@ -256,13 +262,17 @@ const facName = facAbbreviation => {
               startDateTime: date,
               endDateTime: dateEnd,
             })
-            await setBookingId(docRef.id);
-            console.log("Booking made with ID: " + docRef?.id);
+            // store document ID
+            bookingID = docRef.id;
+            console.log("Booking made with ID: " + bookingID);
+            // return Bookings tab to Hall page
             navigation.popToTop();
-            // user notified of successful booking and brought back to main page
+            // user notified of successful booking and asked if wish to add to native calendar on device through an alert
             Alert.alert('Booking successfully made', 'Add to Calendar?', [
+              // option to add to calendar
               {text:'Add to Calendar', onPress: () => {
                 (async () => {
+                  // request permission to access device calendar
                   const { status } = await Calendar.requestCalendarPermissionsAsync();
                   // permission to access calendar granted
                   if (status === 'granted') {
@@ -270,18 +280,21 @@ const facName = facAbbreviation => {
                       if (calendarId === '') {
                       // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                       const calendar = await createCalendar();
+                      // store ID
                       setCalendarId(calendar)
                       console.log("calender " + calendar);
+                      // add calendar ID of device into profile
                       const docRef = updateDoc(doc(db, 'users', uid), {
                         calendarId: calendar
                       })
                       .catch(err => {
                         alert("Unable to update calendar")
                       })
-                      // create event for booking
-                      const event = await createEvent();
+                      // create event for booking in the calendar that was just created
+                      const event = await createEvent(calendar);
                       console.log("event created with ID: " + event);
-                      const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
+                      // update event ID into the booking document for edits in the future
+                      await updateDoc(doc(db, 'bookings', bookingID), {
                         eventID: event
                       })
                       .catch(err => {
@@ -290,35 +303,56 @@ const facName = facAbbreviation => {
                       console.log("Event ID updated");
                     // hall bookings calendar created, just create event
                     } else {
-                      const event = await createEvent(calendarId);
-                      console.log("event created with ID: " + event);
-                      /*
-                      const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
-                        eventID: event
-                      })
-                      .catch(err => {
-                        alert("Unable to update calendar")
-                      })
-                      console.log("Event ID updated");
-                      */
+                      // create event in calendar whose ID was stored in the user profile
+                      const event = await createEvent(calendarId)
+                      // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
+                        .catch(async err => {
+                          console.log("caught")
+                          // create new calendar and event, same process as above
+                          const calendar = await createCalendar();
+                          setCalendarId(calendar)
+                          console.log("calender " + calendar);
+                          const docRef = await updateDoc(doc(db, 'users', uid), {
+                            calendarId: calendar
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          })
+                          await createEvent(calendarId);
+                          console.log("event recreated with ID: " + event);
+                        });
+                        console.log("event created with ID: " + event);
+                        // store event ID
+                        await updateDoc(doc(db, 'bookings', bookingID), {
+                          eventID: event
+                        })
+                        .catch(err => {
+                          alert("Unable to update calendar")
+                        })
+                        console.log("Event ID updated")
                     }
                   }
+                  // access to calendar denied
                   else {
                     alert("Unable to access calendar")
                   }
                 })();
+                // navigate to history page to see made bookings
                 navigation.navigate("History", {
                   amended: true
                 });
               }},
+              // navigate to history page to see made bookings if do not wish to add to calendar
               {text:'No', onPress: () => {
                 navigation.navigate("History", {
                   amended: true
                 });
               }}
             ])
+          // other facilities need to check if there are any overlapping bookings
           } else {
             var booked = false;
+            // go through array of existing bookings for that facility on that day (from previous screen) and check any overlaps. if booked remains false, booking can be made
             for (let i = 0; i < existingBookings.length; i++) {
               const existingStart = existingBookings[i].data.startDateTime.seconds;
               const existingEnd = existingBookings[i].data.endDateTime.seconds;
@@ -328,10 +362,12 @@ const facName = facAbbreviation => {
               const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
               booked = booked || !available;
             }
-            // console.log(booked);
+            // facility is booked during selected period
             if (booked) {
               alert("Selected time period already has a booking! Check previous page for existing bookings!");
+            // facility available
             } else {
+            // create booking, rest of process same as above for washing machine and dryer
               const docRef = await addDoc(collection(db, "bookings"), {
                 uid: uid,
                 name: name,
@@ -341,11 +377,13 @@ const facName = facAbbreviation => {
                 startDateTime: date,
                 endDateTime: dateEnd,
               })
-              await setBookingId(docRef.id);
-              console.log("Booking made with ID: " + docRef?.id);
+              bookingID = docRef.id;
+              console.log("Booking made with ID: " + bookingID);
+              // return Bookings tab to Hall page
               navigation.popToTop();
-              // user notified of successful booking and brought back to main page
+              // user notified of successful booking and asked if want to add to calendar
               Alert.alert('Booking successfully made', 'Add to Calendar?', [
+                // adding to calendar
                 {text:'Add to Calendar', onPress: () => {
                   (async () => {
                     const { status } = await Calendar.requestCalendarPermissionsAsync();
@@ -364,9 +402,9 @@ const facName = facAbbreviation => {
                           alert("Unable to update calendar")
                         })
                         // create event for booking
-                        const event = await createEvent(calendarId);
+                        const event = await createEvent(calendar);
                         console.log("event created with ID: " + event);
-                        const docRef2 = await updateDoc(doc(db, 'bookings', BookingId), {
+                        await updateDoc(doc(db, 'bookings', bookingID), {
                           eventID: event
                         })
                         .catch(err => {
@@ -382,7 +420,7 @@ const facName = facAbbreviation => {
                           const calendar = await createCalendar();
                           setCalendarId(calendar)
                           console.log("calender " + calendar);
-                          const docRef = updateDoc(doc(db, 'users', uid), {
+                          const docRef = await updateDoc(doc(db, 'users', uid), {
                             calendarId: calendar
                           })
                           .catch(err => {
@@ -392,15 +430,13 @@ const facName = facAbbreviation => {
                           console.log("event recreated with ID: " + event);
                         });
                         console.log("event created with ID: " + event);
-                        /*
-                        const docRef = await updateDoc(doc(db, 'bookings', BookingId), {
+                        await updateDoc(doc(db, 'bookings', bookingID), {
                           eventID: event
                         })
                         .catch(err => {
                           alert("Unable to update calendar")
                         })
-                        console.log("Event ID updated");
-                        */
+                        console.log("Event ID updated")
                       }
                     }
                     else {

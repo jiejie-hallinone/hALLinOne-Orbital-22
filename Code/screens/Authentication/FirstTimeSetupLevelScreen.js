@@ -53,7 +53,7 @@ const FirstTimeSetupLevelScreen = () => {
                         });
                         console.log("Document updated with level: ", level);
                         // brings user to bookings page
-                        navigation.navigate("Google");
+                        navigation.navigate("AfterLogin");
                       }
                     } catch (e) {
                       console.error("Error adding document: ", e);
@@ -62,7 +62,7 @@ const FirstTimeSetupLevelScreen = () => {
               
                 style={[styles.button, styles.buttonOutline]}
               >
-                <Text style={styles.buttonOutlineText}>Next</Text>
+                <Text style={styles.buttonOutlineText}>Finish Set Up</Text>
               </TouchableOpacity> 
               </View>
   

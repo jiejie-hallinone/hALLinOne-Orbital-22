@@ -189,7 +189,6 @@ function Loaded(props) {
             booked = booked || !available;
             console.log(booked);
           }
-         
         }
         if (booked) {
           alert("Selected time period already has a booking!");
