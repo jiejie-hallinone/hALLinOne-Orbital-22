@@ -60,7 +60,7 @@ const EditBlockScreen = () => {
               
                 style={[styles.button, styles.buttonOutline]}
               >
-                <Text style={styles.buttonOutlineText}>Edit Block</Text>
+                <Text style={styles.buttonOutlineText}>Confirm</Text>
               </TouchableOpacity> 
               </View>
   

@@ -73,7 +73,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Email: {email}</Text>
       
         <TouchableOpacity 
-          onPress={() => navigation.navigate("Email")}
+          onPress={() => navigation.navigate("Edit Email")}
           style={styles.editButton}
         >
         <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 
@@ -84,7 +84,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Name: {name}</Text>
         
         <TouchableOpacity 
-          onPress={() => navigation.navigate("Name")}
+          onPress={() => navigation.navigate("Edit Name")}
           style={styles.editButton}
         >
           <Image source={require('../../assets/edit.png')} style={{width: 20, height: 20, tintColor: '#0782F9'}}/> 

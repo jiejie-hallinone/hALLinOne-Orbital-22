@@ -62,7 +62,7 @@ const EditLevelScreen = () => {
               
                 style={[styles.button, styles.buttonOutline]}
               >
-                <Text style={styles.buttonOutlineText}>Edit Level</Text>
+                <Text style={styles.buttonOutlineText}>Confirm</Text>
               </TouchableOpacity> 
               </View>
   

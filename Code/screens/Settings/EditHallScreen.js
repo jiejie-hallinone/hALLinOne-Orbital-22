@@ -64,7 +64,7 @@ const EditHallScreen = () => {
             
               style={[styles.button, styles.buttonOutline]}
             >
-              <Text style={styles.buttonOutlineText}>Change Hall</Text>
+              <Text style={styles.buttonOutlineText}>Confirm</Text>
             </TouchableOpacity> 
         </View>
     </KeyboardAvoidingView>

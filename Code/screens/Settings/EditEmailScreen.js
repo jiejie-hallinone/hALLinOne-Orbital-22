@@ -65,7 +65,7 @@ const EditEmailScreen = () => {
             }
               style={[styles.button, styles.buttonOutline]}
             >
-              <Text style={styles.buttonOutlineText}>Change Email</Text>
+              <Text style={styles.buttonOutlineText}>Confirm</Text>
             </TouchableOpacity> 
           </View>
         </KeyboardAvoidingView>

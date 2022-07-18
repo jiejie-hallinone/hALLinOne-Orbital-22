@@ -72,19 +72,19 @@ const BookingsScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for KR, which will bring users to select which block within hall 1
+        // button for KE, which will bring users to select which block within hall 1
         onPress={() => {
-          if (hall === "KR") {
+          if (hall === "KE") {
             navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
           }
         }}
-        style={styles.KR}
+        style={styles.KE}
       >
-        <Image source={require('../../assets/kr.png')} style={{width: 50, height: 50, marginRight: 8}}/> 
-        <Text style={styles.krbuttonText}>Kent Ridge Hall </Text>
+        <Image source={require('../../assets/ke.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
+        <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -104,19 +104,19 @@ const BookingsScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button for KE, which will bring users to select which block within hall 1
+        // button for KR, which will bring users to select which block within hall 1
         onPress={() => {
-          if (hall === "KE") {
+          if (hall === "KR") {
             navigation.navigate("Block", {hall: hall})
           }
           else {
             alert("You can only book facilities from your own hall!")
           }
         }}
-        style={styles.KE}
+        style={styles.KR}
       >
-        <Image source={require('../../assets/ke.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
-        <Text style={styles.krbuttonText}>King Edwards VII Hall </Text>
+        <Image source={require('../../assets/kr.png')} style={{width: 50, height: 50, marginRight: 8}}/> 
+        <Text style={styles.krbuttonText}>Kent Ridge Hall </Text>
       </TouchableOpacity>
     </View>
   )

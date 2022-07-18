@@ -85,8 +85,8 @@ function SettingsTab() {
       <SettingsStack.Screen name="Menu" component={SettingsScreen}/>
       <SettingsStack.Screen name="Profile" component={ProfileScreen}/>
       <SettingsStack.Screen name="Change Password" component={ChangePasswordScreen}/>
-      <SettingsStack.Screen name="Name" component={EditNameScreen}/>
-      <SettingsStack.Screen name="Email" component={EditEmailScreen}/>
+      <SettingsStack.Screen name="Edit Name" component={EditNameScreen}/>
+      <SettingsStack.Screen name="Edit Email" component={EditEmailScreen}/>
       <SettingsStack.Screen name="Edit Hall" component={EditHallScreen}/>
       <SettingsStack.Screen name="Edit Block" component={EditBlockScreen}/>
       <SettingsStack.Screen name="Edit Level" component={EditLevelScreen}/>

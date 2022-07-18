@@ -59,7 +59,7 @@ const EditNameScreen = () => {
             }
               style={[styles.button, styles.buttonOutline]}
             >
-              <Text style={styles.buttonOutlineText}>Change name</Text>
+              <Text style={styles.buttonOutlineText}>Confirm</Text>
             </TouchableOpacity> 
           </View>
         </KeyboardAvoidingView>
