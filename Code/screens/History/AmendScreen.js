@@ -331,6 +331,7 @@ function Loaded(props) {
           })
           .catch(err => {
             alert("Booking does not exist / Unable to update")
+            navigation.navigate("Bookings", {amended: amended})
           })
           .then(() => {
             setAmended(true);
@@ -348,8 +349,10 @@ function Loaded(props) {
                     })
                     .catch(err => {alert("Event unable to be updated, add new event or skip!")})
                     console.log("event updated");
+                    navigation.navigate("Bookings", {amended: amended})
                   } else {
-                    alert("access denied")
+                    alert("access denied");
+                    navigation.navigate("Bookings", {amended: amended})
                   }
                 }},
 
@@ -371,22 +374,35 @@ function Loaded(props) {
                       })
                       .catch(err => {
                         alert("Unable to update calendar")
+                        navigation.navigate("Bookings", {amended: amended})
                       })
-                      await createEvent(calendar);
-                      console.log("event recreated with ID: " + event);
-                    });
-                    console.log("event created with ID: " + event);
-                    // store event ID
-                    await updateDoc(doc(db, 'bookings', amend), {
-                      eventID: event
-                    })
-                    .catch(err => {
-                      alert("Unable to update calendar")
-                    });
-                    console.log("Event ID updated");
-                    navigation.navigate("Bookings", {amended: amended})
+                      const event2 = await createEvent(calendar);
+                          console.log("event recreated with ID: " + event2);
+                          await updateDoc(doc(db, 'bookings', amend), {
+                            eventID: event2
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          });
+                          console.log("Event ID updated");
+                          navigation.navigate("Bookings", {amended: amended})
+                        });
+                        // if event was successfully created, carry on with process
+                        if (event) {
+                          console.log("event created with ID: " + event);
+                          // store event ID
+                          await updateDoc(doc(db, 'bookings', amend), {
+                            eventID: event
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          });
+                          console.log("Event ID updated");
+                          navigation.navigate("Bookings", {amended: amended})
+                        }
                   } else {
                     alert("access denied")
+                    navigation.navigate("Bookings", {amended: amended})
                   }
                 }},
 
@@ -444,19 +460,30 @@ function Loaded(props) {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendar);
-                          console.log("event recreated with ID: " + event);
+                          const event2 = await createEvent(calendar);
+                          console.log("event recreated with ID: " + event2);
+                          await updateDoc(doc(db, 'bookings', amend), {
+                            eventID: event2
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          });
+                          console.log("Event ID updated");
+                          navigation.navigate("Bookings", {amended: amended})
                         });
-                        console.log("event created with ID: " + event);
-                        // store event ID
-                        await updateDoc(doc(db, 'bookings', amend), {
-                          eventID: event
-                        })
-                        .catch(err => {
-                          alert("Unable to update calendar")
-                        });
-                        console.log("Event ID updated");
-                        navigation.navigate("Bookings", {amended: amended})
+                        // if event was successfully created, carry on with process
+                        if (event) {
+                          console.log("event created with ID: " + event);
+                          // store event ID
+                          await updateDoc(doc(db, 'bookings', amend), {
+                            eventID: event
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          });
+                          console.log("Event ID updated");
+                          navigation.navigate("Bookings", {amended: amended})
+                        }
                     }
                   // access denied
                   } else {

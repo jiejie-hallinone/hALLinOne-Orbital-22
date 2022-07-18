@@ -317,18 +317,28 @@ const facName = facAbbreviation => {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendar);
-                          console.log("event recreated with ID: " + event);
+                          const event2 = await createEvent(calendar);
+                          console.log("event recreated with ID: " + event2);
+                          // store event ID
+                          await updateDoc(doc(db, 'bookings', bookingID), {
+                            eventID: event2
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          })
+                          console.log("Event ID updated")
                         });
-                        console.log("event created with ID: " + event);
-                        // store event ID
-                        await updateDoc(doc(db, 'bookings', bookingID), {
-                          eventID: event
-                        })
-                        .catch(err => {
-                          alert("Unable to update calendar")
-                        })
-                        console.log("Event ID updated")
+                        if (event) {
+                          console.log("event created with ID: " + event);
+                          // store event ID
+                          await updateDoc(doc(db, 'bookings', bookingID), {
+                            eventID: event
+                          })
+                          .catch(err => {
+                            alert("Unable to update calendar")
+                          })
+                          console.log("Event ID updated")
+                        } 
                     }
                   }
                   // access to calendar denied
