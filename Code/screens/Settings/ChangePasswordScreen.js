@@ -57,6 +57,7 @@ const ChangePasswordScreen = () => {
                 reauthenticateWithCredential(auth.currentUser, cred)
                 .then(() => {
                     updatePassword(auth.currentUser, newPassword);
+                    alert("Password changed!")
                     navigation.navigate("Profile")
                 })
                 .catch(err => alert("Error updating password: " + err))

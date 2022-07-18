@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, onSnapshot } from "firebase/firestore";
@@ -70,10 +70,49 @@ const ProfileScreen = () => {
     // display profile fields, yet to implement edit
     <View style={styles.container}>
       <Text>Email: {email}</Text>
+      
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Email")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Edit Email</Text>
+      </TouchableOpacity>
+      
       <Text>Name: {name}</Text>
+      
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Name")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Edit Name</Text>
+      </TouchableOpacity>
+      
       <Text>Hall: {hallName(hall)}</Text>
+      
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Edit Hall")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Edit Hall</Text>
+      </TouchableOpacity>
+
       <Text>Block: {blockName(block)}</Text>
+
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Edit Block")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Edit Block</Text>
+      </TouchableOpacity>
+      
       <Text>Level: {level} </Text>
+
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Edit Level")}
+        style={styles.button}
+      >
+        <Text style={styles.text} >Edit Level</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity 
         onPress={() => navigation.navigate("Change Password")}

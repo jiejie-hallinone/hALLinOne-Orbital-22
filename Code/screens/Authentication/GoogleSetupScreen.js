@@ -1,3 +1,8 @@
+/*
+
+OBSELETE: KEPT FOR REFERENCE
+google calendar no longer part of application
+
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { auth, db } from '../../Firebase/Firebase';
@@ -155,3 +160,4 @@ const GoogleSetupScreen = () => {
         fontSize: 16,
       },
     })
+*/

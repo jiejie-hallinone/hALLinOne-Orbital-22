@@ -23,6 +23,11 @@ import CommonFacilitiesScreen from './screens/Bookings/CommonFacilitiesScreen';
 import ExistingBookingsScreen from './screens/Bookings/ExistingBookingsScreen';
 import ExistingBookingsOnDayScreen from './screens/Bookings/ExistingBookingsOnDayScreen';
 import ChangePasswordScreen from './screens/Settings/ChangePasswordScreen';
+import EditNameScreen from './screens/Settings/EditNameScreen';
+import EditEmailScreen from './screens/Settings/EditEmailScreen';
+import EditHallScreen from './screens/Settings/EditHallScreen';
+import EditBlockScreen from './screens/Settings/EditBlockScreen';
+import EditLevelScreen from './screens/Settings/EditLevelScreen';
 // import GoogleSetupScreen from './screens/Authentication/GoogleSetupScreen';
 
 // Tab Navigator for tabs after login - booking, history, social, setting. Shows a menu bar at the bottom of screen
@@ -80,6 +85,11 @@ function SettingsTab() {
       <SettingsStack.Screen name="Menu" component={SettingsScreen}/>
       <SettingsStack.Screen name="Profile" component={ProfileScreen}/>
       <SettingsStack.Screen name="Change Password" component={ChangePasswordScreen}/>
+      <SettingsStack.Screen name="Name" component={EditNameScreen}/>
+      <SettingsStack.Screen name="Email" component={EditEmailScreen}/>
+      <SettingsStack.Screen name="Edit Hall" component={EditHallScreen}/>
+      <SettingsStack.Screen name="Edit Block" component={EditBlockScreen}/>
+      <SettingsStack.Screen name="Edit Level" component={EditLevelScreen}/>
     </SettingsStack.Navigator>
   );
 }
