@@ -67,7 +67,7 @@ const LoginScreen = () => {
               .then(() => alert("Password reset email sent!"))
               .catch(err => alert("Error sending reset email: " + err))
             } else {
-              alert("Fill in email to send Password Reset Email!")
+              alert("Fill in email!")
             }
           }}
         >
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    borderColor: '#D3D3D3',
+    borderColor: '#d3d3d3',
     borderWidth: 2,
     paddingHorizontal: 15,
     paddingVertical: 10,
@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   pwText: {
-    color: '#cbcbcb'
+    color: '#a9a9a9'
   }
 })
