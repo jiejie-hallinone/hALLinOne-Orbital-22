@@ -1,6 +1,13 @@
 /*
 
 OBSELETE: KEPT FOR REFERENCE
+
+Meant for logging into and linking application to Google
+
+Managed to achieve OAuth 2.0 - can login and authenticate with gmail, request permission for access to google calendar
+
+Application unable to link to google calendar
+
 google calendar no longer part of application
 
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'

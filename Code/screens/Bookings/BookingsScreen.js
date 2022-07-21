@@ -11,12 +11,20 @@ const BookingsScreen = ({navigation}) => {
 
   // obtain user information from firestore
   const user = auth.currentUser
+  
+  // state to store the hall of the user
   const [hall, setHall] = useState('')
+  
+  // reads the user profile from firestore
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+    // obtain data stored
     const data = doc.data();
+    // if data exists
     if (data) {
+      // set hall to the value stored under "hall" in firestore
       setHall(data.hall)
     } else {
+      // set hall to empty string
       setHall("");
     }
   });  
@@ -26,10 +34,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for TH, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is TH
           if (hall === "TH") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}
@@ -42,10 +53,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for EH, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is EH
           if (hall === "EH") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}
@@ -58,10 +72,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for SH, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is SH
           if (hall === "SH") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}
@@ -74,10 +91,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for KE, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is KE
           if (hall === "KE") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}
@@ -90,10 +110,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for PGP, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is PGP
           if (hall === "LH") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}
@@ -106,10 +129,13 @@ const BookingsScreen = ({navigation}) => {
       <TouchableOpacity
         // button for KR, which will bring users to select which block within hall 1
         onPress={() => {
+          // if the user's hall is KR
           if (hall === "KR") {
+            // passes the user's hall onto the next screen, which is to select the block
             navigation.navigate("Block", {hall: hall})
           }
           else {
+            // else alerts the user that they can only select their own hall
             alert("You can only book facilities from your own hall!")
           }
         }}

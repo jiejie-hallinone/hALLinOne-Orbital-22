@@ -4,6 +4,7 @@ import React from 'react'
 // this screen displays all the blocks of the hall selected from the previous page
 // users will choose the block of the facility they would like to book
 const BlocksScreen = ({route, navigation}) => {
+  // receives the value hall from the previous screen (the hall the user selected)
   const {hall} = route.params
 
   return (
@@ -11,6 +12,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for A block, brings the user to the next page to pick which facility
         onPress={() => {
+          // passes which hall and which block was selected onto the next screen, which is to choose the facility
           navigation.navigate("Block Facilities", {hall: hall, block: 'A'})
         }}
         style={styles.button}
@@ -21,6 +23,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for B block, brings the user to the next page to pick which facility
         onPress={() => {
+          // passes which hall and which block was selected onto the next screen, which is to choose the facility
           navigation.navigate("Block Facilities", {hall: hall, block: 'B'})
         }}
         style={styles.button2}
@@ -31,6 +34,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for C block, brings the user to the next page to pick which facility
         onPress={() => {
+          // passes which hall and which block was selected onto the next screen, which is to choose the facility
           navigation.navigate("Block Facilities", {hall: hall, block: 'C'})
         }}
         style={styles.button}
@@ -41,6 +45,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for D block, brings the user to the next page to pick which facility
         onPress={() => {
+          // passes which hall and which block was selected onto the next screen, which is to choose the facility
           navigation.navigate("Block Facilities", {hall: hall, block: 'D'})
         }}
         style={styles.button2}
@@ -61,6 +66,7 @@ const BlocksScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button for common facilities, brings the user to the next page to pick which common facility
         onPress={() => {
+          // passes which hall and which block was selected onto the next screen, which is to choose the facility
           navigation.navigate("Common Facilities", {hall: hall, block: 'F'})
         }}
         style={styles.button2}

@@ -11,9 +11,9 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   
-  // function that signs in the user to the app (and firebase)
-  // if successful, console will display logged in and the email
-  // else, an alert will be pushed to the user
+  /**
+   * To log in user using firebase authentication, function used on clicking the login button
+   */
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredentials) => {
@@ -62,11 +62,17 @@ const LoginScreen = () => {
         <TouchableOpacity 
           style={styles.pw}
           onPress={() => {
+            // button for users if they forget email
+            // users have to input in an email to send the reset email to
             if (email) {
+              // Firebase Auth function to send email to email inputted
               sendPasswordResetEmail(auth, email)
+              // alerts user that the email has been sent
               .then(() => alert("Password reset email sent!"))
+              // pushes error message to user if unable to send email
               .catch(err => alert("Error sending reset email: " + err))
             } else {
+              // if user does not input an email, an alert is pushed to ask user to input email
               alert("Fill in email!")
             }
           }}

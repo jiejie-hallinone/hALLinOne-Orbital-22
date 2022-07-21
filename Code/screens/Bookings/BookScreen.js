@@ -22,13 +22,21 @@ const BookScreen = ({route, navigation}) => {
     }
   }); 
 
-  // function for expo calendar to obtain the default (native) calendar ID, from expo API
+  /**
+   * function for expo calendar to obtain the default (native) calendar ID, from expo API
+   * 
+   * @return source of default calendar
+   */
   async function getDefaultCalendarSource() {
     const defaultCalendar = await Calendar.getDefaultCalendarAsync();
     return defaultCalendar.source;
   }
   
-  // function to create a new calendar in device, from expo API
+  /**
+   * function to create a new calendar in device, from expo API
+   *  
+   * @return string value of the id of the calendar
+   */ 
   async function createCalendar() {
     const defaultCalendarSource =
       Platform.OS === 'ios'
@@ -48,7 +56,12 @@ const BookScreen = ({route, navigation}) => {
     return `${newCalendarID}`;
   }
 
-  // function to create a new event in a given calendar, with fields based on selection of booking
+  /**
+   * function to create a new event in a given calendar, with fields based on selection of booking
+   *  
+   * @param calendarId the string id of the calendar to create the event in
+   * @return string value of the event of the booking on the calendar
+   */ 
   async function createEvent(calendarId) {
     const newEventID = await Calendar.createEventAsync(calendarId, {
       title: "Booking",
@@ -63,77 +76,97 @@ const BookScreen = ({route, navigation}) => {
 
   const {hall, block, facility, startDate, endDate, existingBookings} = route.params;
 
-  // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
-const hallName = hallAbbreviation => {
-  if (hallAbbreviation === "TH") {
-    return "Temasek Hall";
+  /**
+   * to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+   * 
+   * @param hallAbbreviation the 2 character string used in to store the the hall of the user
+   * @return full string name of the hall
+   */
+  const hallName = hallAbbreviation => {
+    if (hallAbbreviation === "TH") {
+      return "Temasek Hall";
+    }
+    else if (hallAbbreviation === "EH") {
+      return "Eusoff Hall";
+    }
+    else if (hallAbbreviation === "SH") {
+      return "Sheares Hall";
+    }
+    else if (hallAbbreviation === "KR") {
+      return "Kent Ridge Hall";
+    }
+    else if (hallAbbreviation === "LH") {
+      return "Prince George's Park Hall";
+    }
+    else {
+      return "King Edwards VII Hall"
+    }
   }
-  else if (hallAbbreviation === "EH") {
-    return "Eusoff Hall";
-  }
-  else if (hallAbbreviation === "SH") {
-    return "Sheares Hall";
-  }
-  else if (hallAbbreviation === "KR") {
-    return "Kent Ridge Hall";
-  }
-  else if (hallAbbreviation === "LH") {
-    return "Prince George's Park Hall";
-  }
-  else {
-    return "King Edwards VII Hall"
-  }
-}
 
-// to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
-const blockName = letter => {
-  if (letter === "A") {
-    return "A Block";
+  /**
+   * to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+   * 
+   * @param letter the char used to store the block the user selected
+   * @return full string name of the block
+   */
+  const blockName = letter => {
+    if (letter === "A") {
+      return "A Block";
+    }
+    else if (letter === "B") {
+      return "B Block";
+    }
+    else if (letter === "C") {
+      return "C Block";
+    }
+    else if (letter === "D") {
+      return "D Block";
+    }
+    else if (letter === 'E') {
+      return "E Block";
+    } else {
+      return "";
+    }
   }
-  else if (letter === "B") {
-    return "B Block";
-  }
-  else if (letter === "C") {
-    return "C Block";
-  }
-  else if (letter === "D") {
-    return "D Block";
-  }
-  else if (letter === 'E') {
-    return "E Block";
-  } else {
-    return "";
-  }
-}
 
-// to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
-const facName = facAbbreviation => {
-  if (facAbbreviation === 'L') {
-    return "Lounge";
+  /**
+   * to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+   * 
+   * @param facAbbreviation the char used to store the facility the user selected
+   * @return full string name of the facility
+   */
+  const facName = facAbbreviation => {
+    if (facAbbreviation === 'L') {
+      return "Lounge";
+    }
+    else if (facAbbreviation === 'W') {
+      return "Washing Machine";
+    }
+    else if (facAbbreviation === 'D') {
+      return "Dryer";
+    }
+    else if (facAbbreviation === 'B') {
+      return "Basketball Court";
+    }
+    else if (facAbbreviation === 'S') {
+      return "Squash Court";
+    }
+    else if (facAbbreviation === 'M') {
+      return "Band / Music Room";
+    }
+    else {
+      return "Communal Hall"
+    }
   }
-  else if (facAbbreviation === 'W') {
-    return "Washing Machine";
-  }
-  else if (facAbbreviation === 'D') {
-    return "Dryer";
-  }
-  else if (facAbbreviation === 'B') {
-    return "Basketball Court";
-  }
-  else if (facAbbreviation === 'S') {
-    return "Squash Court";
-  }
-  else if (facAbbreviation === 'M') {
-    return "Band / Music Room";
-  }
-  else {
-    return "Communal Hall"
-  }
-}
 
-  const paramsToLocation = () => {
-    return hallName(hall) + " " + blockName(block) + " " + facName(facility);
-  }
+  /**
+   * combines the full string names of the hall, block and facility to input as the location in the event created in the calendar
+   * 
+   * @returns full string name of hall block and facility e.g. Temasek Hall A Block Dryer or Eusoff Hall Communal Hall
+   */
+const paramsToLocation = () => {
+  return hallName(hall) + " " + blockName(block) + " " + facName(facility);
+}
 
   // states used to capture information for booking
   // start date and time
@@ -150,44 +183,66 @@ const facName = facAbbreviation => {
   const [text, setText] = useState("Start time:")
   const [textEnd, setTextEnd] = useState("End time:")
 
-  // updates start date and time when changed
+  /**
+   * updates start time when changed on the picker
+   */ 
   const onChangeStart = (event, selectedTime) => {
+    // template for start time
     const begin = new Date();
+    // set date to the date selected in previous screen
     begin.setDate(startDate.day);
     begin.setMonth(startDate.month);
     begin.setFullYear(startDate.year);
+    // set time to the time that was selected on the picker
     begin.setTime(selectedTime.getTime());
+    // store in state Date
     setDate(begin);
 
-    // shows selected start date and time for debugging
     let tempDate = new Date(begin);
+    // get the time inputed in string
     let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+    // store in state Text to be displayed
     setText("Start Time: " + fullTime);
   }
 
-  // updates end date and time when changed
+  /**
+   * updates end time when changed on the picker
+   */ 
   const onChangeEnd = (event, selectedTime) => {
+    // template for end time
     const finish = new Date();
+    // set date to the date selected in previous screen
     finish.setDate(endDate.day);
     finish.setMonth(endDate.month);
     finish.setFullYear(endDate.year);
+    // set time to the time that was selected on the picker
     finish.setTime(selectedTime.getTime());
+    // store in the state DateEnd
     setDateEnd(finish);
 
-    // shows selected end date and time for debugging
     let tempDate = new Date(finish);
+    // get the time inputted in string
     let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+    // store in state textEnd to be displayed
     setTextEnd("End Time: " + fullTime);
   }
 
-  // toggles mode and visibility for start picker (makes end invisible)
+  /**
+   * toggles mode and visibility for start picker (makes end invisible)
+   * 
+   * @param currentMode the mode of the datetimepicker to show  "date" or "time"
+   */
   const showModeStart = (currentMode) => {
     setShowEnd(false);
     setShowStart(true);
     setMode(currentMode);
   }
 
-  // toggles mode and visibility for end picker (makes start invisible)
+  /**
+   * toggles mode and visibility for end picker (makes start invisible)
+   * 
+   * @param currentMode the mode of the datetimepicker to show  "date" or "time"
+   */
   const showModeEnd = (currentMode) => {
     setShowStart(false);
     setShowEnd(true);
@@ -219,13 +274,19 @@ const facName = facAbbreviation => {
       {showStart && (
         <DateTimePicker
         // start picker, only shows when start is supposed to be visible (showStart === true)
+          // id of picker is Start
           testID='Start'
+          // value input will be stored as date
           value={date}
+          // original mode is on date mode (as stored in state mode) - based on previous implementation where users will select both date and time on this page. current version is only time
           mode={mode}
+          // clock is not 24hr
           is24Hour={false}
           display='default'
+          // when value is changed, onChangeStart function is called
           onChange={onChangeStart}
           style={styles.dtpicker}
+          // minimum date is the current date and time
           minimumDate={new Date()}
         />
       )}
@@ -233,19 +294,28 @@ const facName = facAbbreviation => {
       {showEnd && (
         <DateTimePicker
         // end picker, only shows when end is supposed to be visible (showEnd === true)
+          // id of picker is End
           testID='End'
+          // value input will be stored as dateEnd
           value={dateEnd}
+          // original mode is on date mode (as stored in state mode) - based on previous implementation where users will select both date and time on this page. current version is only time
           mode={mode}
+          // clock is not 24hr
           is24Hour={false}
           display='default'
+          // when value is changed, onChangeEnd function is called
           onChange={onChangeEnd}
           style={styles.dtpicker}
+          // minimum date on picker is whatever was selected as the start date - else it is the current date and time
           minimumDate={date}
         />
       )}
 
       <TouchableOpacity
-      // makes booking by saving into firestore bookings collection
+      // Button to confirm booking
+      // a confirmed booking creates a new document in the "bookings" collection in firestore
+      // then the user is asked if they want to add the event to calendar
+      // if the user wishes to, then permission is requested, a calendar and then an event is created.
         onPress={async () => {
           // variable to store document ID of booking in firestore after creating
           var bookingID;
@@ -253,6 +323,8 @@ const facName = facAbbreviation => {
           if (facility === 'W' || facility === 'D') {
             // create booking in firestore
             const docRef = await addDoc(collection(db, "bookings"), {
+              // values are stored in the following form - title: value
+              // values are captured by the states
               uid: uid,
               name: name,
               hall: hall,
@@ -263,8 +335,9 @@ const facName = facAbbreviation => {
             })
             // store document ID
             bookingID = docRef.id;
+            // logs that the booking is successfully made (not visible to users)
             console.log("Booking made with ID: " + bookingID);
-            // return Bookings tab to Hall page
+            // return Bookings tab to Hall page - so the next booking the user makes, the preexisting bookings would be refreshed
             navigation.popToTop();
             // user notified of successful booking and asked if wish to add to native calendar on device through an alert
             Alert.alert('Booking successfully made', 'Add to Calendar?', [
@@ -292,7 +365,7 @@ const facName = facAbbreviation => {
                       // create event for booking in the calendar that was just created
                       const event = await createEvent(calendar);
                       console.log("event created with ID: " + event);
-                      // update event ID into the booking document for edits in the future
+                      // update event ID into the booking document for edits in the future (if the user amends the booking)
                       await updateDoc(doc(db, 'bookings', bookingID), {
                         eventID: event
                       })
@@ -304,8 +377,9 @@ const facName = facAbbreviation => {
                     } else {
                       // create event in calendar whose ID was stored in the user profile
                       const event = await createEvent(calendarId)
-                      // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
+                      // if any errors eg change device, need to create new calendar (calendarID in firestore does not exist on local device etc)
                         .catch(async err => {
+                          // logs on console that an error was caught - for tracing flow and debugging
                           console.log("caught")
                           // create new calendar and event, same process as above
                           const calendar = await createCalendar();
@@ -343,6 +417,7 @@ const facName = facAbbreviation => {
                   }
                   // access to calendar denied
                   else {
+                    // alerts users that app was unable to access the device's calendar
                     alert("Unable to access calendar")
                   }
                 })();
@@ -360,19 +435,24 @@ const facName = facAbbreviation => {
             ])
           // other facilities need to check if there are any overlapping bookings
           } else {
+            // to check if there are any bookings that overlap i.e. facility is booked during selected period
             var booked = false;
             // go through array of existing bookings for that facility on that day (from previous screen) and check any overlaps. if booked remains false, booking can be made
             for (let i = 0; i < existingBookings.length; i++) {
+              // access the start and end date and time stored in the existing bookings - stored as seconds (Firestore timestamp format)
               const existingStart = existingBookings[i].data.startDateTime.seconds;
               const existingEnd = existingBookings[i].data.endDateTime.seconds;
+              // get the start and end time that was selected  -stored as milliseconds (JavaScript Date format) hence need to divide by 1000
               const selectedStart = date.getTime() / 1000;
               const selectedEnd = dateEnd.getTime() / 1000;
               // overlaps if it doesnt end before selected start timing or doesnt start after selected end timing
               const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
+              // accumulates through the existing bookings if the facility is booked
               booked = booked || !available;
             }
             // facility is booked during selected period
             if (booked) {
+              // alerts user that the facility is booked during selected period
               alert("Selected time period already has a booking! Check previous page for existing bookings!");
             // facility available
             } else {

@@ -8,14 +8,15 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        // button to select Comm Hall, brings user to page to book the lounge when pressed
+        // button to select Comm Hall, brings user to select the date they wish to make a booking
         onPress={() => {
-            navigation.navigate("Date", {
-              hall: hall,
-              block: block,
-              facility: 'C'
-            })
-          }}
+          // 
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'C'
+          })
+        }}
         style={styles.button}
       >
         <Image source={require('../../assets/facilities/commhall.png')} style={{width: 70, height: 70, marginRight: 5}} />

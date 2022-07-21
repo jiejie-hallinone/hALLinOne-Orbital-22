@@ -12,15 +12,17 @@ const RegisterScreen = () => {
     const [password, setPassword] = useState('')
     const [confirmpassword, setConfirmPassword] = useState('')
 
-    // function that creates an account for the app and firebase
-    // if successful, console will show registered, with the user email
-    // else, an alert will be pushed to the user
+    /**
+     * function that handles the creation of a new user account in firebase auth
+     */
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
+        // logs the user email in the console to confirm confirmation (user does not see anything on his end)
         .then((userCredentials) => {
           const user = userCredentials.user;
           console.log("Registered " + user.email);
         })
+        // pushes any error encountered to the user in an alert
         .catch(error => alert(error.message))
     } 
 
@@ -48,6 +50,7 @@ const RegisterScreen = () => {
           // input field for email
           placeholder="Email"
           value={email}
+          // sets any text input as the value email when text changes
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
@@ -55,16 +58,20 @@ const RegisterScreen = () => {
           // input field for password
           placeholder="Password"
           value={password}
+          // sets any text input as the value password when text changes
           onChangeText={text => setPassword(text)}
           style={styles.input}
+          // ensures that the input is not shown and case sensitive
           secureTextEntry
         />   
         <TextInput
           // input field to retype password
           placeholder="Confirm Password"
           value={confirmpassword}
+          // sets any text input as the value confirmpassword when text changes
           onChangeText={text => setConfirmPassword(text)}
           style={styles.input}
+          // ensures that the input is not shown and case sensitive
           secureTextEntry
         /> 
       </View>
