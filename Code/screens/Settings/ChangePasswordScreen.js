@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { auth } from '../../Firebase/Firebase';
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
-
+// page for user to change their password
 const ChangePasswordScreen = () => {
     // stores email, password, and confirmed password (a retype of password)
     const [currentPassword, setCurrentPassword] = useState('')
@@ -22,27 +22,36 @@ const ChangePasswordScreen = () => {
     >
       <View style={styles.inputContainer}>
         <TextInput
-          // input field for email
+          // input field for current password
+          // shows "Current Password" when empty
           placeholder="Current Password"
+          // stores value in state currentPassword
           value={currentPassword}
           onChangeText={text => setCurrentPassword(text)}
           style={styles.input}
+          // makes text invisible and case sensitive
           secureTextEntry
         />
         <TextInput
-          // input field for password
+          // input field for new password
+          // shows "New Password" when empty
           placeholder="New Password"
+          // stores value in state newPassword
           value={newPassword}
           onChangeText={text => setNewPassword(text)}
           style={styles.input}
+          // makes text invisible and case sensitive
           secureTextEntry
         />   
         <TextInput
-          // input field to retype password
+          // input field to retype new password
+          // shows "Confirm New Password" when empty
           placeholder="Confirm New Password"
+          // stores value in state confirmpassword
           value={confirmpassword}
           onChangeText={text => setConfirmPassword(text)}
           style={styles.input}
+          // makes text invisible and case sensitive
           secureTextEntry
         /> 
       </View>
@@ -51,15 +60,20 @@ const ChangePasswordScreen = () => {
         <TouchableOpacity
           // register button to create a new account
           onPress={() => {
-            // if password and retyped password match, create account
+            // if password and retyped password match
             if (newPassword === confirmpassword) {
+                // reauthenticate the current user with firebase
                 const cred = EmailAuthProvider.credential(auth.currentUser.email, currentPassword);
                 reauthenticateWithCredential(auth.currentUser, cred)
                 .then(() => {
+                    // change the user password to the new password in firebase
                     updatePassword(auth.currentUser, newPassword);
+                    // alert the user on successful change
                     alert("Password changed!")
+                    // bring the user back to the profile page
                     navigation.navigate("Profile")
                 })
+                // push errors to the user
                 .catch(err => alert("Error updating password: " + err))
             } else {
                 // alert users that passwords do not match and users have to retype the password

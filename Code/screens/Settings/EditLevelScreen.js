@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 import { Picker } from '@react-native-picker/picker'
@@ -6,8 +6,9 @@ import { auth, db } from '../../Firebase/Firebase';
 import { useNavigation } from '@react-navigation/native';
 import { doc, updateDoc } from "firebase/firestore"; 
 
+// users can edit their level here
 const EditLevelScreen = () => {
-  // to select level
+  // to store their level
     const [level, setLevel] = useState('')
 
     // to navigate between authentication stack
@@ -26,6 +27,7 @@ const EditLevelScreen = () => {
               // appears as dropdown for android, scrolling wheel for ios
                style={styles.picker}
                placeholder="Select your level"
+               // input is stored in state level
                selectedValue={level}
                onValueChange={(val, index) => setLevel(val)}
                >
@@ -44,18 +46,24 @@ const EditLevelScreen = () => {
                 // button that when pressed, updates user level into firestore profile (in users, document under uid)
                 onPress={() => {
                     try{
+                      // if level not selected
                       if (level === '') {
+                        // alert user to select level
                         alert("Please select your level!")
                       } else {
                         // updates user's level into profile on firestore
                         const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
                           level: level,
                         });
+                        // log successful update
                         console.log("Document updated with level: ", level);
+                        // alert user on update
                         alert("Level updated!")
+                        // bring user back to profile page
                         navigation.navigate("Profile");
                       }
                     } catch (e) {
+                      // push errors to user
                       console.error("Error adding document: ", e);
                     }  
                   }}

@@ -3,23 +3,35 @@ import React, {useState, useEffect} from 'react'
 import { db } from '../../Firebase/Firebase';
 import { getDocs, collection, query, where } from "firebase/firestore";
 
+// users are brought here after selecting a date
+// this page shows the existing bookings made by users for that specific facility 
+// users can also navigate to the book screen from here
 const ExistingBookingsOnDayScreen = ({route, navigation}) => {
+    // receives hall, block, facility and date selected from previous screen
+    // reload triggers the page to show the loading screen
     const {hall, block, facility, date, reload} = route.params;
+
+    // state to store existing bookings
     const [bookings, setBookings] = useState();
+    // state to store if the page is loading - whether the loading wheel is shown
     const [loading, setLoading] = useState(reload);
+
+    // checks the current date
     const currentDate = new Date();
+    // checks if the selected date has passed the current date
     const upcoming = date.day >= currentDate.getDate() && date.month >= (currentDate.getMonth() + 1) && date.year >= currentDate.getFullYear();
 
+    /**
+     * to read the bookings for the specific facility on the selected date from firestore
+     */
     const getBookings = async () => {
-        // to store data
+        // to store existing bookings
         const newBookings = new Array();
-        // queries under bookings those bookings in firestore made by the user that has not expired yet
+        // queries under bookings those bookings in firestore made by users for the specific facility
         const q = query(collection(db, "bookings"), 
             where("hall", "==", hall), 
             where("block", "==", block), 
             where("facility", "==", facility));
-            // where("startDateTime", "<=", date));
-            // where("endDateTime", ">=", date));
         // retrieves the documents
         const querySnapshot = await getDocs(q);
         // for each document
@@ -27,12 +39,14 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           // retrieves document data (name, hall, time etc)
           let data = doc.data()
           // console.log("retrieved: " + doc.id);
+          // captures the start date and time
           const start = data.startDateTime.toDate();
+          // captures the end date and time
           const end = data.endDateTime.toDate();
           // console.log(date.year);
           // console.log(start)
           // console.log(doc.id + " retrieved")
-          // adds it to the newBookings array as a tuple - with the data and the doc id
+          // adds it to the newBookings array as a tuple - with the data and the doc id if the start and end date is the same as the selected date
           if (start.getDate() <= date.day && (start.getMonth() + 1) <= date.month && (start.getYear() + 1900) <= date.year 
             && end.getDate() >= date.day && (end.getMonth() + 1) >= date.month && (end.getYear() + 1900) >= date.year) {
                 newBookings.push({data: data, id: doc.id});
@@ -41,19 +55,27 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           
         })
 
+        // finished loading, can render the list of bookings
         setLoading(false);
+        // sort the existing bookings by start time
         newBookings.sort((booking1, booking2) => booking1.data.startDateTime.seconds - booking2.data.startDateTime.seconds);
+        // store the existing bookings in the state bookings
         setBookings(newBookings);
         // console.log(bookings);
       }
 
+      // gets the existing bookings every time the page is visited (refreshes the page on every visit)
       useEffect(() => {
         const unsub = navigation.addListener('focus', () => {
           getBookings();
         });
       }, [navigation])
 
-    // function to render each item in flatList (each booking)
+    /**
+     * to render the interface for the flatlist of existing bookings
+     * @param {Firestore Document} item  the document for the booking on firestore
+     * @returns the interface for each booking - with name of user that made the booking, start date and time and end date and time
+     */
     function renderList({item}) {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
@@ -76,16 +98,23 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
     )
   }
 
-  // function to render the screen after all bookings retrieved i.e. load finished
+  /**
+   *  function to render the screen after all bookings retrieved i.e. load finished
+   * 
+   * @param props react native props
+   * @returns the interface with the list of bookings as well as the book button (if date has not passed)
+   */ 
   function Loaded(props) {
     return (
       <View style={styles.container}>
         <View style={styles.listContainer}>
           <FlatList
             style={styles.item}
+            // array of bookings is captured in state booking
             data={bookings}
             renderItem={renderList}
             keyExtractor={item => item.id}
+            // to be shown at the end of the list of bookings
             ListFooterComponent={<Text>No more existing bookings</Text>}
             ListFooterComponentStyle={styles.text}
           />
@@ -95,8 +124,10 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
           ? 
             <View style={styles.buttonContainer}>
             <TouchableOpacity 
+            // button for user to make a new booking, only shown if the selected date has not passed
               style={styles.button}
               onPress={() => {
+                // bring users to the book screen, passing the hall, block, facility and date selected, as well as the whole array of existing bookings
                 navigation.navigate("Book", {
                   hall: hall,
                   block: block,

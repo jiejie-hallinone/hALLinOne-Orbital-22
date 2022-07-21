@@ -14,6 +14,7 @@ const ProfileScreen = () => {
   const [hall, setHall] = useState('')
   const [block, setBlock] = useState('')
   const [level, setLevel] = useState('')
+  // read user profile on firestore and store details
   const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
      const data = doc.data();
      setEmail(data.email)
@@ -25,7 +26,12 @@ const ProfileScreen = () => {
 
   const navigation = useNavigation();
   
-  // to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+  /**
+   * to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+   * 
+   * @param hallAbbreviation the 2 character string used in to store the the hall of the user
+   * @return full string name of the hall
+   */
   const hallName = hallAbbreviation => {
     if (hallAbbreviation === "TH") {
       return "Temasek Hall";
@@ -47,7 +53,12 @@ const ProfileScreen = () => {
     }
   }
 
-  // to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+  /**
+   * to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+   * 
+   * @param letter the char used to store the block the user selected
+   * @return full string name of the block
+   */
   const blockName = letter => {
     if (letter === "A") {
       return "A";
@@ -67,12 +78,13 @@ const ProfileScreen = () => {
   }
 
   return (
-    // display profile fields, yet to implement edit
+    // display profile fields
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <Text style={styles.details} >Email: {email}</Text>
       
         <TouchableOpacity 
+          // button to edit user email, brings them to page to edit email
           onPress={() => navigation.navigate("Edit Email")}
           style={styles.editButton}
         >
@@ -84,6 +96,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Name: {name}</Text>
         
         <TouchableOpacity 
+        // button to edit user name, brings them to page to edit name
           onPress={() => navigation.navigate("Edit Name")}
           style={styles.editButton}
         >
@@ -95,6 +108,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Hall: {hallName(hall)}</Text>
       
         <TouchableOpacity 
+        // button to edit user hall, brings them to page to edit hall
           onPress={() => navigation.navigate("Edit Hall")}
           style={styles.editButton}
         >
@@ -106,6 +120,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Block: {blockName(block)}</Text>
 
         <TouchableOpacity 
+        // button to edit user block, brings them to page to edit block
           onPress={() => navigation.navigate("Edit Block")}
           style={styles.editButton}
         >
@@ -117,6 +132,7 @@ const ProfileScreen = () => {
         <Text style={styles.details} >Level: {level} </Text>
 
         <TouchableOpacity 
+        // button to edit user level, brings them to page to edit level
           onPress={() => navigation.navigate("Edit Level")}
           style={styles.editButton}
         >
@@ -126,6 +142,7 @@ const ProfileScreen = () => {
       
 
       <TouchableOpacity 
+      // button to edit user password, brings them to page to edit password
         onPress={() => navigation.navigate("Change Password")}
         style={styles.button}
       >

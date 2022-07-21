@@ -12,13 +12,17 @@ const currentUser = auth.currentUser;
 const uid = currentUser.uid;
 const name = currentUser.displayName;
 
+// receives the hall, block, facility, date of booking, as well as the document id of the booking to be amended
 const {hall, block, facility, bookedDate, amend} = route.params;
+// convert type of the date of booking to JavaScript Date
 const selectedDate = bookedDate.toDate();
 
+// state used to store existing bookings
 const [bookings, setBookings] = useState();
+// state used to store if the page is done loading (existing bookings are done being read)
 const [loading, setLoading] = useState(true);
 
-// get calendar ID from profile in firestore
+// reads calendar ID from profile in firestore
 const[calendarId, setCalendarId] = useState('');
 const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
   const data = doc.data();
@@ -27,8 +31,9 @@ const unsub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
   } else {
     setCalendarId('');
   }
-}); 
-// get event ID from booking document in firestore
+});
+
+// reads event ID from booking document in firestore
 const[eventId, setEventId] = useState('');
 const unsub2 = onSnapshot(doc(db, "bookings", amend), (doc) => {
   const data = doc.data();
@@ -39,16 +44,17 @@ const unsub2 = onSnapshot(doc(db, "bookings", amend), (doc) => {
   }
 }); 
 
+/**
+ * reads existing bookings from Firestore
+ */
 const getBookings = async () => {
   // to store data
   const newBookings = new Array();
-  // queries under bookings those bookings in firestore made by the user that has not expired yet
+  // queries under bookings those bookings in firestore made by users for the specific facility
   const q = query(collection(db, "bookings"), 
       where("hall", "==", hall), 
       where("block", "==", block), 
       where("facility", "==", facility));
-      // where("startDateTime", "<=", date));
-      // where("endDateTime", ">=", date));
   // retrieves the documents
   const querySnapshot = await getDocs(q);
   // for each document
@@ -56,11 +62,10 @@ const getBookings = async () => {
     // retrieves document data (name, hall, time etc)
     let data = doc.data()
     // console.log("retrieved: " + doc.id);
+    // converts the start date to date format
     const start = data.startDateTime.toDate();
-    // console.log(date.year);
-    // console.log(start)
     // console.log(doc.id + " retrieved")
-    // adds it to the newBookings array as a tuple - with the data and the doc id
+    // adds it to the newBookings array as a tuple - with the data and the doc id if the start date of the booking is the same as that of the booking being amended
     if (start.getDate() === selectedDate.getDate() && start.getMonth() === selectedDate.getMonth() && start.getFullYear() === selectedDate.getFullYear()) {
           newBookings.push({data: data, id: doc.id});
           // console.log("added: " + doc.id)
@@ -74,19 +79,28 @@ const getBookings = async () => {
   // console.log(bookings);
 }
 
+// refreshes the existing bookings every time the page is visited
 useEffect(() => {
   const unsub = navigation.addListener('focus', () => {
     getBookings();
   });
 }, [navigation])
 
-// function for expo calendar to obtain the default (native) calendar ID, from expo API
+/**
+ * function for expo calendar to obtain the default (native) calendar ID, from expo API
+ * 
+ * @returns the source id of the calender
+ */
 async function getDefaultCalendarSource() {
   const defaultCalendar = await Calendar.getDefaultCalendarAsync();
   return defaultCalendar.source;
 }
 
-// function to create a new calendar in device, from expo API
+/**
+ * function to create a new calendar in device, from expo API
+ * 
+ * @returns string value of the calendarID created in the device
+ */ 
 async function createCalendar() {
   const defaultCalendarSource =
     Platform.OS === 'ios'
@@ -106,10 +120,17 @@ async function createCalendar() {
   return `${newCalendarID}`;
 }
 
-// function to create a new event in a given calendar, with fields based on selection of booking
+/**
+ * function to create a new event in a given calendar, with fields based on selection of booking
+ * 
+ * @param {string} calendarId the id of the calendar in the device to create an event in
+ * @returns the string value of the event created
+ */ 
 async function createEvent(calendarId) {
   const newEventID = await Calendar.createEventAsync(calendarId, {
+    // creates an event with title e.g. Booking: Washing Machine
     title: "Booking: " + facName(facility),
+    // location of the event eg Temasek Hall Block B Lounge
     location: paramsToLocation(),
     startDate: date,
     endDate: dateEnd,
@@ -119,7 +140,12 @@ async function createEvent(calendarId) {
   return `${newEventID}`; 
 }
 
-// to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+/**
+ * to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+ * 
+ * @param hallAbbreviation the 2 character string used in to store the the hall of the user
+ * @return full string name of the hall
+ */
 const hallName = hallAbbreviation => {
 if (hallAbbreviation === "TH") {
   return "Temasek Hall";
@@ -141,7 +167,12 @@ else {
 }
 }
 
-// to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+/**
+ * to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+ * 
+ * @param letter the char used to store the block the user selected
+ * @return full string name of the block
+ */
 const blockName = letter => {
 if (letter === "A") {
   return "A Block";
@@ -162,7 +193,12 @@ else if (letter === 'E') {
 }
 }
 
-// to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+/**
+ * to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+ * 
+ * @param facAbbreviation the char used to store the facility the user selected
+ * @return full string name of the facility
+ */
 const facName = facAbbreviation => {
 if (facAbbreviation === 'L') {
   return "Lounge";
@@ -187,6 +223,11 @@ else {
 }
 }
 
+/**
+ * combines the full string names of the hall, block and facility to input as the location in the event created in the calendar
+ * 
+ * @returns full string name of hall block and facility e.g. Temasek Hall A Block Dryer or Eusoff Hall Communal Hall
+ */
 const paramsToLocation = () => {
   return hallName(hall) + " " + blockName(block) + " " + facName(facility);
 }
@@ -208,52 +249,79 @@ const [textEnd, setTextEnd] = useState("End time:")
 // to pass back to history page after confirming amend
 const [amended, setAmended] = useState(false);
 
-// updates start date and time when changed
+/**
+ * updates start time when changed on the picker
+ */ 
 const onChangeStart = (event, selectedTime) => {
+  // template for start time
   const begin = new Date();
+  // set time to the time that was selected on the picker
   begin.setDate(selectedDate.day)
   begin.setDate(selectedDate.day);
   begin.setMonth(selectedDate.month);
   begin.setFullYear(selectedDate.year);
+  // set time to the time that was selected on the picker
   begin.setTime(selectedTime.getTime());
+  // store in state Date
   setDate(begin);
 
-  // shows selected start date and time for debugging
   let tempDate = new Date(begin);
+  // get the time inputed in string
   let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+  // store in state Text to be displayed
   setText("Start Time: " + fullTime);
 }
 
-// updates end date and time when changed
+/**
+ * updates end time when changed on the picker
+ */ 
 const onChangeEnd = (event, selectedTime) => {
+  // template for end time
   const finish = new Date();
-  finish.setDate(selectedDate.day)
+  // set date to the date selected in previous screen
   finish.setDate(selectedDate.day);
   finish.setMonth(selectedDate.month);
   finish.setFullYear(selectedDate.year);
+  // set time to the time that was selected on the picker
   finish.setTime(selectedTime.getTime());
+  // store in the state DateEnd
   setDateEnd(finish);
 
-  // shows selected start date and time for debugging
   let tempDate = new Date(finish);
+  // get the time inputted in string
   let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+  // store in state textEnd to be displayed
   setTextEnd("End Time: " + fullTime);
 }
 
-// toggles mode and visibility for start picker (makes end invisible)
+/**
+ * toggles mode and visibility for start picker (makes end invisible)
+ * 
+ * @param currentMode the mode of the datetimepicker to show  "date" or "time"
+ */
 const showModeStart = (currentMode) => {
   setShowEnd(false);
   setShowStart(true);
   setMode(currentMode);
 }
 
-// toggles mode and visibility for end picker (makes start invisible)
+/**
+ * toggles mode and visibility for end picker (makes start invisible)
+ * 
+ * @param currentMode the mode of the datetimepicker to show  "date" or "time"
+ */
 const showModeEnd = (currentMode) => {
   setShowStart(false);
   setShowEnd(true);
   setMode(currentMode);
 }
 
+/**
+ *  function to render the screen after all bookings retrieved i.e. load finished
+ * 
+ * @param props react native props
+ * @returns the interface with the list of bookings as well as the book button (if date has not passed)
+ */ 
 function Loaded(props) {
   return (
     <View style={styles.container}>
@@ -280,11 +348,16 @@ function Loaded(props) {
     {showStart && (
       <DateTimePicker
       // start picker, only shows when start is supposed to be visible (showStart === true)
+        // id of picker is Start
         testID='Start'
+        // value input will be stored as date
         value={date}
+        // original mode is on date mode (as stored in state mode) - based on previous implementation where users will select both date and time on this page. current version is only time
         mode={mode}
+        // clock is not 24hr
         is24Hour={false}
         display='default'
+        // when value is changed, onChangeStart function is called
         onChange={onChangeStart}
         style={styles.dtpicker}
       />
@@ -293,65 +366,101 @@ function Loaded(props) {
     {showEnd && (
       <DateTimePicker
       // end picker, only shows when end is supposed to be visible (showEnd === true)
+        // id of picker is End
         testID='End'
+        // id of picker is End
         value={dateEnd}
+        // original mode is on date mode (as stored in state mode) - based on previous implementation where users will select both date and time on this page. current version is only time
         mode={mode}
+        // clock is not 24hr
         is24Hour={false}
         display='default'
+        // when value is changed, onChangeEnd function is called
         onChange={onChangeEnd}
         style={styles.dtpicker}
+        // minimum date on picker is whatever was selected as the start date - else it is the current date and time
         minimumDate={date}
       />
     )}
 
     <TouchableOpacity
-    // makes booking by saving into firestore bookings collection
+      // Button to confirm amendment
+      // a confirmed amendment updates the existing document in the "bookings" collection in firestore
+      // then the user is asked if they want to add the event to calendar or amend of event was already created
+      // if the user wishes to, then permission is requested, a calendar and then an event is created.
       onPress={() => {
+        // variable to store document ID of booking in firestore after creating
         var booked = false;
+        // go through array of existing bookings for that facility on that day (from previous screen) and check any overlaps. if booked remains false, booking can be made
         for (let i = 0; i < bookings.length; i++) {
           const id = bookings[i].id;
+          // read the document if the document is not the booking being amended
           if (id != amend) {
+            // access the start and end date and time stored in the existing bookings - stored as seconds (Firestore timestamp format)
             const existingStart = bookings[i].data.startDateTime.seconds;
             const existingEnd = bookings[i].data.endDateTime.seconds;
+            // get the start and end time that was selected  -stored as milliseconds (JavaScript Date format) hence need to divide by 1000
             const selectedStart = date.getTime() / 1000;
             const selectedEnd = dateEnd.getTime() / 1000;
             // overlaps if it doesnt end before selected start timing or doesnt start after selected end timing
             const available = (existingEnd < selectedStart) || (existingStart > selectedEnd);
+            // accumulates through the existing bookings if the facility is booked
             booked = booked || !available;
             // console.log(booked);
           }
         }
         // if facility is not washing machine or dryer and already has existing booking
         if (booked && !(facility === 'W' || facility === 'D')) {
+          // alert user that the time period is already booked
           alert("Selected time period already has a booking!");
         } else {
+          // update the document of the booking to the new selected start and end time
           const docRef = updateDoc(doc(db, "bookings", amend), {
             startDateTime: date,
             endDateTime: dateEnd,
           })
+          // catch any errors
           .catch(err => {
+            // alert the user that update failed
             alert("Booking does not exist / Unable to update")
+            // bring user back to the main history page without triggering refresh of the page
             navigation.navigate("Bookings", {amended: amended})
           })
+          // once updated
           .then(() => {
+            // to trigger refresh of history page when going back later
             setAmended(true);
+            // log on console that the booking was successful
             console.log("Booking updated");
-            // user asked if want to amend booking on calendar, or want to add new event on calendar
+            // if an event and calendar has been created before, user asked if want to amend booking on calendar, or want to add new event on calendar
             if (calendarId && eventId) {
               Alert.alert("Booking successfully updated", "Amend event on calendar?", [
                 {text: 'Amend existing event', onPress: async () => {
                   // request permission to access device calendar
                   const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  // permission to access calendar granted
                   if (status === 'granted') {
+                    // update the start and end time on the previously created event in the calendar
                     await Calendar.updateEventAsync(eventId, {
                       startDate: date,
                       endDate: dateEnd
                     })
-                    .catch(err => {alert("Event unable to be updated, add new event or skip!")})
-                    console.log("event updated");
-                    navigation.navigate("Bookings", {amended: amended})
+                    // catch any errors, usually that the event does not exist on the device
+                    .catch(err => {
+                      // alert user that update failed, request user to either create a new event or skip
+                      alert("Event unable to be updated, add new event or skip!")
+                    })
+                    .then(() => {
+                      // log that the update was successful
+                      console.log("event updated");
+                      // bring user back to main history page and trigger reload
+                      navigation.navigate("Bookings", {amended: amended});
+                    })
+                  // access to calendar was denied
                   } else {
+                    // alert the user that unable to access
                     alert("access denied");
+                    // bring user back to main history page and trigger reload
                     navigation.navigate("Bookings", {amended: amended})
                   }
                 }},
@@ -359,49 +468,64 @@ function Loaded(props) {
                 {text: 'Add new event', onPress: async () => {
                   // request permission to access device calendar
                   const { status } = await Calendar.requestCalendarPermissionsAsync();
+                  // permission to access calendar granted
                   if (status === 'granted') {
                     // create event in calendar whose ID was stored in the user profile
                     const event = await createEvent(calendarId)
                     // if any errors eg change device, need to create new calendar (ID stored does not exist etc)
                     .catch(async err => {
+                      // logs on console that an error was caught - for tracing flow and debugging
                       console.log("caught")
-                      // create new calendar and event, same process as above
+                      // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                       const calendar = await createCalendar();
+                      // store id
                       await setCalendarId(calendar)
                       console.log("calender " + calendar);
+                      // add calendar ID of device into profile
                       await updateDoc(doc(db, 'users', uid), {
                         calendarId: calendar
                       })
                       .catch(err => {
+                        // alert user that update failed
                         alert("Unable to update calendar")
+                        // bring user back to main history page and trigger reload
                         navigation.navigate("Bookings", {amended: amended})
                       })
+                      // create new event for booking in the calendar that was just amended
                       const event2 = await createEvent(calendar);
-                          console.log("event recreated with ID: " + event2);
-                          await updateDoc(doc(db, 'bookings', amend), {
-                            eventID: event2
-                          })
-                          .catch(err => {
-                            alert("Unable to update calendar")
-                          });
-                          console.log("Event ID updated");
-                          navigation.navigate("Bookings", {amended: amended})
+                      console.log("event recreated with ID: " + event2);
+                       await updateDoc(doc(db, 'bookings', amend), {
+                         eventID: event2
+                       })
+                       .catch(err => {
+                         alert("Unable to update calendar")
+                       });
+                       console.log("Event ID updated");
+                       navigation.navigate("Bookings", {amended: amended})
+                      });
+                        
+                      // if event was successfully created, carry on with process
+                      if (event) {
+                        // log successful update
+                        console.log("event created with ID: " + event);
+                        // store new event ID in booking document on firestore
+                        await updateDoc(doc(db, 'bookings', amend), {
+                          eventID: event
+                        })
+                        .catch(err => {
+                          // alert user on error
+                          alert("Unable to update event ID in firestore")
                         });
-                        // if event was successfully created, carry on with process
-                        if (event) {
-                          console.log("event created with ID: " + event);
-                          // store event ID
-                          await updateDoc(doc(db, 'bookings', amend), {
-                            eventID: event
-                          })
-                          .catch(err => {
-                            alert("Unable to update calendar")
-                          });
-                          console.log("Event ID updated");
-                          navigation.navigate("Bookings", {amended: amended})
-                        }
+                        // log successful creation
+                        console.log("Event ID updated");
+                        // bring user back to main history page and trigger reload
+                        navigation.navigate("Bookings", {amended: amended})
+                      }
+                  // permission to access calendar denied
                   } else {
+                    // alert user that unable to access calendar
                     alert("access denied")
+                    // bring user back to main history page and trigger reload
                     navigation.navigate("Bookings", {amended: amended})
                   }
                 }},
@@ -410,7 +534,8 @@ function Loaded(props) {
                   navigation.navigate("Bookings", {amended: amended})
                 }}
               ])
-            // add to calendar (event not created and maybe calendar not created)  
+            // add to calendar (event not created and maybe calendar not created) 
+            // refer to above for annotations 
             } else {
               Alert.alert("Booking successfully updated", "Add to calendar?", [
                 {text: 'Add to calendar', onPress: async () => {
@@ -509,6 +634,7 @@ function Loaded(props) {
   )
 }
 
+// if all existing bookings yet to be retrieved, a loading wheel will be shown, else the input fields and the confirm button will be shown
 return (
   <View
       style={styles.container}

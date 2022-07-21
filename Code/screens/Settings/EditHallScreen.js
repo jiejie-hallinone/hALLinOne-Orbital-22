@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 import { Picker } from '@react-native-picker/picker'
@@ -6,9 +6,9 @@ import { auth, db } from '../../Firebase/Firebase';
 import { useNavigation } from '@react-navigation/native';
 import { doc, updateDoc } from "firebase/firestore"; 
 
+// users can edit their hall on their profile here
 const EditHallScreen = () => {
-  // select hall to save in profile
-  
+    // to store hall
     const [hall, setHall] = useState('')
 
     // to navigate between authentication stack
@@ -27,6 +27,7 @@ const EditHallScreen = () => {
               // halls are listed as their abbreviations to save space
                style={styles.picker}
                placeholder="Select your hall"
+               // stores selected value in state hall
                selectedValue={hall}
                onValueChange={(val, index) => setHall(val)}
                >
@@ -42,23 +43,29 @@ const EditHallScreen = () => {
              
         <View style={styles.buttonContainer}>
             <TouchableOpacity
-              // button that when pressed, updates user block to selected value
-              // button writes "Next"
+              // button that when pressed, updates user hall to selected value
+              // button writes "Confirm"
               onPress={() => {
                   try{
+                    // if hall is not selected
                     if (hall === "") {
+                      // user alerted to select a hall
                       alert("Please select your hall!")
                     } else {
                       // updates document by adding hall into profile
                     const docRef = updateDoc(doc(db, "users", auth.currentUser.uid), {
                       hall: hall,
                     });
+                    // log successful update
                     console.log("Document updated with hall: ", hall);
+                    // update user on successful update
                     alert("Changed hall!")
+                    // bring user back to profile page
                     navigation.navigate("Profile");
                     }
+                  // push errors to user
                   } catch (e) {
-                    console.error("Error adding document: ", e);
+                    console.error("Error updating hall: ", e);
                   }  
                 }}
             

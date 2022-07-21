@@ -6,8 +6,7 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import { useNavigation } from '@react-navigation/native';
 import { doc, updateDoc } from "firebase/firestore"; 
 
-
-
+// here users can edit their name
 const EditNameScreen = () => {
     // stores name
     const [name, setName] = useState('')
@@ -23,6 +22,7 @@ const EditNameScreen = () => {
             <TextInput
               // input field to type user's desired display name, which is stored as name
               placeholder="New Name"
+              // input stored in state name
               value={name}
               onChangeText={text => setName(text)}
               style={styles.input}
@@ -32,29 +32,35 @@ const EditNameScreen = () => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               // button that when pressed, updates user displayed name to what was input in above field
-              // button writes "Next"
+              // button writes "Confirm"
               onPress={() => {
-                updateProfile(auth.currentUser, {
-                    displayName: name
-                })
-                // if successful, name and email will be created on Firestore
-                .then(async () => {
-                  try{
-                    if (name === '') {
-                      alert("Please fill in your name!")
-                    } else {
-                      // creates document with name and email in Firestore collection users, using key id as document name
+                // if user did not input name
+                if (name === '') {
+                  // alert user to input
+                  alert("Please fill in your name!")
+                } else {
+                  try {
+                    // update user name on firebase
+                    updateProfile(auth.currentUser, {
+                      displayName: name
+                    })
+                    .then(async () => {
+                      // update user name in firestore
                       const docRef = await updateDoc(doc(db, "users", auth.currentUser.uid), {
                         name: name,
                       });
+                      // log successful update
                       console.log("Name updated with: ", name);
+                      // alert user on successful update
                       alert("Name changed!");
+                      // bring user back to profile page
                       navigation.navigate("Profile");
-                    }
+                    })
+                  // push errors to user
                   } catch (e) {
                     console.error("Error changing name: ", e);
-                  }  
-                })
+                  }
+                }
               }
             }
               style={[styles.button, styles.buttonOutline]}

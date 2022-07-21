@@ -3,7 +3,12 @@ import React, {useEffect, useState} from 'react'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, getDocs, collection, query, where, deleteDoc } from "firebase/firestore";
 
-// to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+/**
+ * to match abbreviation to full hall name (since we stored abbrev to save space in firestore)
+ * 
+ * @param hallAbbreviation the 2 character string used in to store the the hall of the user
+ * @return full string name of the hall
+ */
 const hallName = hallAbbreviation => {
   if (hallAbbreviation === "TH") {
     return "Temasek Hall";
@@ -25,7 +30,12 @@ const hallName = hallAbbreviation => {
   }
 }
 
-// to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+/**
+ * to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+ * 
+ * @param letter the char used to store the block the user selected
+ * @return full string name of the block
+ */
 const blockName = letter => {
   if (letter === "A") {
     return "A / 1";
@@ -46,7 +56,12 @@ const blockName = letter => {
   }
 }
 
-// to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+/**
+ * to match abbreviation to full facility name (since we stored abbrev to save space in firestore)
+ * 
+ * @param facAbbreviation the char used to store the facility the user selected
+ * @return full string name of the facility
+ */
 const facName = facAbbreviation => {
   if (facAbbreviation === 'L') {
     return "Lounge";
@@ -73,6 +88,7 @@ const facName = facAbbreviation => {
 
 // here the existing bookings made by the user will be shown
 const HistoryScreen = ({route, navigation}) => {
+  // obtain current user's uid
   const currentUser = auth.currentUser;
   const uid = currentUser.uid;
 
@@ -82,7 +98,9 @@ const HistoryScreen = ({route, navigation}) => {
   // if still retrieving information
   const [loading, setLoading] = useState(amended);
   
-  // gets the bookings from firestore made by current user, with end date and time after the current date and time
+  /**
+   * gets the bookings from firestore made by current user, with end date and time after the current date and time
+   */
   const getBookings = async () => {
     // to store data
     const newBookings = new Array();
@@ -98,9 +116,13 @@ const HistoryScreen = ({route, navigation}) => {
       // adds it to the newBookings array as a tuple - with the data and the doc id
       newBookings.push({data: data, id: doc.id});
     })
+
+    // finishes loading
     setLoading(false);
 
+    // sort bookings by start time
     newBookings.sort((booking1, booking2) => booking1.data.startDateTime.seconds - booking2.data.startDateTime.seconds);
+    // store in state bookings
     setBookings(newBookings);
   }
   
@@ -108,6 +130,7 @@ const HistoryScreen = ({route, navigation}) => {
   // to get the bookings and set to the state bookings, every time page is visited
   const [bookings, setBookings] = useState([]);
   
+  // refreshes the bookings every time the page is visited
   useEffect(() => {
     const unsub = navigation.addListener('focus', () => {
       getBookings();
@@ -135,6 +158,7 @@ const HistoryScreen = ({route, navigation}) => {
     const ending = endDate + " " + endTime;
 
     return (
+      // shows details of bookings - hall, block, facility, start and end date and time
       <View style={styles.itemContainer}>
         <Text>Hall: {hallName(item.data.hall)}</Text>
         <Text>Block: {blockName(item.data.block)}</Text>
@@ -147,9 +171,12 @@ const HistoryScreen = ({route, navigation}) => {
           // button to amend booking, passes the booking id to the amend screen
             onPress={() => {
               try {
+                // get the document id of the booking to be amended
                 const amendingid = item.id;
+                // store id
                 setAmend(amendingid);
                 console.log("amending: " + amendingid)
+                // bring user to the amend page with the hall, block, facility, date and id of the booking to be amended
                 navigation.navigate("Amend", {
                   hall: item.data.hall,
                   block: item.data.block,
@@ -158,7 +185,8 @@ const HistoryScreen = ({route, navigation}) => {
                   amend: amendingid
                 });
               } catch (err) {
-                alert("Error! Please try again")
+                // alerts user that there was an error, and to try again
+                alert("Error! Please try again! " + err)
               }
               
             }}
@@ -170,23 +198,31 @@ const HistoryScreen = ({route, navigation}) => {
           <TouchableOpacity
             // button to cancel booking
               onPress={() => {
-                // user has to confirm cancellation
+                // user has to confirm cancellation on the alert
                 try {
                   Alert.alert('Cancel Booking', 'Are you sure?', [
                   {text: 'Cancel Booking', onPress: () => {
+                    // if user confirms cancelling
+                    // get document id of the booking to be delted
                     const delid = item.id;
+                    // store
                     setDel(delid);
+                    // delete the document of the booking from firestore
                     deleteDoc(doc(db, "bookings", delid));
                     console.log("deleted: " + delid);
+                    // refresh the page to update the existing bookings
                     setLoading(true);
                     getBookings();
                   }},
                   {text: 'Go back', onPress: () => {
+                    // user does not want to cancel, wants to return
+                    // bring user back to current page
                     navigation.navigate("Bookings");
                   }}
                 ])
                 } catch (err) {
-                  alert("Error! Please try again.")
+                  // alert user on error
+                  alert("Error! Please try again. " + err) 
                 }
                 
               }}

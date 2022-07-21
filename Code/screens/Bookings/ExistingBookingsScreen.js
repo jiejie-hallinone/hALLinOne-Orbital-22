@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { CalendarList } from 'react-native-calendars';
-import { db } from '../../Firebase/Firebase';
-import { doc, getDocs, collection, query, where } from "firebase/firestore";
 
+// users are brought here after selecting a facility to choose a date
+// this screen shows a calendar list
 const ExistingBookingsScreen = ({route, navigation}) => {
     const {hall, block, facility} = route.params;
     return (
@@ -21,6 +21,7 @@ const ExistingBookingsScreen = ({route, navigation}) => {
   showScrollIndicator={true}
   // When certain date is selected
   onDayPress={day => {
+    // bring users to see existing bookings (and make a new booking), passes the hall, block, facility and date chosen, as well as triggers a reload of the next screen
     navigation.navigate("Existing Bookings", {
         hall: hall,
         block: block,

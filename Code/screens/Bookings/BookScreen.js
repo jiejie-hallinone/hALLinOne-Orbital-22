@@ -296,7 +296,7 @@ const paramsToLocation = () => {
         // end picker, only shows when end is supposed to be visible (showEnd === true)
           // id of picker is End
           testID='End'
-          // value input will be stored as dateEnd
+          // id of picker is End
           value={dateEnd}
           // original mode is on date mode (as stored in state mode) - based on previous implementation where users will select both date and time on this page. current version is only time
           mode={mode}
@@ -475,6 +475,7 @@ const paramsToLocation = () => {
                 // adding to calendar
                 {text:'Add to Calendar', onPress: () => {
                   (async () => {
+                    // request permission to access device calendar
                     const { status } = await Calendar.requestCalendarPermissionsAsync();
                     // permission to access calendar granted
                     if (status === 'granted') {

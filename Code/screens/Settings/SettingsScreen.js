@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'firebase/auth';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { auth } from '../../Firebase/Firebase';
@@ -8,15 +8,21 @@ const SettingsScreen = () => {
   // to navigate within settings stack
   const navigation = useNavigation();
 
-  // to sign user out of app and firebase
-  // if successful, console will display signed out and user will be brought back to the login page
-  // else, the user will be notified of the error
+  /**
+   * to sign user out of app and firebase
+   * if successful, console will display signed out and user will be brought back to the login page
+   * else, the user will be notified of the error
+   */ 
   const handleSignOut = () => {
+    // sign user out with firebase auth
     signOut(auth)
     .then(() => {
+      // log the log out
       console.log("Signed out");
+      // bring user to the login screen
       navigation.navigate("Login");
     })
+    // pushes error to the user
     .catch(error => alert(error.message))
   } 
 

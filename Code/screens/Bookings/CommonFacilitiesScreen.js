@@ -10,7 +10,7 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       <TouchableOpacity
         // button to select Comm Hall, brings user to select the date they wish to make a booking
         onPress={() => {
-          // 
+          // navigates to the page to select date, passing on the hall, block and facility selected
           navigation.navigate("Date", {
             hall: hall,
             block: block,
@@ -24,14 +24,15 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to select Basketball Court, brings user to page to book the lounge when pressed
+        // button to select Basketball court, brings user to select the date they wish to make a booking
         onPress={() => {
-            navigation.navigate("Date", {
-              hall: hall,
-              block: block,
-              facility: 'B'
-            })
-          }}
+          // navigates to the page to select date, passing on the hall, block and facility selected
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'B'
+          })
+        }}
         style={styles.button2}
       >
         <Image source={require('../../assets/facilities/basketball.png')} style={{width: 70, height: 70, marginRight: 8}} />
@@ -39,14 +40,15 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to select Squash Court, brings user to page to book the lounge when pressed
+        // button to select Squash Court, brings user to select the date they wish to make a booking
         onPress={() => {
-            navigation.navigate("Date", {
-              hall: hall,
-              block: block,
-              facility: 'S'
-            })
-          }}
+          // navigates to the page to select date, passing on the hall, block and facility selected
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'S'
+          })
+        }}
         style={styles.button}
       >
         <Image source={require('../../assets/facilities/squash.png')} style={{width: 70, height: 70, marginRight: 5}} />
@@ -54,14 +56,15 @@ const CommonFacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to select Band Room, brings user to page to book the lounge when pressed
+        // button to select Band Room, brings user to select the date they wish to make a booking
         onPress={() => {
-            navigation.navigate("Date", {
-              hall: hall,
-              block: block,
-              facility: 'M'
-            })
-          }}
+          // navigates to the page to select date, passing on the hall, block and facility selected
+          navigation.navigate("Date", {
+            hall: hall,
+            block: block,
+            facility: 'M'
+          })
+        }}
         style={styles.button2}
       >
         <Image source={require('../../assets/facilities/music.png')} style={{width: 70, height: 70, marginRight: 10}} />

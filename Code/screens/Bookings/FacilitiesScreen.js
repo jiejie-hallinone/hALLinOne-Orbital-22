@@ -9,8 +9,9 @@ const FacilitiesScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        // button to select Lounge, brings user to page to book the lounge when pressed
+        // button to select Lounge, brings user to select date when pressed
         onPress={() => {
+          // brings user to select date, with the hall, block and facility selected
           navigation.navigate("Date", {
             hall: hall,
             block: block,
@@ -24,8 +25,9 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to select Washing Machine, brings user to page to book the lounge when pressed
+        // button to select Washing Machine, brings user to select date when pressed
         onPress={() => {
+          // brings user to select date, with the hall, block and facility selected
           navigation.navigate("Date", {
             hall: hall,
             block: block,
@@ -39,8 +41,9 @@ const FacilitiesScreen = ({route, navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        // button to select Dryer, brings user to page to book the lounge when pressed
+        // button to select Dryer, brings user to select date when pressed
         onPress={() => {
+          // brings user to select date, with the hall, block and facility selected
           navigation.navigate("Date", {
             hall: hall,
             block: block,

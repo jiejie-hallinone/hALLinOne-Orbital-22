@@ -6,8 +6,7 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import { useNavigation } from '@react-navigation/native';
 import { doc, setDoc } from "firebase/firestore"; 
 
-
-
+// here users will input their display name
 const FirstTimeSetupScreen = () => {
     // stores name
     const [name, setName] = useState('')

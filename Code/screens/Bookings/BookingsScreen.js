@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
-import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../Firebase/Firebase';
 import { doc, onSnapshot } from "firebase/firestore";
 

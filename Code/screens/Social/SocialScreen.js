@@ -5,7 +5,6 @@ import { doc, getDocs, collection, onSnapshot, getDoc } from "firebase/firestore
 
 // here is the feed where users can see jios from other users
 // there will also be a button to bring users to create their own jio
-// yet to be implemented
 const SocialScreen = ({navigation}) => {
   // loading true while retrieving posts
   const [loading, setLoading] = useState(true);
@@ -18,13 +17,18 @@ const SocialScreen = ({navigation}) => {
   const [b, setB] = useState('');
   const [l, setL] = useState('');
   const [n, setN] = useState('');
+  /**
+   * read user info from firestore 
+   */
   const getInfo = async () => {
     // console.log("getting info");
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await onSnapshot(docRef, (doc) => {
+      // read document
       const data = doc.data();
       // console.log("retrieved info");
       // console.log(data.hall)
+      // store info
       hall = data.hall;
       setH(data.hall);
       block = data.block;
@@ -38,6 +42,9 @@ const SocialScreen = ({navigation}) => {
 
   // retrieve posts
   const [jios, setJios] = useState();
+  /**
+   * read posts from firestore
+   */
   const getPosts = async () => {
     // to store data
     const posts = new Array();
@@ -49,12 +56,13 @@ const SocialScreen = ({navigation}) => {
       let data = doc.data()
       // console.log("retrieved: " + doc.id);
       // console.log(hall);
+      // convert start and end time to JS Date
       const start = data.startDateTime.toDate();
       const end = data.endDateTime.toDate();
       const date = new Date();
       // if current date is within start and end
       const withinDate = end >= date;
-      // adds it to the newBookings array as a tuple - with the data and the doc id
+      // adds it to the posts array as a tuple - with the data and the doc id
       if (withinDate && (
         // privacy setting is open
         (data.privacy === 'O') 
@@ -69,13 +77,17 @@ const SocialScreen = ({navigation}) => {
       }
     })
 
+    // done retrieving
     setLoading(false);
 
+    // sort by start time
     posts.sort((post1, post2) => post1.data.startDateTime.seconds - post2.data.startDateTime.seconds);
+    // store posts
     setJios(posts);
     // console.log(jios);
   }
 
+  // refresh user info and posts every time page is visited
   useEffect(() => {
     getInfo();
     const unsub = navigation.addListener('focus', () => {
@@ -83,7 +95,7 @@ const SocialScreen = ({navigation}) => {
     });
   }, [navigation])
 
-  // function to render each item in flatList (each booking)
+  // function to render each item in flatList (each post)
   function renderList({item}) {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
@@ -98,6 +110,7 @@ const SocialScreen = ({navigation}) => {
     const ending = endDate + " " + endTime;
 
     return (
+      // details of post - user name, start and end, location, description
       <View style={styles.itemContainer}>
         <Text>Post by: {item.data.name}</Text>
         <Text>From: {starting}</Text>
@@ -125,6 +138,7 @@ const SocialScreen = ({navigation}) => {
         <TouchableOpacity
         // button to post
           onPress={() => {
+            // bring user to post page, with user's hall, block, level and name
             navigation.navigate("Post", {
               hall: h,
               block: b,
@@ -140,6 +154,7 @@ const SocialScreen = ({navigation}) => {
     )
   }
 
+  // show loading wheel if still retrieving posts, else show posts and post button
   return (
     <View
       style={styles.container}

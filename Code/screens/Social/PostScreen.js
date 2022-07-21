@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import React, {useState} from 'react'
-import { auth, db } from '../../Firebase/Firebase';
-import { doc, addDoc, collection } from "firebase/firestore";
+import { db } from '../../Firebase/Firebase';
+import { addDoc, collection } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 
 
 // here users can create their own jio to be posted
-// yet to be implemented
 const PostScreen = ({route, navigation}) => {
   // obtaining hall, block and level
   const {hall, block, level, name} = route.params;
@@ -33,19 +32,25 @@ const PostScreen = ({route, navigation}) => {
   // toggle visibility of picker for end time and date
   const [showEnd, setShowEnd] = useState(false)
 
-  // updates start date and time when changed
+  /**
+   *  updates start date and time when changed
+   */ 
   const onChangeStart = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
   }
 
-  // updates end date and time when changed
+  /** 
+   * updates end date and time when changed
+   */
   const onChangeEnd = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDateEnd(currentDate);
   }
 
-  // toggles mode and visibility for start picker
+  /**
+   * toggles mode and visibility for start picker
+   */ 
   const showModeStart = (currentMode) => {
     setShowPrivacy(false);
     setShowEnd(false);
@@ -53,7 +58,9 @@ const PostScreen = ({route, navigation}) => {
     setMode(currentMode);
   }
 
-  // toggles mode and visibility for end picker
+  /**
+   * toggles mode and visibility for end picker
+   */ 
   const showModeEnd = (currentMode) => {
     setShowPrivacy(false);
     setShowStart(false);
@@ -61,7 +68,9 @@ const PostScreen = ({route, navigation}) => {
     setMode(currentMode);
   }
 
-  // toggles mode and visibility for privacy picker
+  /**
+   * toggles mode and visibility for privacy picker
+   */ 
   const showModePrivacy = () => {
     setShowPrivacy(true);
     setShowStart(false);
@@ -152,13 +161,19 @@ const PostScreen = ({route, navigation}) => {
             {showStart && (
               <DateTimePicker
               // start picker, only shows when start is supposed to be visible (showStart === true)
+                // id of picker is start
                 testID='Start'
+                // value is stored in state date
                 value={date}
+                // starting mode is date
                 mode={mode}
+                // clock is not 24hr
                 is24Hour={false}
                 display='default'
+                // when value change, onChangeStart is called
                 onChange={onChangeStart}
                 style={styles.dtpicker}
+                // the minimum date is the current date and time
                 minimumDate={new Date()}
               />
             )}
@@ -166,24 +181,35 @@ const PostScreen = ({route, navigation}) => {
             {showEnd && (
               <DateTimePicker
               // end picker, only shows when end is supposed to be visible (showEnd === true)
+                // id of picker is end
                 testID='End'
+                // value is stored in state dateEnd
                 value={dateEnd}
+                // starting mode is date
                 mode={mode}
+                // clock is not 24hr
                 is24Hour={false}
                 display='default'
+                // when a value is selected, onChangeEnd is called
                 onChange={onChangeEnd}
                 style={styles.dtpicker}
+                // minimum date is the selected start time and date, else it is the current date and time
                 minimumDate={date}
               />
             )}
 
             <TouchableOpacity
-            // makes booking by saving into firestore bookings collection
+            // button to confirm post
             onPress={() => {
+                // if any fields are empty
                 if (description === "" || location === "" || privacy === "") {
+                  // alerts user to input
                   alert("Please fill in all fields!")
                 } else {
+                  // create document in posts collection on firestore
                   const docRef = addDoc(collection(db, "posts"), {
+                    // document has the following fields, in the form of title: value
+                    // values are captured in the states
                     privacy: privacy,
                     name: name,
                     hall: hall,
@@ -194,6 +220,7 @@ const PostScreen = ({route, navigation}) => {
                     location: location,
                     text: description
                   })
+                  // log successful post
                   console.log("Post made");
                   // user notified of successful booking and brought back to main page
                   alert("jio successfully posted")
