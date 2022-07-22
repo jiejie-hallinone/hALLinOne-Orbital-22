@@ -46,7 +46,7 @@ const BookingsScreen = ({navigation}) => {
         style={styles.TH}
       >
         <Image source={require('../../assets/th.png')} style={{width: 50, height: 50, }}/> 
-        <Text style={styles.buttonText}>Temasek Hall </Text>
+        <Text style={styles.buttonText}>Temasek Hall</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -83,7 +83,7 @@ const BookingsScreen = ({navigation}) => {
         }}
         style={styles.SH}
       >
-        <Image source={require('../../assets/sh.png')} style={{width: 50, height: 50, marginRight: 5}}/> 
+        <Image source={require('../../assets/sh.png')} style={{width: 60, height: 60, marginRight: 5}}/> 
         <Text style={styles.buttonText}>Sheares Hall </Text>
       </TouchableOpacity>
 
@@ -156,40 +156,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TH: {
-    backgroundColor: 'white',
+    backgroundColor: '#277047',
     width: '100%',
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: 'green',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
   buttonText: {
-    color: 'black',
+    color: 'white',
     fontWeight: '700',
     fontSize: 20,
   },
   EH: {
-    backgroundColor: 'gold',
+    backgroundColor: '#C48F06',
     width: '100%',
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: 'red',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
   SH: {
-    backgroundColor: 'orange',
+    backgroundColor: '#E43C00',
     width: '100%',
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: 'black',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
@@ -199,8 +193,6 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: '#fff500',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
@@ -215,19 +207,15 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: '#dbb526',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
   KE: {
-    backgroundColor: 'maroon',
+    backgroundColor: '#C3051A',
     width: '100%',
     padding: 15,
     alignItems: 'center',
     marginTop: 5,
-    borderColor: 'yellow',
-    borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center'
   },
