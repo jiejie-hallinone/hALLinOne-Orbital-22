@@ -77,7 +77,7 @@ const LoginScreen = () => {
             }
           }}
         >
-          <Text style={styles.pwText}>Forgot Password</Text>
+          <Text style={styles.pwText}>Forgot Password?</Text>
         </TouchableOpacity>   
       </View>
 
@@ -132,17 +132,16 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#003D7C',
     width: '100%',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center'
   },
   buttonOutline: {
-    backgroundColor: 'white',
+    backgroundColor: '#EF7C00',
     marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
+    borderColor: 'white',
   },
   buttonText: {
     color: 'white',
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
   },
@@ -160,6 +159,7 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   pwText: {
-    color: '#a9a9a9'
+    color: '#a9a9a9',
+    marginRight: -180,
   }
 })
