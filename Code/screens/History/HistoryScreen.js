@@ -31,7 +31,7 @@ const hallName = hallAbbreviation => {
 }
 
 /**
- * to match abbreviation to letter / number for blocks(since we stored only letters to save space in firestore)
+ * to match abbreviation to letter / number for blocks (since we stored only letters to save space in firestore)
  * 
  * @param letter the char used to store the block the user selected
  * @return full string name of the block
@@ -148,90 +148,99 @@ const HistoryScreen = ({route, navigation}) => {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
     const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + (start.getYear() + 1900);
-    const startTime = start.getHours() + 'hrs ' + start.getMinutes() + 'min';
+    const startTime = start.getHours() + ':' + start.getMinutes().toString().padStart(2, "0");
     const starting = startDate + " " + startTime;
 
     // convert end Date and Time to String
     const end = item.data.endDateTime.toDate();
     const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + (end.getYear() + 1900);
-    const endTime = end.getHours() + 'hrs ' + end.getMinutes() + 'min';
+    const endTime = end.getHours() + ':' + end.getMinutes().toString().padStart(2, "0");
     const ending = endDate + " " + endTime;
 
     return (
       // shows details of bookings - hall, block, facility, start and end date and time
       <View style={styles.itemContainer}>
-        <Text>Hall: {hallName(item.data.hall)}</Text>
-        <Text>Block: {blockName(item.data.block)}</Text>
-        <Text>Facility: {facName(item.data.facility)}</Text>
-        <Text>From: {starting}</Text>
-        <Text>To: {ending}</Text>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-          // button to amend booking, passes the booking id to the amend screen
-            onPress={() => {
-              try {
-                // get the document id of the booking to be amended
-                const amendingid = item.id;
-                // store id
-                setAmend(amendingid);
-                console.log("amending: " + amendingid)
-                // bring user to the amend page with the hall, block, facility, date and id of the booking to be amended
-                navigation.navigate("Amend", {
-                  hall: item.data.hall,
-                  block: item.data.block,
-                  facility: item.data.facility,
-                  bookedDate: item.data.startDateTime,
-                  amend: amendingid
-                });
-              } catch (err) {
-                // alerts user that there was an error, and to try again
-                alert("Error! Please try again! " + err)
-              }
-              
-            }}
-            style={[styles.button, styles.buttonOutline]}
-          >
-            <Text style={styles.buttonOutlineText}>Amend</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            // button to cancel booking
+        <View style={styles.topContainer}>
+          <View>
+            <Text style={styles.title}>Date</Text>
+            <Text style={styles.text}>{startDate}</Text>
+          </View>
+          <View>
+            <Text style={styles.title}>Time</Text>
+            <Text style={styles.text}>{startTime + " - " + endTime}</Text>
+          </View>
+        </View>
+        <View style={styles.midContainer}>
+            <Text style={styles.title}>{facName(item.data.facility)}</Text>
+            <Text style={styles.text}>{blockName(item.data.block)}</Text>
+        </View>
+        <View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+            // button to amend booking, passes the booking id to the amend screen
               onPress={() => {
-                // user has to confirm cancellation on the alert
                 try {
-                  Alert.alert('Cancel Booking', 'Are you sure?', [
-                  {text: 'Cancel Booking', onPress: () => {
-                    // if user confirms cancelling
-                    // get document id of the booking to be delted
-                    const delid = item.id;
-                    // store
-                    setDel(delid);
-                    // delete the document of the booking from firestore
-                    deleteDoc(doc(db, "bookings", delid));
-                    console.log("deleted: " + delid);
-                    // refresh the page to update the existing bookings
-                    setLoading(true);
-                    getBookings();
-                  }},
-                  {text: 'Go back', onPress: () => {
-                    // user does not want to cancel, wants to return
-                    // bring user back to current page
-                    navigation.navigate("Bookings");
-                  }}
-                ])
+                  // get the document id of the booking to be amended
+                  const amendingid = item.id;
+                  // store id
+                  setAmend(amendingid);
+                  console.log("amending: " + amendingid)
+                  // bring user to the amend page with the hall, block, facility, date and id of the booking to be amended
+                  navigation.navigate("Amend", {
+                    hall: item.data.hall,
+                    block: item.data.block,
+                    facility: item.data.facility,
+                    bookedDate: item.data.startDateTime,
+                    amend: amendingid
+                  });
                 } catch (err) {
-                  // alert user on error
-                  alert("Error! Please try again. " + err) 
+                  // alerts user that there was an error, and to try again
+                  alert("Error! Please try again! " + err)
                 }
                 
               }}
-              style={[styles.cancelButton, styles.cancelButtonOutline]}
+              style={[styles.button, styles.buttonOutline]}
             >
-              <Text style={styles.cancelButtonOutlineText}>Cancel</Text>
-          </TouchableOpacity>
+              <Text style={styles.buttonOutlineText}>Amend</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              // button to cancel booking
+                onPress={() => {
+                  // user has to confirm cancellation on the alert
+                  try {
+                    Alert.alert('Cancel Booking', 'Are you sure?', [
+                    {text: 'Cancel Booking', onPress: () => {
+                      // if user confirms cancelling
+                      // get document id of the booking to be delted
+                      const delid = item.id;
+                      // store
+                      setDel(delid);
+                      // delete the document of the booking from firestore
+                      deleteDoc(doc(db, "bookings", delid));
+                      console.log("deleted: " + delid);
+                      // refresh the page to update the existing bookings
+                      setLoading(true);
+                      getBookings();
+                    }},
+                    {text: 'Go back', onPress: () => {
+                      // user does not want to cancel, wants to return
+                      // bring user back to current page
+                      navigation.navigate("Bookings");
+                    }}
+                  ])
+                  } catch (err) {
+                    // alert user on error
+                    alert("Error! Please try again. " + err) 
+                  }
+                  
+                }}
+                style={[styles.cancelButton, styles.cancelButtonOutline]}
+              >
+                <Text style={styles.cancelButtonOutlineText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        
       </View>
     )
   }
@@ -278,7 +287,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   item: {
     flexDirection: 'column',
@@ -292,11 +301,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#0782F9',
-    width: '25%',
+    width: 'auto',
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 5, 
     marginRight: 30,
+    padding: 5,
+    textAlign: 'center'
   },
   buttonOutline: {
     backgroundColor: 'white',
@@ -316,11 +327,13 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: '#0782F9',
-    width: '25%',
+    width: 'auto ',
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 5,
-    marginLeft: 30
+    marginLeft: 30,
+    padding: 5,
+    textAlign: 'center'
   },
   cancelButtonOutline: {
     backgroundColor: 'white',
@@ -334,10 +347,14 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: 'center',
-    width: '100%',
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
-    marginBottom: 5,
+    width: '90%',
+    alignSelf: 'center',
+    backgroundColor: '#E0E0E0',
+    borderWidth: 0.7,
+    borderColor: 'black',
+    borderRadius: '20%',
+    padding: '1%',
+    marginBottom: 5
   },
   footer: {
     marginTop: 2,
@@ -346,6 +363,31 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  topContainer: {
+    width: '96%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    paddingBottom: '3%',
+    paddingLeft: '3%',
+    paddingRight: '3%',
+    marginTop: '2%'
+  },
+  midContainer: {
+    flexDirection: 'column',
+    justifyContent: 'start',
+    width: '96%',
+    paddingLeft: '3%',
+    marginTop: '2%'
+  },
+  title: {
+    fontSize: '12'
+  },
+  text: {
+    fontSize: '18',
+    fontWeight: '600'
   }
 })
