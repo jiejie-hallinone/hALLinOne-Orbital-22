@@ -171,8 +171,8 @@ const HistoryScreen = ({route, navigation}) => {
           </View>
         </View>
         <View style={styles.midContainer}>
-            <Text style={styles.title}>{facName(item.data.facility)}</Text>
-            <Text style={styles.text}>{blockName(item.data.block)}</Text>
+            <Text style={styles.title}>{blockName(item.data.block)}</Text>
+            <Text style={styles.text}>{facName(item.data.facility)}</Text>
         </View>
         <View>
           <View style={styles.buttonContainer}>
@@ -379,7 +379,8 @@ const styles = StyleSheet.create({
     justifyContent: 'start',
     width: '96%',
     paddingLeft: '3%',
-    marginTop: '2%'
+    marginTop: '2%',
+    marginBottom: '1%'
   },
   title: {
     fontSize: '12'
