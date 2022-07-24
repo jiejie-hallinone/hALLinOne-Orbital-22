@@ -19,7 +19,7 @@ const FirstTimeSetupBlockScreen = () => {
           behavior="padding"
       >
         <View style={styles.inputContainer}> 
-            <Text style={styles.text}>Select your block </Text>
+            <Text style={styles.text}>Select your block</Text>            
               <Picker
               // picker to select block
               // appears as dropdown for android, scrolling wheel for ios

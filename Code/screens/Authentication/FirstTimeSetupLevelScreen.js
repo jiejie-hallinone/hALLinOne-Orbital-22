@@ -19,7 +19,7 @@ const FirstTimeSetupLevelScreen = () => {
           behavior="padding"
       >
         <View style={styles.inputContainer}> 
-            <Text style={styles.text}>Select your level </Text>
+            <Text style={styles.text}>Select your level</Text>
               
               <Picker
               // picker to select level
