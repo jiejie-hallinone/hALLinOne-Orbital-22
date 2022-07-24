@@ -301,7 +301,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#0782F9',
-    width: 'auto',
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 5, 
@@ -327,7 +326,6 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: '#0782F9',
-    width: 'auto ',
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 5,
