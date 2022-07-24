@@ -80,20 +80,31 @@ const ExistingBookingsOnDayScreen = ({route, navigation}) => {
     // convert start Date and Time to String
     const start = item.data.startDateTime.toDate();
     const startDate = start.getDate() + "/" + (start.getMonth() + 1) + "/" + (start.getYear() + 1900);
-    const startTime = start.getHours() + 'hrs ' + start.getMinutes() + 'min';
+    const startTime = start.getHours() + ':' + start.getMinutes().toString().padStart(2, "0");
     const starting = startDate + " " + startTime;
 
     // convert end Date and Time to String
     const end = item.data.endDateTime.toDate();
     const endDate = end.getDate() + "/" + (end.getMonth() + 1) + "/" + (end.getYear() + 1900);
-    const endTime = end.getHours() + 'hrs ' + end.getMinutes() + 'min';
+    const endTime = end.getHours() + ':' + end.getMinutes().toString().padStart(2, "0");
     const ending = endDate + " " + endTime;
 
     return (
       <View style={styles.itemContainer}>
-        <Text>Booking by: {item.data.name}</Text>
-        <Text>From: {starting}</Text>
-        <Text>To: {ending}</Text>
+        <View style={styles.topContainer}>
+          <View>
+            <Text style={styles.title}>Date:</Text>
+            <Text style={styles.text2}>{startDate}</Text>
+          </View>
+          <View>
+            <Text style={styles.title}>Time</Text>
+            <Text style={styles.text2}>{startTime + " - " + endTime}</Text>
+          </View>
+        </View>
+        <View style={styles.midContainer}>
+            <Text style={styles.title}>Booking by</Text>
+            <Text style={styles.text2}>{item.data.name}</Text>
+        </View>
       </View>
     )
   }
@@ -180,11 +191,15 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     itemContainer: {
-        alignItems: 'center',
-        width: '100%',
-        borderBottomColor: 'black',
-        borderBottomWidth: 2,
-        padding: 5
+      alignItems: 'center',
+      width: '90%',
+      alignSelf: 'center',
+      backgroundColor: '#E0E0E0',
+      borderWidth: 0.7,
+      borderColor: 'black',
+      borderRadius: '20%',
+      padding: '1%',
+      marginBottom: 5
     },
     listContainer: {
         alignItems: 'center',
@@ -206,5 +221,31 @@ const styles = StyleSheet.create({
       marginTop: 2,
       marginBottom: 5,
       alignItems: 'center'
+    },
+    topContainer: {
+      width: '96%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+      paddingBottom: '3%',
+      paddingLeft: '3%',
+      paddingRight: '3%',
+      marginTop: '2%'
+    },
+    midContainer: {
+      flexDirection: 'column',
+      justifyContent: 'start',
+      width: '96%',
+      paddingLeft: '3%',
+      marginTop: '2%',
+      marginBottom: '1%'
+    },
+    title: {
+      fontSize: '12'
+    },
+    text2: {
+      fontSize: '18',
+      fontWeight: '600'
     }
 })
