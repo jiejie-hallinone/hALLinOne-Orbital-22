@@ -384,10 +384,10 @@ const styles = StyleSheet.create({
     marginTop: '2%'
   },
   title: {
-    fontSize: '12'
+    fontSize: 12
   },
   text: {
-    fontSize: '18',
+    fontSize: 18,
     fontWeight: '600'
   }
 })
