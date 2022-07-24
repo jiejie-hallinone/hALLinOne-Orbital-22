@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { auth } from '../../Firebase/Firebase';
@@ -45,6 +45,7 @@ const RegisterScreen = () => {
       style={styles.container}
       behavior="padding"
     >
+      <Image source={require('../../assets/hALLinOne.png')} style={{width: 320, height: 320, resizeMode: "contain"}} />
       <View style={styles.inputContainer}>
         <TextInput
           // input field for email
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
   inputContainer: {
     width: '80%'
@@ -130,10 +132,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   buttonOutline: {
-    backgroundColor: 'white',
+    backgroundColor: '#EF7C00',
     marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
+
   },
   buttonText: {
     color: 'white',
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
   },
