@@ -516,8 +516,12 @@ const paramsToLocation = () => {
                           .catch(err => {
                             alert("Unable to update calendar")
                           })
-                          await createEvent(calendar);
-                          console.log("event recreated with ID: " + event);
+                          const event2 = await createEvent(calendar);
+                          console.log("event recreated with ID: " + event2);
+                          await updateDoc(doc(db, 'bookings', bookingID), {
+                            eventID: event2
+                          })
+                          console.log("Event ID updated")
                         });
                         console.log("event created with ID: " + event);
                         await updateDoc(doc(db, 'bookings', bookingID), {
