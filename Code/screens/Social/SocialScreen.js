@@ -222,7 +222,8 @@ itemContainer: {
   borderColor: 'black',
   borderRadius: '20%',
   padding: '1%',
-  marginBottom: 5
+  marginBottom: 1,
+  marginTop: "2%"
 },
 listContainer: {
     flex: 1,

@@ -242,10 +242,10 @@ const styles = StyleSheet.create({
       marginBottom: '1%'
     },
     title: {
-      fontSize: '12'
+      fontSize: 12
     },
     text2: {
-      fontSize: '18',
+      fontSize: 18,
       fontWeight: '600'
     }
 })

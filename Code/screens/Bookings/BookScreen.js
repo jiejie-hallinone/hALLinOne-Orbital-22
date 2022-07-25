@@ -180,8 +180,8 @@ const paramsToLocation = () => {
   // toggle visibility of picker for end time and date
   const [showEnd, setShowEnd] = useState(false)
   // text for checking selected date and time
-  const [text, setText] = useState("From:")
-  const [textEnd, setTextEnd] = useState("To:")
+  const [text, setText] = useState("")
+  const [textEnd, setTextEnd] = useState("")
 
   /**
    * updates start time when changed on the picker
@@ -202,7 +202,7 @@ const paramsToLocation = () => {
     // get the time inputed in string
     let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
     // store in state Text to be displayed
-    setText("From: " + fullTime + " hrs");
+    setText(fullTime);
   }
 
   /**
@@ -224,7 +224,7 @@ const paramsToLocation = () => {
     // get the time inputted in string
     let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
     // store in state textEnd to be displayed
-    setTextEnd("To: " + fullTime + " hrs");
+    setTextEnd(fullTime);
   }
 
   /**
@@ -251,10 +251,12 @@ const paramsToLocation = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{text}</Text>
-      
-      <Text>{textEnd}</Text>
-
+      <View style={styles.topContainer}>
+        <Text style={styles.title}>From:</Text>
+        <Text style={styles.from}>{text}</Text>
+        <Text style={styles.title}>To:</Text>
+        <Text style={styles.to}>{textEnd}</Text>
+    
       <TouchableOpacity
       // for selecting start time - shows start picker on time mode
         onPress={() => showModeStart('time')}
@@ -270,7 +272,8 @@ const paramsToLocation = () => {
       > 
         <Text>Select End Time </Text>
       </TouchableOpacity>
-
+      </View>
+      
       {showStart && (
         <DateTimePicker
         // start picker, only shows when start is supposed to be visible (showStart === true)
@@ -566,14 +569,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'white',
-    width: '100%',
-    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 5, 
+    marginRight: 30,
+    padding: 5,
+    textAlign: 'center',
   },
   dtpicker: {
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5F5',
     marginTop: 20,
   },
   confirm: {
@@ -588,5 +593,28 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16
+  },
+  topContainer: {
+    width: '96%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    paddingBottom: '3%',
+    paddingLeft: '3%',
+    paddingRight: '3%',
+    marginTop: '2%'
+  },
+  title: {
+    fontSize: 12
+  },
+  from: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  to: {
+    fontSize: 18,
+    fontWeight: '600',
   }
+
 })
