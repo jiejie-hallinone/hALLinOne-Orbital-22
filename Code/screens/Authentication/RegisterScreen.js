@@ -82,11 +82,14 @@ const RegisterScreen = () => {
           // register button to create a new account
           onPress={() => {
             // if password and retyped password match, create account
-            if (password === confirmpassword) {
+            if (email && password && confirmpassword && password === confirmpassword) {
                 handleSignUp();
-            } else {
+            } else if (email && password && confirmpassword) {
                 // alert users that passwords do not match and users have to retype the password
                 alert("Passwords do not match!")
+            } else {
+              // alert users that not all fields input
+              alert("Please input all fields!")
             }
           }}
           style={[styles.button, styles.buttonOutline]}

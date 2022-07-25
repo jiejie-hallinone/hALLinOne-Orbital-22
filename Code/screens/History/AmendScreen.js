@@ -244,8 +244,8 @@ const [showStart, setShowStart] = useState(false)
 // toggle visibility of picker for end time and date
 const [showEnd, setShowEnd] = useState(false)
 // text for checking selected date and time
-const [text, setText] = useState("Start time:")
-const [textEnd, setTextEnd] = useState("End time:")
+const [text, setText] = useState("From:")
+const [textEnd, setTextEnd] = useState("To:")
 // to pass back to history page after confirming amend
 const [amended, setAmended] = useState(false);
 
@@ -267,9 +267,9 @@ const onChangeStart = (event, selectedTime) => {
 
   let tempDate = new Date(begin);
   // get the time inputed in string
-  let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+  let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
   // store in state Text to be displayed
-  setText("Start Time: " + fullTime);
+  setText("From: " + fullTime + " hrs");
 }
 
 /**
@@ -289,9 +289,9 @@ const onChangeEnd = (event, selectedTime) => {
 
   let tempDate = new Date(finish);
   // get the time inputted in string
-  let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
-  // store in state textEnd to be displayed
-  setTextEnd("End Time: " + fullTime);
+  let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
+    // store in state textEnd to be displayed
+    setTextEnd("To: " + fullTime + " hrs");
 }
 
 /**
