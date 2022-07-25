@@ -61,7 +61,7 @@ const ChangePasswordScreen = () => {
           // register button to create a new account
           onPress={() => {
             // if password and retyped password match
-            if (newPassword === confirmpassword) {
+            if (newPassword.length > 5 && newPassword === confirmpassword) {
                 // reauthenticate the current user with firebase
                 const cred = EmailAuthProvider.credential(auth.currentUser.email, currentPassword);
                 reauthenticateWithCredential(auth.currentUser, cred)
@@ -75,9 +75,11 @@ const ChangePasswordScreen = () => {
                 })
                 // push errors to the user
                 .catch(err => alert("Error updating password: " + err))
-            } else {
+            } else if (newPassword.length > 5) {
                 // alert users that passwords do not match and users have to retype the password
                 alert("Passwords do not match!")
+            } else {
+              alert("Password must be at least 6 characters long!")
             }
           }}
           style={[styles.button, styles.buttonOutline]}

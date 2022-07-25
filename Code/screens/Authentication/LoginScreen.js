@@ -68,7 +68,7 @@ const LoginScreen = () => {
               // Firebase Auth function to send email to email inputted
               sendPasswordResetEmail(auth, email)
               // alerts user that the email has been sent
-              .then(() => alert("Password reset email sent!"))
+              .then(() => alert("Password reset email sent to " + email))
               // pushes error message to user if unable to send email
               .catch(err => alert("Error sending reset email: " + err))
             } else {

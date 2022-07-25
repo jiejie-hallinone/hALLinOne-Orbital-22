@@ -482,7 +482,7 @@ function Loaded(props) {
                       // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                       const calendar = await createCalendar();
                       // store id
-                      await setCalendarId(calendar)
+                      // await setCalendarId(calendar)
                       console.log("calender " + calendar);
                       // add calendar ID of device into profile
                       await updateDoc(doc(db, 'users', uid), {
@@ -550,7 +550,7 @@ function Loaded(props) {
                       // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                       const calendar = await createCalendar();
                       // store ID
-                      await setCalendarId(calendar)
+                      // await setCalendarId(calendar)
                       console.log("calender " + calendar);
                       // add calendar ID of device into profile
                       const docRef = await updateDoc(doc(db, 'users', uid), {
@@ -580,7 +580,7 @@ function Loaded(props) {
                           console.log("caught")
                           // create new calendar and event, same process as above
                           const calendar = await createCalendar();
-                          await setCalendarId(calendar)
+                          // await setCalendarId(calendar)
                           console.log("calender " + calendar);
                           const docRef = await updateDoc(doc(db, 'users', uid), {
                             calendarId: calendar
