@@ -200,7 +200,7 @@ const paramsToLocation = () => {
 
     let tempDate = new Date(begin);
     // get the time inputed in string
-    let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+    let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
     // store in state Text to be displayed
     setText("Start Time: " + fullTime);
   }
@@ -222,7 +222,7 @@ const paramsToLocation = () => {
 
     let tempDate = new Date(finish);
     // get the time inputted in string
-    let fullTime = tempDate.getHours() + 'hrs ' + tempDate.getMinutes() + 'min';
+    let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes().toString().padStart(2, "0");
     // store in state textEnd to be displayed
     setTextEnd("End Time: " + fullTime);
   }
@@ -453,7 +453,7 @@ const paramsToLocation = () => {
             // facility is booked during selected period
             if (booked) {
               // alerts user that the facility is booked during selected period
-              alert("Selected time period already has a booking! Check previous page for existing bookings!");
+              alert("Selected time period already has a booking! Check previous page for existing bookings.");
             // facility available
             } else {
             // create booking, rest of process same as above for washing machine and dryer

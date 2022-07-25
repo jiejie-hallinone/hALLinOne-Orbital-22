@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
       borderColor: 'black',
       borderRadius: '20%',
       padding: '1%',
-      marginBottom: 5
+      marginTop: 10
     },
     listContainer: {
         alignItems: 'center',
