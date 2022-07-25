@@ -453,7 +453,7 @@ const paramsToLocation = () => {
             // facility is booked during selected period
             if (booked) {
               // alerts user that the facility is booked during selected period
-              alert("Selected time period already has a booking! Check previous page for existing bookings!");
+              alert("Selected time period already has a booking! Check previous page for existing bookings.");
             // facility available
             } else {
             // create booking, rest of process same as above for washing machine and dryer
