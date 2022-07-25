@@ -84,7 +84,13 @@ const LoginScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           // login button that logs the user into app and firebase when pressed
-          onPress={handleLogin}
+          onPress={() => {
+            if (email && password) {
+              handleLogin()
+            } else {
+              alert("Please input email and password!")
+            }
+          }}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
