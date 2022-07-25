@@ -353,7 +353,7 @@ const paramsToLocation = () => {
                       // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                       const calendar = await createCalendar();
                       // store ID
-                      setCalendarId(calendar)
+                      // setCalendarId(calendar)
                       console.log("calender " + calendar);
                       // add calendar ID of device into profile
                       const docRef = updateDoc(doc(db, 'users', uid), {
@@ -383,7 +383,7 @@ const paramsToLocation = () => {
                           console.log("caught")
                           // create new calendar and event, same process as above
                           const calendar = await createCalendar();
-                          setCalendarId(calendar)
+                          // setCalendarId(calendar)
                           console.log("calender " + calendar);
                           const docRef = await updateDoc(doc(db, 'users', uid), {
                             calendarId: calendar
@@ -483,7 +483,7 @@ const paramsToLocation = () => {
                         if (calendarId === '') {
                         // creates a calendar in device native calendar, named Hall Bookings. calender represents ID of calendar
                         const calendar = await createCalendar();
-                        setCalendarId(calendar)
+                        // setCalendarId(calendar)
                         console.log("calender " + calendar);
                         const docRef = updateDoc(doc(db, 'users', uid), {
                           calendarId: calendar
@@ -508,7 +508,7 @@ const paramsToLocation = () => {
                         .catch(async err => {
                           console.log("caught")
                           const calendar = await createCalendar();
-                          setCalendarId(calendar)
+                          // await setCalendarId(calendar)
                           console.log("calender " + calendar);
                           const docRef = await updateDoc(doc(db, 'users', uid), {
                             calendarId: calendar
