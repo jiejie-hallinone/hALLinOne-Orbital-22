@@ -2,20 +2,20 @@ name: Firebase Continuous Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
         with:
           node-version: 16.16.0
       - run: npm ci
       - run: npm run build
-      - uses: w9jds/firebase-action@main
+      - uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
