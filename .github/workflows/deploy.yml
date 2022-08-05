@@ -1,26 +1,22 @@
-name: Continuous Integration
+name: Firebase Continuous Deployment
 
 on:
   push:
-    branches:
-      - UI/UX
-      - google
-      - main
+    branches: [ main ]
+
 
 jobs:
-  test:
-    name: Tests
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with: 
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
           node-version: 16.16.0
-
-      - run: npm ci --legacy-peer-deps
-      - run: npm test
+      - run: npm ci
       - run: npm run build
-      - run: npm run deploy
-
-    
+      - uses: w9jds/firebase-action@main
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
