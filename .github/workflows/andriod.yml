@@ -14,7 +14,4 @@ jobs:
         
 
         - run: npm ci --legacy-peer-deps
-        
-        - run: ./gradlew assembleDebug
-          working-directory: andriod
-          name: Build Andriod apk (debug)
+    
